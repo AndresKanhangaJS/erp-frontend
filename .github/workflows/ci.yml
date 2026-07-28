@@ -18,18 +18,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configurar Node 20
+      - name: Configurar Node 24
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: npm
           cache-dependency-path: erp-frontend/package-lock.json
 
       - name: npm ci
         run: npm ci
 
-      - name: Verificação de tipos (tsc --noEmit)
-        run: npx tsc --noEmit
+      - name: Verificação de tipos (tsc -b)
+        run: npx tsc -b
 
       - name: ESLint
         run: npm run lint

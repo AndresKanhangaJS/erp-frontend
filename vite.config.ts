@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { fileURLToPath, URL } from 'node:url'
 
 import tailwindcss from '@tailwindcss/vite'
@@ -32,5 +33,15 @@ export default defineConfig({
         changeOrigin: true,
       },
     },
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    // @testing-library/jest-dom nesta versão espera um `expect` global
+    // (chama expect.extend() no import) — não há entrada dedicada ao
+    // Vitest nesta versão do pacote. Os testes continuam a importar
+    // describe/it/expect explicitamente de 'vitest'; isto só liga o
+    // registo dos matchers do jest-dom.
+    globals: true,
   },
 })
