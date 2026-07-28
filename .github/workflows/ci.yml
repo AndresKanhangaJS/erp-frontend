@@ -41,7 +41,7 @@ jobs:
         run: npm run build
         env:
           VITE_API_URL: http://localhost/api/v1
-          VITE_APP_NAME: "ERP Angola"
+          VITE_APP_NAME: 'ERP Angola'
 
   comment:
     runs-on: ubuntu-latest

@@ -1,0 +1,103 @@
+/**
+ * Tokens do design system — ERP Angola.
+ *
+ * Fonte única de verdade para cor, tipografia e raio. Nada fora deste
+ * ficheiro deve conter uma cor literal (hex/oklch/rgb) — componentes
+ * consomem sempre var(--token) ou uma classe Tailwind mapeada a um
+ * destes tokens (ver @theme em src/index.css).
+ *
+ * Tema escuro activa-se com a classe `.dark` num antecessor (ver
+ * @custom-variant dark em src/index.css) — é isso que a uiStore
+ * (Passo 6) deve alternar em <html>, não um atributo data-theme.
+ */
+
+:root {
+  /* Superfícies */
+  --surface-page: oklch(0.99 0 0);
+  --surface-card: oklch(1 0 0);
+  --surface-raised: oklch(0.97 0 0);
+  --surface-hover: oklch(0.955 0 0);
+  --surface-hover-foreground: oklch(0.205 0 0);
+
+  /* Texto */
+  --text-primary: oklch(0.145 0 0);
+  --text-secondary: oklch(0.4 0 0);
+  --text-muted: oklch(0.556 0 0);
+
+  /* Bordas */
+  --border: oklch(0.9 0 0);
+  --border-strong: oklch(0.8 0 0);
+  --border-focus: oklch(0.55 0.18 255);
+
+  /* Acento (cor de acção principal — mapeado para --primary do shadcn) */
+  --accent: oklch(0.5 0.18 255);
+  --accent-hover: oklch(0.44 0.19 255);
+  --accent-subtle: oklch(0.94 0.03 255);
+  --accent-foreground: oklch(0.99 0 0);
+
+  /* Semântica */
+  --success: oklch(0.55 0.15 145);
+  --success-subtle: oklch(0.95 0.03 145);
+  --warning: oklch(0.75 0.16 80);
+  --warning-subtle: oklch(0.96 0.04 80);
+  --danger: oklch(0.58 0.22 25);
+  --danger-subtle: oklch(0.95 0.04 25);
+  --info: oklch(0.6 0.13 220);
+  --info-subtle: oklch(0.95 0.03 220);
+
+  /* Fiscal */
+  --agt: oklch(0.35 0.08 250);
+
+  /*
+   * Tipografia — escala de tamanhos vem do default do Tailwind v4.
+   *
+   * Nomes com sufixo -family (não --font-sans/--font-mono directamente):
+   * essas são as chaves de tema reservadas do Tailwind v4 e são
+   * declaradas via indirecção em src/index.css (@theme inline), à mesma
+   * distância de --font-sans que --primary está de --accent. Declarar
+   * "--font-sans: var(--font-sans)" ali seria uma referência circular.
+   */
+  --font-family-sans: 'Geist Variable', system-ui, sans-serif;
+  --font-family-mono:
+    ui-monospace, 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* Espaço — escala base de 4px já é o default do Tailwind v4 (--spacing: 0.25rem) */
+
+  /* Raio — sóbrio, denso; --radius-sm/md/lg/etc. derivam disto no @theme */
+  --radius: 0.375rem;
+
+  /* Transições — rápidas, nunca animações longas */
+  --transition-fast: 150ms;
+}
+
+.dark {
+  --surface-page: oklch(0.145 0 0);
+  --surface-card: oklch(0.205 0 0);
+  --surface-raised: oklch(0.269 0 0);
+  --surface-hover: oklch(0.269 0 0);
+  --surface-hover-foreground: oklch(0.985 0 0);
+
+  --text-primary: oklch(0.985 0 0);
+  --text-secondary: oklch(0.8 0 0);
+  --text-muted: oklch(0.708 0 0);
+
+  --border: oklch(1 0 0 / 12%);
+  --border-strong: oklch(1 0 0 / 20%);
+  --border-focus: oklch(0.65 0.19 255);
+
+  --accent: oklch(0.65 0.19 255);
+  --accent-hover: oklch(0.7 0.19 255);
+  --accent-subtle: oklch(0.3 0.08 255);
+  --accent-foreground: oklch(0.145 0 0);
+
+  --success: oklch(0.65 0.15 145);
+  --success-subtle: oklch(0.28 0.06 145);
+  --warning: oklch(0.78 0.15 80);
+  --warning-subtle: oklch(0.3 0.05 80);
+  --danger: oklch(0.65 0.2 25);
+  --danger-subtle: oklch(0.3 0.06 25);
+  --info: oklch(0.68 0.12 220);
+  --info-subtle: oklch(0.28 0.05 220);
+
+  --agt: oklch(0.6 0.09 250);
+}

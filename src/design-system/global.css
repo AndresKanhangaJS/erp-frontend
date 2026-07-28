@@ -1,0 +1,68 @@
+/**
+ * Reset + base — ERP Angola.
+ *
+ * Software de trabalho usado 8h/dia: sóbrio, denso, sem decoração.
+ * Estas regras não estão dentro de @layer de propósito — o cascade
+ * layers do CSS dá prioridade a regras sem layer sobre as de
+ * @layer base do Tailwind, portanto isto vence de forma previsível
+ * independentemente da ordem de import.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: var(--surface-page);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Foco visível em todos os elementos interactivos (ADR-008) */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* Transições rápidas por omissão em elementos interactivos comuns */
+button,
+a,
+input,
+select,
+textarea {
+  transition:
+    color var(--transition-fast) ease,
+    background-color var(--transition-fast) ease,
+    border-color var(--transition-fast) ease;
+}
+
+/* Valores monetários e códigos — sempre monoespaçados, alinhados,
+   sem re-arredondar dígitos tabulares uns contra os outros */
+.font-tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
