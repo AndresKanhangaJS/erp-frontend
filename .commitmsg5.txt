@@ -1,0 +1,36 @@
+Passo 5: camada de API - axios, TanStack Query, mapeamento de erros
+
+client.ts: instancia axios com Authorization/X-Tenant-ID injectados
+via interceptor de pedido (lidos de authStore/tenantStore fora de
+React), e interceptor de resposta que desembrulha response.data.data
+para recursos simples e preserva {data, meta, links} para listas
+paginadas (colapsar sempre para response.data.data teria perdido a
+paginacao). Trata 401 (limpa authStore, redirect duro para /login -
+ainda sem router, Passo 8), 403 (toast; MODULE_NOT_ACTIVE fica so
+com toast por agora, o modal de upgrade pertence ao ModuleGuard do
+Passo 8), 422 (deixa passar para o mapApiErrors) e 5xx/rede (toast
+generico + log).
+
+queryClient.ts: retry automatico em falhas de rede e 5xx, nunca em
+4xx; mutations sem retry (reenviar as cegas arrisca duplicar a accao).
+
+shared/types/api.ts: ApiSuccessResponse, PaginatedResponse,
+PaginationMeta/Links, ApiErrorBody (forma unificada dos corpos de
+422/409/403).
+
+shared/utils/mapApiErrors.ts: mapeia os "errors" de um 422 para
+setError() do React Hook Form, tipado por generics (sem any).
+
+Puxados do Passo 6 porque o client.ts depende deles de forma real
+(o interceptor precisa de token/tenantId para montar os cabecalhos
+obrigatorios em cada pedido): shared/stores/authStore.ts e
+tenantStore.ts, ambos persistidos em localStorage. uiStore continua
+por fazer no Passo 6.
+
+../docs/openapi.json ainda nao existe (backend nao exportou) -
+api/types.generated.ts fica por gerar ate isso acontecer.
+
+8 testes novos (utils.test.ts + mapApiErrors.test.ts). tsc -b,
+vitest run, lint, format:check e build todos validados.
+
+Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
