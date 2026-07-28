@@ -1,64 +1,105 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import type { ColumnDef } from '@tanstack/react-table'
+
+import { Button } from '@/components/ui/button'
+import { AppShell } from '@/shared/components/layout/AppShell'
+import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { ConfirmDialog } from '@/shared/components/ui/ConfirmDialog'
+import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
+import { CurrencyInput } from '@/shared/components/ui/CurrencyInput'
+import { DataTable } from '@/shared/components/ui/DataTable'
+import { DatePicker } from '@/shared/components/ui/DatePicker'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
+import { useAuthStore } from '@/shared/stores/authStore'
+import { useTenantStore } from '@/shared/stores/tenantStore'
+
+interface DocumentoDemo {
+  numero: string
+  cliente: string
+  total: number
+}
+
+const DOCUMENTOS: DocumentoDemo[] = [
+  { numero: 'FT 2026/000123', cliente: 'Angola Digital, Lda', total: 125000 },
+  { numero: 'FT 2026/000124', cliente: 'Kwanza Tech', total: 48250.5 },
+]
+
+const columns: ColumnDef<DocumentoDemo>[] = [
+  { accessorKey: 'numero', header: 'Nº Documento' },
+  { accessorKey: 'cliente', header: 'Cliente' },
+  {
+    accessorKey: 'total',
+    header: 'Total',
+    cell: ({ row }) => <CurrencyDisplay value={row.original.total} className="block text-right" />,
+  },
+]
 
 /**
- * Página de smoke-test do design system (Passo 4).
- * Substituída pelo router real no Passo 8.
+ * Página de smoke-test do Passo 7 (design system + componentes
+ * partilhados). Substituída pelo router real no Passo 8 — o
+ * seed de auth/tenant abaixo é só para a Sidebar/Topbar terem algo
+ * para mostrar antes de existir login de verdade.
  */
 function App() {
-  const [dark, setDark] = useState(false)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [valor, setValor] = useState<number | null>(125000)
+  const [data, setData] = useState<Date | null>(new Date())
+
+  useEffect(() => {
+    useAuthStore.getState().setAuth({
+      token: 'demo-token',
+      user: { id: '1', name: 'Ana Contabilista', email: 'ana@example.com' },
+      permissions: ['faturacao.emitir'],
+    })
+    useTenantStore.getState().setTenant({
+      tenantId: 'demo-tenant',
+      plan: 'starter',
+      activeModules: ['faturacao'],
+    })
+  }, [])
 
   return (
-    <div className={dark ? 'dark' : ''}>
-      <div className="min-h-screen space-y-6 bg-surface-page p-8 text-text-primary">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold">Design system — smoke test</h1>
-          <button
-            type="button"
-            onClick={() => setDark((v) => !v)}
-            className="rounded-md border border-border-strong bg-surface-card px-3 py-1.5 text-sm hover:bg-accent"
-          >
-            Alternar tema ({dark ? 'escuro' : 'claro'})
-          </button>
+    <AppShell>
+      <PageHeader
+        title="Documentos"
+        breadcrumbs={[{ label: 'Facturação', href: '/faturacao' }, { label: 'Documentos' }]}
+        actions={
+          <PermissionGuard permission="faturacao.emitir">
+            <Button type="button" onClick={() => setConfirmOpen(true)}>
+              Anular factura
+            </Button>
+          </PermissionGuard>
+        }
+      />
+
+      <div className="mt-6 flex gap-4">
+        <div className="w-56 space-y-1">
+          <label htmlFor="valor" className="text-sm text-text-secondary">
+            Valor
+          </label>
+          <CurrencyInput id="valor" value={valor} onChange={setValor} />
         </div>
-
-        <section className="grid grid-cols-3 gap-4">
-          <div className="rounded-lg border border-border bg-surface-card p-4">
-            <p className="text-sm text-text-secondary">surface-card</p>
-            <p className="text-text-muted">text-muted</p>
-          </div>
-          <div className="rounded-lg border border-border bg-surface-raised p-4">
-            <p className="text-sm text-text-secondary">surface-raised</p>
-          </div>
-          <div className="rounded-lg border-2 border-border-focus bg-surface-card p-4">
-            <p className="text-sm text-text-secondary">border-focus</p>
-          </div>
-        </section>
-
-        <section className="flex flex-wrap gap-3">
-          <span className="rounded-md bg-success-subtle px-2.5 py-1 text-sm text-success">
-            Pago
-          </span>
-          <span className="rounded-md bg-warning-subtle px-2.5 py-1 text-sm text-warning">
-            Pendente
-          </span>
-          <span className="rounded-md bg-danger-subtle px-2.5 py-1 text-sm text-danger">
-            Anulado
-          </span>
-          <span className="rounded-md bg-info-subtle px-2.5 py-1 text-sm text-info">Rascunho</span>
-          <span className="rounded-md bg-surface-raised px-2.5 py-1 text-sm text-agt">
-            Certificado AGT
-          </span>
-        </section>
-
-        <section className="flex items-center gap-4">
-          <button type="button" className="rounded-md bg-primary px-4 py-2 text-primary-foreground">
-            Emitir factura
-          </button>
-          <p className="font-mono text-lg tabular-nums">125.000,00 AOA</p>
-          <p className="font-mono text-sm text-text-muted">FT 2026/000123</p>
-        </section>
+        <div className="w-56 space-y-1">
+          <label htmlFor="data" className="text-sm text-text-secondary">
+            Data
+          </label>
+          <DatePicker value={data} onChange={setData} />
+        </div>
       </div>
-    </div>
+
+      <div className="mt-6">
+        <DataTable columns={columns} data={DOCUMENTOS} />
+      </div>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        title="Anular factura"
+        description="Esta acção não pode ser revertida."
+        destructive
+        onConfirm={() => setConfirmOpen(false)}
+      />
+    </AppShell>
   )
 }
 
