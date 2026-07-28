@@ -16,7 +16,12 @@ interface TopbarProps {
 
 export function Topbar({ onToggleSidebar }: TopbarProps) {
   const { user, logout } = useAuth()
-  const { tenantId } = useTenant()
+  const { tenantId, clearTenant } = useTenant()
+
+  function handleLogout() {
+    logout()
+    clearTenant()
+  }
 
   return (
     <header className="flex h-14 shrink-0 items-center justify-between border-b border-border bg-surface-card px-4">
@@ -40,7 +45,7 @@ export function Topbar({ onToggleSidebar }: TopbarProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={logout}>Terminar sessão</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>Terminar sessão</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
