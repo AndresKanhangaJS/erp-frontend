@@ -4,6 +4,38 @@
  */
 
 export interface paths {
+  '/v1/contabilidade/apuramento-iva': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations['contabilidade.apuramento-iva.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/contabilidade/apuramento-iva/{apuramentoIva}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['contabilidade.apuramento-iva.show']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/v1/faturacao/artigos': {
     parameters: {
       query?: never
@@ -164,6 +196,38 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/v1/contabilidade/plano-de-contas': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['contabilidade.contas.index']
+    put?: never
+    post: operations['contabilidade.contas.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/contabilidade/plano-de-contas/{conta}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put: operations['contabilidade.contas.update']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/v1/faturacao/faturas': {
     parameters: {
       query?: never
@@ -249,6 +313,54 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/v1/contabilidade/lancamentos': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['contabilidade.lancamentos.index']
+    put?: never
+    post: operations['contabilidade.lancamentos.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/contabilidade/lancamentos/{lancamento}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['contabilidade.lancamentos.show']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/contabilidade/lancamentos/{lancamento}/anular': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations['contabilidade.lancamentos.anular']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/v1/faturacao/faturas/{fatura}/pagamentos': {
     parameters: {
       query?: never
@@ -259,6 +371,38 @@ export interface paths {
     get: operations['faturacao.pagamentos.index']
     put?: never
     post: operations['faturacao.pagamentos.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/contabilidade/periodos': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['contabilidade.periodos.index']
+    put?: never
+    post: operations['contabilidade.periodos.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/contabilidade/periodos/{periodoContabil}/fechar': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations['contabilidade.periodos.fechar']
     delete?: never
     options?: never
     head?: never
@@ -291,6 +435,54 @@ export interface paths {
     get?: never
     put?: never
     post: operations['faturacao.periodos-fiscais.fechar']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/contabilidade/balancete': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['contabilidade.balancete']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/contabilidade/balanco': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['contabilidade.balanco']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/contabilidade/demonstracao-resultados': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['contabilidade.demonstracao-resultados']
+    put?: never
+    post?: never
     delete?: never
     options?: never
     head?: never
@@ -419,6 +611,36 @@ export interface components {
       serie_nc_id: string
       motivo: string
     }
+    /** ApuramentoIvaResource */
+    ApuramentoIvaResource: {
+      id: string
+      /** @constant */
+      type: 'apuramento_iva'
+      attributes: {
+        periodo_id: string
+        iva_liquidado: {
+          amount: string
+          currency: string
+        } | null
+        iva_dedutivel: {
+          amount: string
+          currency: string
+        } | null
+        iva_apurado: {
+          amount: string
+          currency: string
+        } | null
+        lancamento_id: string
+        data_apuramento: string | null
+      }
+      created_at: string | null
+      updated_at: string | null
+    }
+    /** ApurarIvaRequest */
+    ApurarIvaRequest: {
+      /** Format: uuid */
+      periodo_id: string
+    }
     /** ArtigoCollection */
     ArtigoCollection: {
       data: string
@@ -452,6 +674,28 @@ export interface components {
       }
       created_at: string | null
       updated_at: string | null
+    }
+    /** BalancoResource */
+    BalancoResource: {
+      activo: components['schemas']['LinhaDemonstrativoResource'][]
+      passivo: components['schemas']['LinhaDemonstrativoResource'][]
+      capital_proprio: components['schemas']['LinhaDemonstrativoResource'][]
+      resultado_acumulado: {
+        amount: string
+        currency: string
+      } | null
+      total_activo: {
+        amount: string
+        currency: string
+      } | null
+      total_passivo: {
+        amount: string
+        currency: string
+      } | null
+      total_capital_proprio: {
+        amount: string
+        currency: string
+      } | null
     }
     /** ChangePasswordRequest */
     ChangePasswordRequest: {
@@ -490,6 +734,37 @@ export interface components {
       created_at: string | null
       updated_at: string | null
     }
+    /** ContaCollection */
+    ContaCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** ContaResource */
+    ContaResource: {
+      id: string
+      /** @constant */
+      type: 'conta'
+      attributes: {
+        codigo: string
+        designacao: string
+        tipo: string
+        conta_pai_id: string
+        permite_lancamentos: string
+      }
+      created_at: string | null
+      updated_at: string | null
+    }
     /** CreateArtigoRequest */
     CreateArtigoRequest: {
       codigo: string
@@ -507,6 +782,21 @@ export interface components {
       email?: string | null
       telefone?: string | null
       morada?: string | null
+    }
+    /** CreateContaRequest */
+    CreateContaRequest: {
+      codigo: string
+      designacao: string
+      /** @enum {string} */
+      tipo: 'activo' | 'passivo' | 'capital_proprio' | 'proveito' | 'custo'
+      /** Format: uuid */
+      conta_pai_id?: string | null
+      permite_lancamentos: boolean
+    }
+    /** CreatePeriodoContabilRequest */
+    CreatePeriodoContabilRequest: {
+      ano_fiscal: number
+      mes: number
     }
     /** CreatePeriodoFiscalRequest */
     CreatePeriodoFiscalRequest: {
@@ -534,6 +824,37 @@ export interface components {
       /** Format: email */
       email: string
       role: string
+    }
+    /** CriarLancamentoRequest */
+    CriarLancamentoRequest: {
+      /** Format: uuid */
+      periodo_id: string
+      /** Format: date-time */
+      data: string
+      descricao: string
+      linhas: {
+        /** Format: uuid */
+        conta_id: string
+        debito?: number | null
+        credito?: number | null
+      }[]
+    }
+    /** DemonstracaoResultadosResource */
+    DemonstracaoResultadosResource: {
+      proveitos: components['schemas']['LinhaDemonstrativoResource'][]
+      custos: components['schemas']['LinhaDemonstrativoResource'][]
+      total_proveitos: {
+        amount: string
+        currency: string
+      } | null
+      total_custos: {
+        amount: string
+        currency: string
+      } | null
+      resultado_liquido: {
+        amount: string
+        currency: string
+      } | null
     }
     /** EmitirFaturaRequest */
     EmitirFaturaRequest: {
@@ -640,6 +961,65 @@ export interface components {
       /** Format: email */
       email: string
     }
+    /** LancamentoCollection */
+    LancamentoCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** LancamentoResource */
+    LancamentoResource: {
+      id: string
+      /** @constant */
+      type: 'lancamento'
+      attributes: {
+        numero: string
+        periodo_id: string
+        data: string | null
+        descricao: string
+        estado: string
+        tipo_origem: string
+        origem_tipo: string
+        origem_id: string
+        lancamento_estorno_id: string
+        linhas:
+          | {
+              id: string
+              conta_id: string
+              debito: {
+                amount: string
+                currency: string
+              } | null
+              credito: {
+                amount: string
+                currency: string
+              } | null
+            }[]
+          | null
+      }
+      created_at: string | null
+      updated_at: string | null
+    }
+    /** LinhaDemonstrativoResource */
+    LinhaDemonstrativoResource: {
+      conta_id: string
+      conta_codigo: string
+      conta_designacao: string
+      valor: {
+        amount: string
+        currency: string
+      } | null
+    }
     /** LoginRequest */
     LoginRequest: {
       /** Format: email */
@@ -676,6 +1056,36 @@ export interface components {
         metodo: string
         referencia: string
         data_pagamento: string | null
+      }
+      created_at: string | null
+      updated_at: string | null
+    }
+    /** PeriodoContabilCollection */
+    PeriodoContabilCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** PeriodoContabilResource */
+    PeriodoContabilResource: {
+      id: string
+      /** @constant */
+      type: 'periodo_contabil'
+      attributes: {
+        ano_fiscal: string
+        mes: string
+        fechado: string
+        fechado_em: string | null
       }
       created_at: string | null
       updated_at: string | null
@@ -724,6 +1134,28 @@ export interface components {
       token: string
       password: string
       password_confirmation: string
+    }
+    /** SaldoContaResource */
+    SaldoContaResource: {
+      conta_id: string
+      conta_codigo: string
+      conta_designacao: string
+      saldo_anterior: {
+        amount: string
+        currency: string
+      } | null
+      debito: {
+        amount: string
+        currency: string
+      } | null
+      credito: {
+        amount: string
+        currency: string
+      } | null
+      saldo_atual: {
+        amount: string
+        currency: string
+      } | null
     }
     /** SerieDocumentoCollection */
     SerieDocumentoCollection: {
@@ -799,6 +1231,13 @@ export interface components {
       email?: string | null
       telefone?: string | null
       morada?: string | null
+    }
+    /** UpdateContaRequest */
+    UpdateContaRequest: {
+      designacao: string
+      /** Format: uuid */
+      conta_pai_id?: string | null
+      permite_lancamentos: boolean
     }
     /** UpdateUserRequest */
     UpdateUserRequest: {
@@ -902,6 +1341,63 @@ export interface components {
 }
 export type $defs = Record<string, never>
 export interface operations {
+  'contabilidade.apuramento-iva.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ApurarIvaRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['ApuramentoIvaResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'contabilidade.apuramento-iva.show': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The apuramento iva ID */
+        apuramentoIva: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `ApuramentoIvaResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['ApuramentoIvaResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
   'faturacao.artigos.index': {
     parameters: {
       query?: never
@@ -1237,6 +1733,91 @@ export interface operations {
       422: components['responses']['ValidationException']
     }
   }
+  'contabilidade.contas.index': {
+    parameters: {
+      query?: {
+        search?: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `ContaCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ContaCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'contabilidade.contas.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateContaRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['ContaResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'contabilidade.contas.update': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The conta ID */
+        conta: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateContaRequest']
+      }
+    }
+    responses: {
+      /** @description `ContaResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['ContaResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+      422: components['responses']['ValidationException']
+    }
+  }
   'faturacao.faturas.index': {
     parameters: {
       query?: never
@@ -1414,6 +1995,117 @@ export interface operations {
       404: components['responses']['ModelNotFoundException']
     }
   }
+  'contabilidade.lancamentos.index': {
+    parameters: {
+      query?: {
+        periodo_id?: string
+        estado?: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `LancamentoCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['LancamentoCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'contabilidade.lancamentos.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CriarLancamentoRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['LancamentoResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'contabilidade.lancamentos.show': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The lancamento ID */
+        lancamento: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `LancamentoResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['LancamentoResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'contabilidade.lancamentos.anular': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The lancamento ID */
+        lancamento: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: {
+              original: components['schemas']['LancamentoResource']
+              estorno: components['schemas']['LancamentoResource']
+            }
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
   'faturacao.pagamentos.index': {
     parameters: {
       query?: never
@@ -1470,6 +2162,84 @@ export interface operations {
       403: components['responses']['AuthorizationException']
       404: components['responses']['ModelNotFoundException']
       422: components['responses']['ValidationException']
+    }
+  }
+  'contabilidade.periodos.index': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `PeriodoContabilCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PeriodoContabilCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'contabilidade.periodos.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreatePeriodoContabilRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['PeriodoContabilResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'contabilidade.periodos.fechar': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The periodo contabil ID */
+        periodoContabil: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `PeriodoContabilResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['PeriodoContabilResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
     }
   }
   'faturacao.periodos-fiscais.index': {
@@ -1548,6 +2318,87 @@ export interface operations {
       401: components['responses']['AuthenticationException']
       403: components['responses']['AuthorizationException']
       404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'contabilidade.balancete': {
+    parameters: {
+      query: {
+        periodo_id: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Array of `SaldoContaResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['SaldoContaResource'][]
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'contabilidade.balanco': {
+    parameters: {
+      query: {
+        periodo_id: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `BalancoResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['BalancoResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'contabilidade.demonstracao-resultados': {
+    parameters: {
+      query: {
+        periodo_id: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `DemonstracaoResultadosResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['DemonstracaoResultadosResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
     }
   }
   'faturacao.saft.exportar': {
