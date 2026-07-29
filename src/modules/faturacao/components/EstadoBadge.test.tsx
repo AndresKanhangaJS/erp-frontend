@@ -9,13 +9,18 @@ describe('EstadoBadge', () => {
     expect(screen.getByText('Rascunho')).toBeInTheDocument()
   })
 
-  it('mostra "Emitido" para emitido', () => {
-    render(<EstadoBadge estado="emitido" />)
-    expect(screen.getByText('Emitido')).toBeInTheDocument()
+  it('mostra "Emitida" para emitida', () => {
+    render(<EstadoBadge estado="emitida" />)
+    expect(screen.getByText('Emitida')).toBeInTheDocument()
   })
 
-  it('mostra "Anulado" para anulado', () => {
-    render(<EstadoBadge estado="anulado" />)
-    expect(screen.getByText('Anulado')).toBeInTheDocument()
+  it('mostra "Paga" para paga', () => {
+    render(<EstadoBadge estado="paga" />)
+    expect(screen.getByText('Paga')).toBeInTheDocument()
+  })
+
+  it('mostra "Anulada" para anulada', () => {
+    render(<EstadoBadge estado="anulada" />)
+    expect(screen.getByText('Anulada')).toBeInTheDocument()
   })
 })

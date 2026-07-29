@@ -1,16 +1,17 @@
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
-import type { EstadoDocumento } from '../types'
+import type { EstadoFatura } from '../types'
 
-const CONFIG: Record<EstadoDocumento, { label: string; className: string }> = {
+const CONFIG: Record<EstadoFatura, { label: string; className: string }> = {
   rascunho: { label: 'Rascunho', className: 'bg-surface-raised text-text-secondary' },
-  emitido: { label: 'Emitido', className: 'bg-success-subtle text-success' },
-  anulado: { label: 'Anulado', className: 'bg-danger-subtle text-danger' },
+  emitida: { label: 'Emitida', className: 'bg-success-subtle text-success' },
+  paga: { label: 'Paga', className: 'bg-info-subtle text-info' },
+  anulada: { label: 'Anulada', className: 'bg-danger-subtle text-danger' },
 }
 
 interface EstadoBadgeProps {
-  estado: EstadoDocumento
+  estado: EstadoFatura
   className?: string
 }
 

@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
-import type { TipoDocumento } from '../types'
+import type { TipoDocumento, TipoDocumentoEmissao } from '../types'
 
 interface TipoConfig {
   label: string
@@ -35,14 +35,25 @@ const TIPOS: Record<TipoDocumento, TipoConfig> = {
   RC: { label: 'Recibo (RC)', icon: FileCheck, className: 'text-text-secondary' },
 }
 
+/** NC/ND nunca aparecem aqui por omissão — só se emitem via anular, nunca directamente. */
+const TIPOS_EMISSIVEIS: TipoDocumentoEmissao[] = ['FT', 'FR', 'VD', 'RC']
+
 interface TipoDocumentoPickerProps {
   value: TipoDocumento
   onChange: (value: TipoDocumento) => void
   id?: string
   disabled?: boolean
+  /** Por omissão só os tipos emissíveis directamente (FT/FR/VD/RC). */
+  tipos?: TipoDocumento[]
 }
 
-export function TipoDocumentoPicker({ value, onChange, id, disabled }: TipoDocumentoPickerProps) {
+export function TipoDocumentoPicker({
+  value,
+  onChange,
+  id,
+  disabled,
+  tipos = TIPOS_EMISSIVEIS,
+}: TipoDocumentoPickerProps) {
   return (
     <Select
       value={value}
@@ -53,7 +64,8 @@ export function TipoDocumentoPicker({ value, onChange, id, disabled }: TipoDocum
         <SelectValue placeholder="Tipo de documento" />
       </SelectTrigger>
       <SelectContent>
-        {(Object.entries(TIPOS) as [TipoDocumento, TipoConfig][]).map(([tipo, config]) => {
+        {tipos.map((tipo) => {
+          const config = TIPOS[tipo]
           const Icon = config.icon
           return (
             <SelectItem key={tipo} value={tipo}>

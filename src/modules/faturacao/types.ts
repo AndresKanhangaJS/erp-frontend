@@ -1,23 +1,8 @@
 export type TipoDocumento = 'FT' | 'FR' | 'NC' | 'ND' | 'VD' | 'RC'
-export type EstadoDocumento = 'rascunho' | 'emitido' | 'anulado'
-
-/**
- * A comunicação à AGT é uma exigência legal separada do ciclo de vida
- * do documento em si — um documento pode estar "emitido" e ainda
- * "pendente" de comunicação (o backend comunica de forma assíncrona).
- */
-export type EstadoComunicacaoAgt = 'pendente' | 'comunicado' | 'erro'
-
-export interface ComunicacaoAgt {
-  estado: EstadoComunicacaoAgt
-  /** Hash de encadeamento com o documento anterior da série. */
-  hash: string | null
-  /** Código de verificação (equivalente ao ATCUD) impresso no documento. */
-  codigoVerificacao: string | null
-  /** Payload/URL codificado no QR code do documento. */
-  qrCodeData: string | null
-  dataComunicacao: string | null
-}
+/** NC/ND nunca se emitem directamente — só via POST /faturas/{id}/anular. */
+export type TipoDocumentoEmissao = 'FT' | 'FR' | 'VD' | 'RC'
+export type EstadoFatura = 'rascunho' | 'emitida' | 'paga' | 'anulada'
+export type Moeda = 'AOA' | 'USD' | 'EUR'
 
 export interface Cliente {
   id: string
@@ -25,42 +10,91 @@ export interface Cliente {
   nif: string | null
   email: string | null
   telefone: string | null
+  morada: string | null
 }
 
 export interface Artigo {
   id: string
   codigo: string
-  designacao: string
+  nome: string
   precoUnitario: number
-  taxaIva: 0 | 14
+  moeda: Moeda
+  /** Fracção, não percentagem — 0.14 representa 14%. */
+  taxaIva: number
+  unidade: string | null
 }
 
-export interface LinhaDocumento {
-  artigoId: string
-  designacao: string
+export interface SerieDocumento {
+  id: string
+  tipoDocumento: TipoDocumento
+  codigo: string
+  anoFiscal: number
+  ultimoNumero: number
+  activa: boolean
+}
+
+export interface FaturaLinha {
+  id: string
+  artigoId: string | null
+  descricao: string
   quantidade: number
   precoUnitario: number
-  taxaIva: 0 | 14
-  motivoIsencao?: string | null
+  /** Fracção, não percentagem. */
+  taxaIva: number
+  subtotal: number
+  valorIva: number
+  total: number
 }
 
-export type Moeda = 'AOA' | 'USD' | 'EUR'
-
-export interface DocumentoFiscal {
+export interface Fatura {
   id: string
-  tipo: TipoDocumento
-  /** Formato SERIE/NNNNNN. */
   numero: string
-  serie: string
-  estado: EstadoDocumento
-  cliente: Cliente
-  linhas: LinhaDocumento[]
+  tipoDocumento: TipoDocumento
+  estado: EstadoFatura
+  serieId: string
+  clienteId: string | null
   subtotal: number
   totalIva: number
   total: number
   moeda: Moeda
-  taxaCambio: number | null
-  comunicacaoAgt: ComunicacaoAgt
-  dataEmissao: string
-  createdAt: string
+  taxaCambio: number
+  /** Assinatura local em cadeia (integridade técnica) — não é certificação AGT. */
+  hash: string
+  hashAnterior: string | null
+  faturaOriginalId: string | null
+  motivoAnulacao: string | null
+  dataEmissao: string | null
+  /** null quando a listagem não carrega as linhas — só show/store/anular trazem linhas populadas. */
+  linhas: FaturaLinha[] | null
+  createdAt: string | null
+}
+
+export type MetodoPagamento = 'transferencia' | 'numerario' | 'outro'
+
+export interface Pagamento {
+  id: string
+  faturaId: string
+  valor: number
+  moeda: Moeda
+  metodo: MetodoPagamento
+  referencia: string | null
+  dataPagamento: string | null
+  createdAt: string | null
+}
+
+export interface PeriodoFiscal {
+  id: string
+  anoFiscal: number
+  /** null/0 = período fecha o ano inteiro; 1-12 = fecha só o mês. */
+  mes: number | null
+  fechado: boolean
+  fechadoEm: string | null
+}
+
+export interface TaxaCambio {
+  id: string
+  /** AOA nunca tem taxa própria — é sempre a moeda base. */
+  moeda: Moeda
+  taxa: number
+  data: string
 }

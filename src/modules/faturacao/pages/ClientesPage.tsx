@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import type { ColumnDef } from '@tanstack/react-table'
+import { Link } from 'react-router'
 
 import { listClientes } from '@/api/modules/faturacao'
+import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { DataTable } from '@/shared/components/ui/DataTable'
 
@@ -11,7 +13,15 @@ import type { Cliente } from '../types'
 const PER_PAGE = 20
 
 const columns: ColumnDef<Cliente>[] = [
-  { accessorKey: 'nome', header: 'Nome' },
+  {
+    accessorKey: 'nome',
+    header: 'Nome',
+    cell: ({ row }) => (
+      <Link to={`/faturacao/clientes/${row.original.id}`} className="hover:underline">
+        {row.original.nome}
+      </Link>
+    ),
+  },
   { accessorKey: 'nif', header: 'NIF', cell: ({ row }) => row.original.nif ?? '—' },
   { accessorKey: 'email', header: 'Email', cell: ({ row }) => row.original.email ?? '—' },
   { accessorKey: 'telefone', header: 'Telefone', cell: ({ row }) => row.original.telefone ?? '—' },
@@ -26,7 +36,14 @@ export default function ClientesPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Clientes" />
+      <PageHeader
+        title="Clientes"
+        actions={
+          <Button asChild>
+            <Link to="/faturacao/clientes/novo">Novo cliente</Link>
+          </Button>
+        }
+      />
       <DataTable
         columns={columns}
         data={data?.data ?? []}

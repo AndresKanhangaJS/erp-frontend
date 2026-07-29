@@ -15,17 +15,17 @@ function Wrapper({ children }: { children: ReactNode }) {
 function ComLinhaHarness() {
   const { control } = useForm<EmitirFaturaFormValues>({
     defaultValues: {
-      tipo: 'FT',
+      serieId: 'serie-1',
+      tipoDocumento: 'FT',
       clienteId: '',
       moeda: 'AOA',
       linhas: [
         {
           artigoId: '1',
-          designacao: 'Artigo A',
+          descricao: 'Artigo A',
           quantidade: 2,
           precoUnitario: 1000,
-          taxaIva: 14,
-          motivoIsencao: null,
+          taxaIva: 0.14,
         },
       ],
     },
@@ -35,7 +35,7 @@ function ComLinhaHarness() {
 
 function VaziaHarness() {
   const { control } = useForm<EmitirFaturaFormValues>({
-    defaultValues: { tipo: 'FT', clienteId: '', moeda: 'AOA', linhas: [] },
+    defaultValues: { serieId: '', tipoDocumento: 'FT', clienteId: '', moeda: 'AOA', linhas: [] },
   })
   return <LinhasEditor control={control} />
 }
@@ -52,7 +52,7 @@ describe('LinhasEditor', () => {
 
   it('mostra a linha inicial com o subtotal correcto', () => {
     renderComWrapper(<ComLinhaHarness />)
-    expect(screen.getByText('Artigo A')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('Artigo A')).toBeInTheDocument()
     expect(screen.getByText(/2.*000,00/)).toBeInTheDocument()
   })
 

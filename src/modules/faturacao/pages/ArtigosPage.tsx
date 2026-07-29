@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import type { ColumnDef } from '@tanstack/react-table'
+import { Link } from 'react-router'
 
 import { listArtigos } from '@/api/modules/faturacao'
+import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { DataTable } from '@/shared/components/ui/DataTable'
@@ -17,15 +19,24 @@ const columns: ColumnDef<Artigo>[] = [
     header: 'Código',
     cell: ({ row }) => <span className="font-mono">{row.original.codigo}</span>,
   },
-  { accessorKey: 'designacao', header: 'Designação' },
+  { accessorKey: 'nome', header: 'Nome' },
   {
     accessorKey: 'precoUnitario',
     header: 'Preço unitário',
     cell: ({ row }) => (
-      <CurrencyDisplay value={row.original.precoUnitario} className="block text-right" />
+      <CurrencyDisplay
+        value={row.original.precoUnitario}
+        currency={row.original.moeda}
+        className="block text-right"
+      />
     ),
   },
-  { accessorKey: 'taxaIva', header: 'IVA', cell: ({ row }) => `${row.original.taxaIva}%` },
+  {
+    accessorKey: 'taxaIva',
+    header: 'IVA',
+    cell: ({ row }) => `${(row.original.taxaIva * 100).toFixed(0)}%`,
+  },
+  { accessorKey: 'unidade', header: 'Unidade', cell: ({ row }) => row.original.unidade ?? '—' },
 ]
 
 export default function ArtigosPage() {
@@ -37,7 +48,14 @@ export default function ArtigosPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Artigos" />
+      <PageHeader
+        title="Artigos"
+        actions={
+          <Button asChild>
+            <Link to="/faturacao/artigos/novo">Novo artigo</Link>
+          </Button>
+        }
+      />
       <DataTable
         columns={columns}
         data={data?.data ?? []}

@@ -42,29 +42,24 @@ interface LinhaRowProps {
  */
 function LinhaRow({ control, index, onRemove }: LinhaRowProps) {
   const linha = useWatch({ control, name: `linhas.${index}` })
-  const subtotalLinha = linha.quantidade * linha.precoUnitario
+  const subtotalLinha = linha.quantidade * (linha.precoUnitario ?? 0)
 
   return (
     <TableRow>
       <TableCell>
-        <div className="flex flex-col gap-1">
-          <span>{linha.designacao}</span>
-          {linha.taxaIva === 0 && (
-            <Controller
-              control={control}
-              name={`linhas.${index}.motivoIsencao`}
-              render={({ field }) => (
-                <Input
-                  placeholder="Motivo de isenção de IVA"
-                  value={field.value ?? ''}
-                  onChange={field.onChange}
-                  className="h-7 text-xs"
-                  aria-label="Motivo de isenção de IVA"
-                />
-              )}
+        <Controller
+          control={control}
+          name={`linhas.${index}.descricao`}
+          render={({ field }) => (
+            <Input
+              placeholder="Descrição"
+              value={field.value}
+              onChange={field.onChange}
+              className="h-8"
+              aria-label="Descrição"
             />
           )}
-        </div>
+        />
       </TableCell>
       <TableCell>
         <Controller
@@ -92,8 +87,11 @@ function LinhaRow({ control, index, onRemove }: LinhaRowProps) {
               type="number"
               min={0}
               step="0.01"
-              value={field.value}
-              onChange={(event) => field.onChange(Number(event.target.value))}
+              value={field.value ?? ''}
+              placeholder="Preço"
+              onChange={(event) =>
+                field.onChange(event.target.value === '' ? null : Number(event.target.value))
+              }
               className="text-right font-mono"
               aria-label="Preço unitário"
             />
@@ -113,7 +111,7 @@ function LinhaRow({ control, index, onRemove }: LinhaRowProps) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="14">14%</SelectItem>
+                <SelectItem value="0.14">14%</SelectItem>
                 <SelectItem value="0">0%</SelectItem>
               </SelectContent>
             </Select>
@@ -144,11 +142,20 @@ export function LinhasEditor({ control }: LinhasEditorProps) {
   function handleAdicionarArtigo(artigo: Artigo) {
     append({
       artigoId: artigo.id,
-      designacao: artigo.designacao,
+      descricao: artigo.nome,
       quantidade: 1,
       precoUnitario: artigo.precoUnitario,
       taxaIva: artigo.taxaIva,
-      motivoIsencao: null,
+    })
+  }
+
+  function handleAdicionarLinhaLivre() {
+    append({
+      artigoId: null,
+      descricao: '',
+      quantidade: 1,
+      precoUnitario: null,
+      taxaIva: 0.14,
     })
   }
 
@@ -158,7 +165,7 @@ export function LinhasEditor({ control }: LinhasEditorProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Artigo</TableHead>
+              <TableHead>Descrição</TableHead>
               <TableHead className="w-24 text-right">Qtd.</TableHead>
               <TableHead className="w-36 text-right">Preço unitário</TableHead>
               <TableHead className="w-24">IVA</TableHead>
@@ -170,7 +177,7 @@ export function LinhasEditor({ control }: LinhasEditorProps) {
             {fields.length === 0 && (
               <TableRow>
                 <TableCell colSpan={6} className="py-6 text-center text-sm text-text-muted">
-                  Sem linhas — adiciona um artigo abaixo.
+                  Sem linhas — adiciona um artigo ou uma linha livre abaixo.
                 </TableCell>
               </TableRow>
             )}
@@ -186,7 +193,14 @@ export function LinhasEditor({ control }: LinhasEditorProps) {
         </Table>
       </div>
 
-      <ArtigoCombobox onSelect={handleAdicionarArtigo} />
+      <div className="flex gap-2">
+        <div className="flex-1">
+          <ArtigoCombobox onSelect={handleAdicionarArtigo} />
+        </div>
+        <Button type="button" variant="outline" onClick={handleAdicionarLinhaLivre}>
+          Linha livre
+        </Button>
+      </div>
     </div>
   )
 }

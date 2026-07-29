@@ -16,7 +16,7 @@ interface AvisoNIFProps {
  * Aviso automático quando o total ≥ 50.000 AOA e o cliente não tem
  * NIF — exigência da AGT. Só se aplica a documentos em AOA: sem uma
  * taxa de câmbio confirmada no momento da emissão (o backend é quem
- * a atribui, ver DocumentoFiscal.taxaCambio), não há como saber o
+ * a atribui, ver Fatura.taxaCambio), não há como saber o
  * equivalente em AOA de um documento em USD/EUR antes de emitir.
  */
 export function AvisoNIF({ total, moeda, clienteTemNif }: AvisoNIFProps) {

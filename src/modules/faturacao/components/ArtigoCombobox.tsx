@@ -65,7 +65,7 @@ export function ArtigoCombobox({ onSelect, disabled }: ArtigoComboboxProps) {
                   }}
                 >
                   <div className="flex w-full items-center justify-between gap-2">
-                    <span>{artigo.designacao}</span>
+                    <span>{artigo.nome}</span>
                     <CurrencyDisplay value={artigo.precoUnitario} className="text-xs" />
                   </div>
                 </CommandItem>
