@@ -7,8 +7,9 @@ export function useAnularLancamento() {
 
   return useMutation({
     mutationFn: (id: string) => anularLancamento(id),
-    onSuccess: (lancamento) => {
-      queryClient.setQueryData(['contabilidade', 'lancamentos', lancamento.id], lancamento)
+    onSuccess: ({ original, estorno }) => {
+      queryClient.setQueryData(['contabilidade', 'lancamentos', original.id], original)
+      queryClient.setQueryData(['contabilidade', 'lancamentos', estorno.id], estorno)
       queryClient.invalidateQueries({ queryKey: ['contabilidade', 'lancamentos'], exact: false })
     },
   })

@@ -23,11 +23,20 @@ interface ContaComboboxProps {
   onChange: (conta: Conta | null) => void
   id?: string
   disabled?: boolean
+  /** Quais contas podem ser escolhidas. Por omissão, só contas-folha (permiteLancamentos). */
+  selecionavel?: (conta: Conta) => boolean
   'aria-invalid'?: boolean
   'aria-describedby'?: string
 }
 
-export function ContaCombobox({ value, onChange, id, disabled, ...aria }: ContaComboboxProps) {
+export function ContaCombobox({
+  value,
+  onChange,
+  id,
+  disabled,
+  selecionavel = (conta) => conta.permiteLancamentos,
+  ...aria
+}: ContaComboboxProps) {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const { data, isLoading } = useContas(search)
@@ -71,7 +80,7 @@ export function ContaCombobox({ value, onChange, id, disabled, ...aria }: ContaC
                 <CommandItem
                   key={conta.id}
                   value={conta.id}
-                  disabled={!conta.permiteLancamentos}
+                  disabled={!selecionavel(conta)}
                   onSelect={() => {
                     onChange(conta)
                     setOpen(false)

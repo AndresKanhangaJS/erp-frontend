@@ -33,6 +33,10 @@ export interface Lancamento {
   totalDebito: number
   totalCredito: number
   createdAt: string
+  /** Se este lançamento é uma contra-entrada gerada ao anular outro, o id do lançamento original. */
+  estornaLancamentoId: string | null
+  /** Se este lançamento foi anulado, o id da contra-entrada gerada. Nunca é apagado nem escondido — só marcado. */
+  estornadoPorId: string | null
 }
 
 export type EstadoPeriodo = 'aberto' | 'fechado'
@@ -53,4 +57,32 @@ export interface SaldoConta {
   debito: number
   credito: number
   saldoAtual: number
+}
+
+export interface LinhaDemonstrativo {
+  contaId: string
+  contaCodigo: string
+  contaDesignacao: string
+  valor: number
+}
+
+/** Activo = Passivo + Capital Próprio, por período. */
+export interface Balanco {
+  periodoId: string
+  activo: LinhaDemonstrativo[]
+  passivo: LinhaDemonstrativo[]
+  capitalProprio: LinhaDemonstrativo[]
+  totalActivo: number
+  totalPassivo: number
+  totalCapitalProprio: number
+}
+
+/** Resultado líquido = Proveitos − Custos, por período. */
+export interface DemonstracaoResultados {
+  periodoId: string
+  proveitos: LinhaDemonstrativo[]
+  custos: LinhaDemonstrativo[]
+  totalProveitos: number
+  totalCustos: number
+  resultadoLiquido: number
 }

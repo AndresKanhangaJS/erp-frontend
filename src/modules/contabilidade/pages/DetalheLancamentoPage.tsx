@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams } from 'react-router'
+import { Link, useNavigate, useParams } from 'react-router'
 
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -22,6 +22,7 @@ import { useLancamento } from '../hooks/useLancamento'
 
 export default function DetalheLancamentoPage() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const { data: lancamento, isLoading } = useLancamento(id)
   const anular = useAnularLancamento()
   const [confirmOpen, setConfirmOpen] = useState(false)
@@ -58,6 +59,31 @@ export default function DetalheLancamentoPage() {
         <span className="text-sm text-text-muted">{formatDate(lancamento.data)}</span>
         <span className="text-sm text-text-secondary">{lancamento.descricao}</span>
       </div>
+
+      {lancamento.estornaLancamentoId && (
+        <p className="text-sm text-text-muted">
+          Estorno do lançamento{' '}
+          <Link
+            to={`/contabilidade/lancamentos/${lancamento.estornaLancamentoId}`}
+            className="underline"
+          >
+            original
+          </Link>
+          .
+        </p>
+      )}
+      {lancamento.estornadoPorId && (
+        <p className="text-sm text-text-muted">
+          Anulado pela contra-entrada{' '}
+          <Link
+            to={`/contabilidade/lancamentos/${lancamento.estornadoPorId}`}
+            className="underline"
+          >
+            de estorno
+          </Link>
+          .
+        </p>
+      )}
 
       <div className="overflow-x-auto rounded-lg border border-border">
         <Table>
@@ -98,10 +124,17 @@ export default function DetalheLancamentoPage() {
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
         title="Anular lançamento"
-        description={`Tens a certeza que queres anular ${lancamento.numero}? Esta acção não pode ser revertida.`}
+        description={`Tens a certeza que queres anular ${lancamento.numero}? O lançamento não é apagado — fica marcado como anulado e é gerada uma contra-entrada de estorno. Esta acção não pode ser revertida.`}
         destructive
         loading={anular.isPending}
-        onConfirm={() => anular.mutate(lancamento.id, { onSuccess: () => setConfirmOpen(false) })}
+        onConfirm={() =>
+          anular.mutate(lancamento.id, {
+            onSuccess: ({ estorno }) => {
+              setConfirmOpen(false)
+              navigate(`/contabilidade/lancamentos/${estorno.id}`)
+            },
+          })
+        }
       />
     </div>
   )
