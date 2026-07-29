@@ -6,23 +6,53 @@ export interface LoginPayload {
   password: string
 }
 
-export interface LoginResponse {
+interface RawUserResource {
+  id: string
+  type: string
+  attributes: {
+    name: string
+    email: string
+    must_change_password: boolean
+    roles: string[]
+    permissions: string[]
+  }
+  created_at: string | null
+  updated_at: string | null
+}
+
+interface RawLoginResponse {
+  token: string
+  must_change_password: boolean
+  user: RawUserResource
+}
+
+export interface LoginResult {
   token: string
   user: AuthUser
   permissions: string[]
-  tenant: {
-    id: string
-    plan: string
-    active_modules: string[]
-  }
+  mustChangePassword: boolean
 }
 
 /**
- * Endpoint e forma da resposta são uma suposição razoável — o backend
- * ainda não publicou o OpenAPI (../docs/openapi.json não existe).
- * Confirmar/ajustar contra o contrato real assim que existir.
+ * A resposta real segue o formato JsonResource/attributes documentado
+ * em docs/api-contract.md (raiz do monorepo) — achata-se aqui para o
+ * formato flat que o resto da app espera. Confirmado com um login real
+ * contra a stack em execução: não há "tenant" nenhum na resposta do
+ * login (o cliente já sabe o tenant, foi ele que o forneceu no
+ * cabeçalho X-Tenant-ID — ver useLogin.ts).
  */
-export async function login(payload: LoginPayload): Promise<LoginResponse> {
-  const response = await apiClient.post<LoginResponse>('/auth/login', payload)
-  return response.data
+export async function login(payload: LoginPayload): Promise<LoginResult> {
+  const response = await apiClient.post<RawLoginResponse>('/auth/login', payload)
+  const raw = response.data
+
+  return {
+    token: raw.token,
+    mustChangePassword: raw.must_change_password,
+    user: {
+      id: raw.user.id,
+      name: raw.user.attributes.name,
+      email: raw.user.attributes.email,
+    },
+    permissions: raw.user.attributes.permissions,
+  }
 }

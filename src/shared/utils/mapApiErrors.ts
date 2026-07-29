@@ -42,3 +42,18 @@ export function applyApiErrorsToForm<T extends FieldValues>(
 
   return true
 }
+
+/**
+ * O "message" do backend é sempre a mensagem amigável em português
+ * (ver docs/api-contract.md na raiz do monorepo), para qualquer
+ * estado HTTP — nunca esconder isto atrás de um texto genérico
+ * fixo no frontend: "Credenciais inválidas" quando o erro real é
+ * "tenant não encontrado" ou "limite de pedidos excedido" confunde
+ * mais do que ajuda a diagnosticar.
+ */
+export function getApiErrorMessage(error: unknown, fallback: string): string {
+  if (axios.isAxiosError<ApiErrorBody>(error) && error.response?.data?.message) {
+    return error.response.data.message
+  }
+  return fallback
+}

@@ -29,6 +29,7 @@ describe('LoginPage', () => {
     renderLoginPage()
 
     expect(screen.getByRole('heading', { name: 'Entrar' })).toBeInTheDocument()
+    expect(screen.getByLabelText('ID do tenant')).toBeInTheDocument()
     expect(screen.getByLabelText('Email')).toBeInTheDocument()
     expect(screen.getByLabelText('Palavra-passe')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Entrar' })).toBeInTheDocument()

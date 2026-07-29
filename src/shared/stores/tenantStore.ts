@@ -5,7 +5,7 @@ interface TenantState {
   tenantId: string | null
   plan: string | null
   activeModules: string[]
-  setTenant: (params: { tenantId: string; plan: string; activeModules: string[] }) => void
+  setTenant: (params: { tenantId: string; plan: string | null; activeModules: string[] }) => void
   clearTenant: () => void
 }
 

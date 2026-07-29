@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { applyApiErrorsToForm, extractValidationErrors } from './mapApiErrors'
+import { applyApiErrorsToForm, extractValidationErrors, getApiErrorMessage } from './mapApiErrors'
 
 function make422(errors: Record<string, string[]>) {
   return {
@@ -52,5 +52,27 @@ describe('applyApiErrorsToForm', () => {
 
     expect(applyApiErrorsToForm(error, setError)).toBe(false)
     expect(setError).not.toHaveBeenCalled()
+  })
+})
+
+describe('getApiErrorMessage', () => {
+  it('devolve a mensagem real do backend, seja qual for o estado HTTP', () => {
+    const error = {
+      isAxiosError: true,
+      response: {
+        status: 400,
+        data: { message: 'O tenant indicado não foi encontrado.', code: 'TENANT_NOT_FOUND' },
+      },
+    }
+    expect(getApiErrorMessage(error, 'fallback')).toBe('O tenant indicado não foi encontrado.')
+  })
+
+  it('devolve o fallback quando nao ha mensagem do backend', () => {
+    const error = { isAxiosError: true, response: { status: 500, data: {} } }
+    expect(getApiErrorMessage(error, 'fallback')).toBe('fallback')
+  })
+
+  it('devolve o fallback para algo que nao e um AxiosError', () => {
+    expect(getApiErrorMessage(new Error('falha qualquer'), 'fallback')).toBe('fallback')
   })
 })

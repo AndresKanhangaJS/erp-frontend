@@ -6,11 +6,12 @@ import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { FormField } from '@/shared/components/ui/FormField'
-import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
+import { applyApiErrorsToForm, getApiErrorMessage } from '@/shared/utils/mapApiErrors'
 
 import { useLogin } from '../hooks/useLogin'
 
 const loginSchema = z.object({
+  tenantId: z.string().min(1, 'O ID do tenant é obrigatório'),
   email: z.string().min(1, 'O email é obrigatório').email('Email inválido'),
   password: z.string().min(1, 'A palavra-passe é obrigatória'),
 })
@@ -19,6 +20,12 @@ type LoginFormValues = z.infer<typeof loginSchema>
 
 /**
  * Validação Zod aqui é só UX — o backend valida sempre (ADR-004).
+ *
+ * Campo "ID do tenant": solução interina — ainda não há resolução de
+ * tenant por subdomínio nem um passo de "descobrir o tenant pelo
+ * email" no backend, e o X-Tenant-ID é obrigatório mesmo no login
+ * (ver docs/api-contract.md). Substituir isto assim que existir um
+ * mecanismo real de resolução.
  *
  * O <Form {...form}> (FormProvider do RHF) é obrigatório aqui: o
  * FormField partilhado usa FormLabel/FormControl/FormMessage do
@@ -30,7 +37,7 @@ type LoginFormValues = z.infer<typeof loginSchema>
 export default function LoginPage() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: { tenantId: '', email: '', password: '' },
   })
   const {
     control,
@@ -44,7 +51,9 @@ export default function LoginPage() {
     login.mutate(values, {
       onError: (error) => {
         if (!applyApiErrorsToForm(error, setError)) {
-          setError('root', { message: 'Credenciais inválidas. Tenta novamente.' })
+          setError('root', {
+            message: getApiErrorMessage(error, 'Não foi possível entrar. Tenta novamente.'),
+          })
         }
       },
     })
@@ -59,6 +68,14 @@ export default function LoginPage() {
           noValidate
         >
           <h1 className="text-lg font-semibold text-text-primary">Entrar</h1>
+
+          <FormField
+            control={control}
+            name="tenantId"
+            label="ID do tenant"
+            description="Temporário — substituído por resolução automática mais tarde."
+            render={(field) => <Input autoComplete="off" {...field} />}
+          />
 
           <FormField
             control={control}
