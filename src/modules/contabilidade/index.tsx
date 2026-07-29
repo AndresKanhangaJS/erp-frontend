@@ -1,6 +1,23 @@
-import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { Route, Routes } from 'react-router'
 
-/** Placeholder — as páginas reais (lançamentos, plano de contas, ...) chegam no Passo 10. */
+import BalancetePage from './pages/BalancetePage'
+import DetalheLancamentoPage from './pages/DetalheLancamentoPage'
+import LancamentosPage from './pages/LancamentosPage'
+import NovoLancamentoPage from './pages/NovoLancamentoPage'
+import PeriodosPage from './pages/PeriodosPage'
+import PlanoContasPage from './pages/PlanoContasPage'
+
+/** Montado em /contabilidade/* pelo router (Passo 8) — routing interno do módulo. */
 export default function ContabilidadeModule() {
-  return <PageHeader title="Contabilidade" />
+  return (
+    <Routes>
+      <Route index element={<LancamentosPage />} />
+      <Route path="lancamentos" element={<LancamentosPage />} />
+      <Route path="lancamentos/novo" element={<NovoLancamentoPage />} />
+      <Route path="lancamentos/:id" element={<DetalheLancamentoPage />} />
+      <Route path="plano-de-contas" element={<PlanoContasPage />} />
+      <Route path="balancete" element={<BalancetePage />} />
+      <Route path="periodos" element={<PeriodosPage />} />
+    </Routes>
+  )
 }
