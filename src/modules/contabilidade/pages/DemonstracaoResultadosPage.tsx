@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { Card, CardContent } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableFooter, TableRow } from '@/components/ui/table'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
@@ -20,7 +21,7 @@ function GrupoTable({
   return (
     <div className="space-y-2">
       <h2 className="text-sm font-semibold text-text-primary">{titulo}</h2>
-      <div className="overflow-x-auto rounded-lg border border-border">
+      <Card className="overflow-x-auto py-0">
         <Table>
           <TableBody>
             {linhas.length === 0 && (
@@ -49,7 +50,7 @@ function GrupoTable({
             </TableRow>
           </TableFooter>
         </Table>
-      </div>
+      </Card>
     </div>
   )
 }
@@ -87,13 +88,15 @@ export default function DemonstracaoResultadosPage() {
           <GrupoTable titulo="Proveitos" linhas={dr.proveitos} total={dr.totalProveitos} />
           <GrupoTable titulo="Custos" linhas={dr.custos} total={dr.totalCustos} />
 
-          <div className="flex items-center justify-between rounded-lg border border-border bg-surface-card p-4 text-sm font-semibold text-text-primary">
-            <span>Resultado líquido</span>
-            <CurrencyDisplay
-              value={dr.resultadoLiquido}
-              className={dr.resultadoLiquido < 0 ? 'text-danger' : undefined}
-            />
-          </div>
+          <Card>
+            <CardContent className="flex items-center justify-between text-sm font-semibold text-text-primary">
+              <span>Resultado líquido</span>
+              <CurrencyDisplay
+                value={dr.resultadoLiquido}
+                className={dr.resultadoLiquido < 0 ? 'text-danger' : undefined}
+              />
+            </CardContent>
+          </Card>
         </>
       )}
     </div>

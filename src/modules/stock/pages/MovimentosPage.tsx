@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { ColumnDef } from '@tanstack/react-table'
+import { ArrowLeftRight } from 'lucide-react'
 import { Controller, useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 
@@ -16,6 +17,7 @@ import {
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { StatCard } from '@/shared/components/ui/StatCard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 import { formatDate } from '@/shared/utils/formatDate'
 
@@ -125,10 +127,21 @@ export default function MovimentosPage() {
         }
       />
 
+      {data && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <StatCard
+            label="Total de movimentos"
+            value={data.meta.total}
+            icon={ArrowLeftRight}
+            tone="accent"
+          />
+        </div>
+      )}
+
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className="grid grid-cols-2 gap-4 rounded-lg border border-border bg-surface-card p-4 md:grid-cols-4"
+        className="grid grid-cols-2 gap-4 rounded-xl bg-surface-card p-4 ring-1 ring-foreground/10 md:grid-cols-4"
       >
         <div className="space-y-1">
           <label htmlFor="armazemId" className="text-sm text-text-secondary">

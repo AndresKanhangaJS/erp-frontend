@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { ConfirmDialog } from '@/shared/components/ui/ConfirmDialog'
@@ -67,44 +68,46 @@ export default function DetalheMovimentoPage() {
         </p>
       )}
 
-      <div className="rounded-lg border border-border bg-surface-card p-4">
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <p className="text-text-secondary">Artigo</p>
-            <p className="font-medium text-text-primary">
-              <span className="font-mono text-xs text-text-muted">{movimento.artigoCodigo}</span>{' '}
-              {movimento.artigoNome}
-            </p>
+      <Card>
+        <CardContent>
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <p className="text-text-secondary">Artigo</p>
+              <p className="font-medium text-text-primary">
+                <span className="font-mono text-xs text-text-muted">{movimento.artigoCodigo}</span>{' '}
+                {movimento.artigoNome}
+              </p>
+            </div>
+            <div>
+              <p className="text-text-secondary">Armazém</p>
+              <p className="font-medium text-text-primary">{armazem?.nome ?? '—'}</p>
+            </div>
+            <div>
+              <p className="text-text-secondary">Tipo</p>
+              <p className="font-medium text-text-primary">
+                {TIPO_LABELS[movimento.tipo] ?? movimento.tipo}
+              </p>
+            </div>
+            <div>
+              <p className="text-text-secondary">Quantidade</p>
+              <p className="font-mono font-medium text-text-primary">{movimento.quantidade}</p>
+            </div>
+            <div>
+              <p className="text-text-secondary">Custo unitário</p>
+              <CurrencyDisplay value={movimento.custoUnitario} className="font-medium" />
+            </div>
+            <div>
+              <p className="text-text-secondary">Data</p>
+              <p className="font-medium text-text-primary">
+                {movimento.data ? formatDate(movimento.data) : '—'}
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-text-secondary">Armazém</p>
-            <p className="font-medium text-text-primary">{armazem?.nome ?? '—'}</p>
-          </div>
-          <div>
-            <p className="text-text-secondary">Tipo</p>
-            <p className="font-medium text-text-primary">
-              {TIPO_LABELS[movimento.tipo] ?? movimento.tipo}
-            </p>
-          </div>
-          <div>
-            <p className="text-text-secondary">Quantidade</p>
-            <p className="font-mono font-medium text-text-primary">{movimento.quantidade}</p>
-          </div>
-          <div>
-            <p className="text-text-secondary">Custo unitário</p>
-            <CurrencyDisplay value={movimento.custoUnitario} className="font-medium" />
-          </div>
-          <div>
-            <p className="text-text-secondary">Data</p>
-            <p className="font-medium text-text-primary">
-              {movimento.data ? formatDate(movimento.data) : '—'}
-            </p>
-          </div>
-        </div>
-        {movimento.observacoes && (
-          <p className="mt-4 text-sm text-text-muted">Observações: {movimento.observacoes}</p>
-        )}
-      </div>
+          {movimento.observacoes && (
+            <p className="mt-4 text-sm text-text-muted">Observações: {movimento.observacoes}</p>
+          )}
+        </CardContent>
+      </Card>
 
       <ConfirmDialog
         open={confirmOpen}

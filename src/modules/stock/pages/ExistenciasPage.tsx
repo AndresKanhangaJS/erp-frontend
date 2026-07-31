@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import type { ColumnDef } from '@tanstack/react-table'
+import { Package } from 'lucide-react'
 
 import { listArtigos } from '@/api/modules/faturacao'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { StatCard } from '@/shared/components/ui/StatCard'
 
 import { ArmazemPicker } from '../components/ArmazemPicker'
 import { useArmazens } from '../hooks/useArmazens'
@@ -71,6 +73,17 @@ export default function ExistenciasPage() {
   return (
     <div className="space-y-6">
       <PageHeader title="Existências" />
+
+      {data && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <StatCard
+            label="Total de existências"
+            value={data.meta.total}
+            icon={Package}
+            tone="accent"
+          />
+        </div>
+      )}
 
       <div className="max-w-xs space-y-1">
         <label htmlFor="armazem" className="text-sm text-text-secondary">

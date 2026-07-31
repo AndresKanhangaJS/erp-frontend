@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
+import { BookOpen, Plus } from 'lucide-react'
 import { Link } from 'react-router'
 
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { StatCard } from '@/shared/components/ui/StatCard'
 import { formatDate } from '@/shared/utils/formatDate'
 
 import { EstadoLancamentoBadge } from '../components/EstadoLancamentoBadge'
@@ -57,10 +59,25 @@ export default function LancamentosPage() {
         title="Lançamentos"
         actions={
           <Button asChild>
-            <Link to="/contabilidade/lancamentos/novo">Novo lançamento</Link>
+            <Link to="/contabilidade/lancamentos/novo">
+              <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
+              Novo lançamento
+            </Link>
           </Button>
         }
       />
+
+      {data && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <StatCard
+            label="Total de lançamentos"
+            value={data.meta.total}
+            icon={BookOpen}
+            tone="accent"
+          />
+        </div>
+      )}
+
       <DataTable
         columns={columns}
         data={data?.data ?? []}

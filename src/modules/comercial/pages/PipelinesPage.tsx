@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { useCriarPipeline } from '../hooks/useCriarPipeline'
@@ -71,7 +72,7 @@ export default function PipelinesPage() {
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className="max-w-xl space-y-4 rounded-lg border border-border bg-surface-card p-4"
+        className="max-w-xl space-y-4 rounded-xl bg-surface-card p-4 ring-1 ring-foreground/10"
       >
         <div className="space-y-1">
           <label htmlFor="nome" className="text-sm text-text-secondary">
@@ -147,19 +148,21 @@ export default function PipelinesPage() {
       <div className="space-y-4">
         {isLoading && <p className="text-sm text-text-muted">A carregar...</p>}
         {(pipelines ?? []).map((pipeline) => (
-          <div key={pipeline.id} className="rounded-lg border border-border bg-surface-card p-4">
-            <div className="flex items-center gap-2">
-              <h3 className="font-medium text-text-primary">{pipeline.nome}</h3>
-              {pipeline.isPadrao && <Badge>Padrão</Badge>}
-            </div>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {pipeline.estagios.map((estagio) => (
-                <Badge key={estagio.id} className="bg-surface-raised text-text-secondary">
-                  {estagio.nome} ({TIPO_LABELS[estagio.tipo]})
-                </Badge>
-              ))}
-            </div>
-          </div>
+          <Card key={pipeline.id}>
+            <CardContent>
+              <div className="flex items-center gap-2">
+                <h3 className="font-medium text-text-primary">{pipeline.nome}</h3>
+                {pipeline.isPadrao && <Badge>Padrão</Badge>}
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {pipeline.estagios.map((estagio) => (
+                  <Badge key={estagio.id} className="bg-surface-raised text-text-secondary">
+                    {estagio.nome} ({TIPO_LABELS[estagio.tipo]})
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>

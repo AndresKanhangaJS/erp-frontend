@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
@@ -43,7 +44,7 @@ export default function ApuramentoIvaPage() {
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className="flex items-end gap-4 rounded-lg border border-border bg-surface-card p-4"
+        className="flex items-end gap-4 rounded-xl bg-surface-card p-4 ring-1 ring-foreground/10"
       >
         <div className="max-w-xs flex-1 space-y-1">
           <label htmlFor="periodoId" className="text-sm text-text-secondary">
@@ -69,35 +70,37 @@ export default function ApuramentoIvaPage() {
       </form>
 
       {resultado && (
-        <div className="max-w-md space-y-1.5 rounded-lg border border-border bg-surface-card p-4">
-          <div className="flex items-center justify-between text-sm text-text-secondary">
-            <span>IVA liquidado</span>
-            <CurrencyDisplay value={resultado.ivaLiquidado} />
-          </div>
-          <div className="flex items-center justify-between text-sm text-text-secondary">
-            <span>IVA dedutível</span>
-            <CurrencyDisplay value={resultado.ivaDedutivel} />
-          </div>
-          <div className="flex items-center justify-between border-t border-border pt-1.5 text-base font-semibold text-text-primary">
-            <span>IVA apurado</span>
-            <CurrencyDisplay value={resultado.ivaApurado} />
-          </div>
-          {resultado.dataApuramento && (
-            <p className="pt-1 text-xs text-text-muted">
-              Apurado em {formatDate(resultado.dataApuramento)}
-            </p>
-          )}
-          {resultado.lancamentoId && (
-            <p className="text-xs text-text-muted">
-              <Link
-                to={`/contabilidade/lancamentos/${resultado.lancamentoId}`}
-                className="underline"
-              >
-                Ver lançamento gerado
-              </Link>
-            </p>
-          )}
-        </div>
+        <Card className="max-w-md">
+          <CardContent className="space-y-1.5">
+            <div className="flex items-center justify-between text-sm text-text-secondary">
+              <span>IVA liquidado</span>
+              <CurrencyDisplay value={resultado.ivaLiquidado} />
+            </div>
+            <div className="flex items-center justify-between text-sm text-text-secondary">
+              <span>IVA dedutível</span>
+              <CurrencyDisplay value={resultado.ivaDedutivel} />
+            </div>
+            <div className="flex items-center justify-between border-t border-border pt-1.5 text-base font-semibold text-text-primary">
+              <span>IVA apurado</span>
+              <CurrencyDisplay value={resultado.ivaApurado} />
+            </div>
+            {resultado.dataApuramento && (
+              <p className="pt-1 text-xs text-text-muted">
+                Apurado em {formatDate(resultado.dataApuramento)}
+              </p>
+            )}
+            {resultado.lancamentoId && (
+              <p className="text-xs text-text-muted">
+                <Link
+                  to={`/contabilidade/lancamentos/${resultado.lancamentoId}`}
+                  className="underline"
+                >
+                  Ver lançamento gerado
+                </Link>
+              </p>
+            )}
+          </CardContent>
+        </Card>
       )}
     </div>
   )

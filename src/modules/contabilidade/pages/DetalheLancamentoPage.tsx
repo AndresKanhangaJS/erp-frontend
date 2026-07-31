@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -89,7 +90,7 @@ export default function DetalheLancamentoPage() {
         </p>
       )}
 
-      <div className="overflow-x-auto rounded-lg border border-border">
+      <Card className="overflow-x-auto py-0">
         <Table>
           <TableHeader>
             <TableRow>
@@ -120,14 +121,16 @@ export default function DetalheLancamentoPage() {
             })}
           </TableBody>
         </Table>
-      </div>
+      </Card>
 
-      <div className="ml-auto w-full max-w-sm space-y-1.5 rounded-lg border border-border bg-surface-card p-4">
-        <div className="flex items-center justify-between text-sm font-semibold text-text-primary">
-          <span>Total</span>
-          <CurrencyDisplay value={saldo.totalDebito} />
-        </div>
-      </div>
+      <Card className="ml-auto w-full max-w-sm">
+        <CardContent>
+          <div className="flex items-center justify-between text-sm font-semibold text-text-primary">
+            <span>Total</span>
+            <CurrencyDisplay value={saldo.totalDebito} />
+          </div>
+        </CardContent>
+      </Card>
 
       <ConfirmDialog
         open={confirmOpen}

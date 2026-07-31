@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useParams } from 'react-router'
 
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -62,7 +63,7 @@ export default function DetalheInventarioPage() {
         <p className="text-sm text-text-muted">{inventario.observacoes}</p>
       )}
 
-      <div className="overflow-x-auto rounded-lg border border-border">
+      <Card className="overflow-x-auto py-0">
         <Table>
           <TableHeader>
             <TableRow>
@@ -97,7 +98,7 @@ export default function DetalheInventarioPage() {
             })}
           </TableBody>
         </Table>
-      </div>
+      </Card>
 
       <ConfirmDialog
         open={confirmOpen}

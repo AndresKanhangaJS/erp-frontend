@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router'
 import { Link } from 'react-router'
 
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -62,7 +63,7 @@ export default function DetalheFolhaPage() {
 
       <EstadoFolhaBadge estado={folha.estado} />
 
-      <div className="overflow-x-auto rounded-lg border border-border">
+      <Card className="overflow-x-auto py-0">
         <Table>
           <TableHeader>
             <TableRow>
@@ -104,7 +105,7 @@ export default function DetalheFolhaPage() {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
 
       <ConfirmDialog
         open={confirmOpen}

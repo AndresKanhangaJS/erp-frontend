@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { Card, CardContent } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableFooter, TableRow } from '@/components/ui/table'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
@@ -20,7 +21,7 @@ function GrupoTable({
   return (
     <div className="space-y-2">
       <h2 className="text-sm font-semibold text-text-primary">{titulo}</h2>
-      <div className="overflow-x-auto rounded-lg border border-border">
+      <Card className="overflow-x-auto py-0">
         <Table>
           <TableBody>
             {linhas.length === 0 && (
@@ -49,7 +50,7 @@ function GrupoTable({
             </TableRow>
           </TableFooter>
         </Table>
-      </div>
+      </Card>
     </div>
   )
 }
@@ -98,21 +99,23 @@ export default function BalancoPage() {
             </div>
           </div>
 
-          <div className="rounded-lg border border-border bg-surface-card p-4 text-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-text-secondary">Activo</span>
-              <CurrencyDisplay value={balanco.totalActivo} className="font-semibold" />
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-text-secondary">Passivo + Capital Próprio</span>
-              <CurrencyDisplay value={totalPassivoMaisCapital} className="font-semibold" />
-            </div>
-            {!equilibrado && (
-              <p className="mt-2 text-danger">
-                O balanço não está equilibrado — verifica os lançamentos deste período.
-              </p>
-            )}
-          </div>
+          <Card className="text-sm">
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <span className="text-text-secondary">Activo</span>
+                <CurrencyDisplay value={balanco.totalActivo} className="font-semibold" />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-text-secondary">Passivo + Capital Próprio</span>
+                <CurrencyDisplay value={totalPassivoMaisCapital} className="font-semibold" />
+              </div>
+              {!equilibrado && (
+                <p className="mt-2 text-danger">
+                  O balanço não está equilibrado — verifica os lançamentos deste período.
+                </p>
+              )}
+            </CardContent>
+          </Card>
         </>
       )}
     </div>

@@ -66,7 +66,7 @@ export default function FolhasSalariaisPage() {
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className="flex items-end gap-4 rounded-lg border border-border bg-surface-card p-4"
+        className="flex items-end gap-4 rounded-xl bg-surface-card p-4 ring-1 ring-foreground/10"
       >
         <div className="space-y-1">
           <label htmlFor="anoFiscal" className="text-sm text-text-secondary">

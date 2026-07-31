@@ -1,5 +1,7 @@
+import { Percent, Wallet } from 'lucide-react'
 import { useParams } from 'react-router'
 
+import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Select,
@@ -10,6 +12,7 @@ import {
 } from '@/components/ui/select'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
+import { StatCard } from '@/shared/components/ui/StatCard'
 import { formatDate } from '@/shared/utils/formatDate'
 
 import { ActividadesTimeline } from '../components/ActividadesTimeline'
@@ -50,20 +53,26 @@ export default function DetalheOportunidadePage() {
           ]}
         />
 
-        <div className="rounded-lg border border-border bg-surface-card p-4">
-          <p className="text-sm text-text-secondary">Lead</p>
-          <p className="font-medium text-text-primary">{lead?.nome ?? '—'}</p>
-        </div>
+        <Card>
+          <CardContent>
+            <p className="text-sm text-text-secondary">Lead</p>
+            <p className="font-medium text-text-primary">{lead?.nome ?? '—'}</p>
+          </CardContent>
+        </Card>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="rounded-lg border border-border bg-surface-card p-4">
-            <p className="text-sm text-text-secondary">Valor estimado</p>
-            <CurrencyDisplay value={oportunidade.valorEstimado} className="text-lg font-semibold" />
-          </div>
-          <div className="rounded-lg border border-border bg-surface-card p-4">
-            <p className="text-sm text-text-secondary">Probabilidade</p>
-            <p className="text-lg font-semibold text-text-primary">{oportunidade.probabilidade}%</p>
-          </div>
+          <StatCard
+            label="Valor estimado"
+            value={<CurrencyDisplay value={oportunidade.valorEstimado} />}
+            icon={Wallet}
+            tone="accent"
+          />
+          <StatCard
+            label="Probabilidade"
+            value={`${oportunidade.probabilidade}%`}
+            icon={Percent}
+            tone="info"
+          />
         </div>
 
         {oportunidade.dataFechoPrevista && (

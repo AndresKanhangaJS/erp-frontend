@@ -1,6 +1,7 @@
 import { useParams } from 'react-router'
 
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
@@ -60,26 +61,32 @@ export default function DetalheVencimentoPage() {
         }
       />
 
-      <div className="max-w-md space-y-1.5 rounded-lg border border-border bg-surface-card p-4">
-        <Linha label="Salário base" value={vencimento.salarioBase} />
-        <Linha label="Subsídio de alimentação" value={vencimento.subsidioAlimentacao} />
-        <Linha label="Subsídio de transporte" value={vencimento.subsidioTransporte} />
-        <Linha label="Vencimento bruto" value={vencimento.vencimentoBruto} destaque />
-      </div>
+      <Card className="max-w-md">
+        <CardContent className="space-y-1.5">
+          <Linha label="Salário base" value={vencimento.salarioBase} />
+          <Linha label="Subsídio de alimentação" value={vencimento.subsidioAlimentacao} />
+          <Linha label="Subsídio de transporte" value={vencimento.subsidioTransporte} />
+          <Linha label="Vencimento bruto" value={vencimento.vencimentoBruto} destaque />
+        </CardContent>
+      </Card>
 
-      <div className="max-w-md space-y-1.5 rounded-lg border border-border bg-surface-card p-4">
-        <Linha label="Base tributável IRT" value={vencimento.baseTributavelIrt} />
-        <Linha label="IRT" value={vencimento.irt} />
-        <Linha label="INSS (trabalhador)" value={vencimento.inssTrabalhador} />
-        <p className="pt-1 text-xs text-text-muted">
-          INSS a cargo da entidade empregadora (não deduzido ao vencimento):{' '}
-          <CurrencyDisplay value={vencimento.inssEmpregador} />
-        </p>
-      </div>
+      <Card className="max-w-md">
+        <CardContent className="space-y-1.5">
+          <Linha label="Base tributável IRT" value={vencimento.baseTributavelIrt} />
+          <Linha label="IRT" value={vencimento.irt} />
+          <Linha label="INSS (trabalhador)" value={vencimento.inssTrabalhador} />
+          <p className="pt-1 text-xs text-text-muted">
+            INSS a cargo da entidade empregadora (não deduzido ao vencimento):{' '}
+            <CurrencyDisplay value={vencimento.inssEmpregador} />
+          </p>
+        </CardContent>
+      </Card>
 
-      <div className="max-w-md rounded-lg border border-border bg-surface-card p-4">
-        <Linha label="Vencimento líquido" value={vencimento.vencimentoLiquido} destaque />
-      </div>
+      <Card className="max-w-md">
+        <CardContent>
+          <Linha label="Vencimento líquido" value={vencimento.vencimentoLiquido} destaque />
+        </CardContent>
+      </Card>
     </div>
   )
 }

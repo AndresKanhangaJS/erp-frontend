@@ -4,6 +4,7 @@ import { Trash2 } from 'lucide-react'
 import { useNavigate } from 'react-router'
 
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import {
   Table,
@@ -93,7 +94,7 @@ export default function InventarioFormPage() {
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-border">
+      <Card className="overflow-x-auto py-0">
         <Table>
           <TableHeader>
             <TableRow>
@@ -171,7 +172,7 @@ export default function InventarioFormPage() {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
       {errors.linhas?.message && <p className="text-sm text-danger">{errors.linhas.message}</p>}
 
       <Button

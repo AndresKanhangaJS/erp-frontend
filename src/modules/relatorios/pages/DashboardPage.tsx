@@ -1,6 +1,8 @@
 import { useState, type ReactNode } from 'react'
+import { Boxes, Calculator, Handshake, Receipt, Users, type LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
@@ -16,12 +18,27 @@ const ESTADO_LABELS: Record<string, string> = {
   desqualificado: 'Desqualificados',
 }
 
-function Cartao({ titulo, children }: { titulo: string; children: ReactNode }) {
+function Cartao({
+  titulo,
+  icon: Icon,
+  children,
+}: {
+  titulo: string
+  icon: LucideIcon
+  children: ReactNode
+}) {
   return (
-    <div className="rounded-lg border border-border bg-surface-card p-4">
-      <p className="text-sm text-text-secondary">{titulo}</p>
-      {children}
-    </div>
+    <Card>
+      <CardContent>
+        <div className="flex items-center gap-2">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-accent-subtle text-brand-accent">
+            <Icon className="h-4 w-4" aria-hidden="true" />
+          </span>
+          <p className="text-sm text-text-secondary">{titulo}</p>
+        </div>
+        <div className="mt-2">{children}</div>
+      </CardContent>
+    </Card>
   )
 }
 
@@ -82,7 +99,7 @@ export default function DashboardPage() {
       {!isLoading && dashboard && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {dashboard.vendas && (
-            <Cartao titulo="Vendas">
+            <Cartao titulo="Vendas" icon={Receipt}>
               <CurrencyDisplay
                 value={dashboard.vendas.totalFacturado}
                 className="block text-2xl font-semibold text-text-primary"
@@ -94,7 +111,7 @@ export default function DashboardPage() {
           )}
 
           {dashboard.financeiro && (
-            <Cartao titulo="Resultado líquido">
+            <Cartao titulo="Resultado líquido" icon={Calculator}>
               <CurrencyDisplay
                 value={dashboard.financeiro.resultadoLiquido}
                 className={
@@ -107,7 +124,7 @@ export default function DashboardPage() {
           )}
 
           {dashboard.pessoal && (
-            <Cartao titulo="Custo com pessoal">
+            <Cartao titulo="Custo com pessoal" icon={Users}>
               <CurrencyDisplay
                 value={dashboard.pessoal.custoTotal}
                 className="block text-2xl font-semibold text-text-primary"
@@ -116,7 +133,7 @@ export default function DashboardPage() {
           )}
 
           {dashboard.comercial && (
-            <Cartao titulo="Pipeline comercial">
+            <Cartao titulo="Pipeline comercial" icon={Handshake}>
               <CurrencyDisplay
                 value={dashboard.comercial.valorPipelineAberto}
                 className="block text-2xl font-semibold text-text-primary"
@@ -134,7 +151,7 @@ export default function DashboardPage() {
           )}
 
           {dashboard.stock && (
-            <Cartao titulo="Valor em existências">
+            <Cartao titulo="Valor em existências" icon={Boxes}>
               <CurrencyDisplay
                 value={dashboard.stock.valorExistencias}
                 className="block text-2xl font-semibold text-text-primary"

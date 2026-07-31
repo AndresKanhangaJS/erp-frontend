@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
+import { Plus, UserPlus } from 'lucide-react'
 import { Link } from 'react-router'
 
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { StatCard } from '@/shared/components/ui/StatCard'
 
 import { EstadoLeadBadge } from '../components/EstadoLeadBadge'
 import { useLeads } from '../hooks/useLeads'
@@ -41,10 +43,18 @@ export default function LeadsPage() {
         title="Leads"
         actions={
           <Button asChild>
-            <Link to="/comercial/leads/novo">Novo lead</Link>
+            <Link to="/comercial/leads/novo">
+              <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
+              Novo lead
+            </Link>
           </Button>
         }
       />
+      {data && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <StatCard label="Total de leads" value={data.meta.total} icon={UserPlus} tone="accent" />
+        </div>
+      )}
       <DataTable
         columns={columns}
         data={data?.data ?? []}
