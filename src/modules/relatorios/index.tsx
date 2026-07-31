@@ -1,6 +1,12 @@
-import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { Route, Routes } from 'react-router'
 
-/** Placeholder — os dashboards e exportações reais chegam no Passo 12. */
+import DashboardPage from './pages/DashboardPage'
+
+/** Montado em /relatorios/* pelo router — routing interno do módulo. */
 export default function RelatoriosModule() {
-  return <PageHeader title="Relatórios" />
+  return (
+    <Routes>
+      <Route index element={<DashboardPage />} />
+    </Routes>
+  )
 }
