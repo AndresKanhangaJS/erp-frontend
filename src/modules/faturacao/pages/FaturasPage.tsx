@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
+import { FileText, Plus } from 'lucide-react'
 import { Link } from 'react-router'
 
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { StatCard } from '@/shared/components/ui/StatCard'
 import { formatDate } from '@/shared/utils/formatDate'
 
 import { EstadoBadge } from '../components/EstadoBadge'
@@ -62,10 +64,25 @@ export default function FaturasPage() {
         title="Facturas"
         actions={
           <Button asChild>
-            <Link to="/faturacao/emitir">Emitir factura</Link>
+            <Link to="/faturacao/emitir">
+              <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
+              Emitir factura
+            </Link>
           </Button>
         }
       />
+
+      {data && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <StatCard
+            label="Total de facturas"
+            value={data.meta.total}
+            icon={FileText}
+            tone="accent"
+          />
+        </div>
+      )}
+
       <DataTable
         columns={columns}
         data={data?.data ?? []}

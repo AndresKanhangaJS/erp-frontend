@@ -21,7 +21,7 @@ interface ModuleTabsProps {
  */
 export function ModuleTabs({ items }: ModuleTabsProps) {
   return (
-    <nav className="flex gap-1 overflow-x-auto border-b border-border" aria-label="Secções">
+    <nav className="flex gap-1 overflow-x-auto border-b border-border pb-2" aria-label="Secções">
       {items.map((item) => (
         <NavLink
           key={item.href}
@@ -29,10 +29,10 @@ export function ModuleTabs({ items }: ModuleTabsProps) {
           end={item.end}
           className={({ isActive }) =>
             cn(
-              'shrink-0 border-b-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors',
+              'shrink-0 rounded-md px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors',
               isActive
-                ? 'border-brand-accent text-text-primary'
-                : 'border-transparent text-text-secondary hover:text-text-primary',
+                ? 'bg-brand-accent-subtle text-brand-accent'
+                : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
             )
           }
         >

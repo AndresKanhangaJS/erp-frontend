@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -94,19 +95,23 @@ export default function DetalheFaturaPage() {
 
       <div className="grid gap-6 md:grid-cols-[1fr_auto]">
         <div className="space-y-4">
-          <div className="rounded-lg border border-border bg-surface-card p-4">
-            <p className="text-sm text-text-secondary">Cliente</p>
-            {cliente ? (
-              <>
-                <p className="font-medium text-text-primary">{cliente.nome}</p>
-                {cliente.nif && <p className="font-mono text-sm text-text-muted">{cliente.nif}</p>}
-              </>
-            ) : (
-              <p className="text-sm text-text-muted">Sem cliente associado</p>
-            )}
-          </div>
+          <Card>
+            <CardContent>
+              <p className="text-sm text-text-secondary">Cliente</p>
+              {cliente ? (
+                <>
+                  <p className="font-medium text-text-primary">{cliente.nome}</p>
+                  {cliente.nif && (
+                    <p className="font-mono text-sm text-text-muted">{cliente.nif}</p>
+                  )}
+                </>
+              ) : (
+                <p className="text-sm text-text-muted">Sem cliente associado</p>
+              )}
+            </CardContent>
+          </Card>
 
-          <div className="overflow-x-auto rounded-lg border border-border">
+          <Card className="overflow-x-auto py-0">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -135,7 +140,7 @@ export default function DetalheFaturaPage() {
                 ))}
               </TableBody>
             </Table>
-          </div>
+          </Card>
 
           <TotaisPanel
             subtotal={fatura.subtotal}
@@ -145,10 +150,14 @@ export default function DetalheFaturaPage() {
             taxaCambio={fatura.taxaCambio}
           />
 
-          <div className="rounded-lg border border-border bg-surface-card p-4 text-xs text-text-muted">
-            <p>Assinatura local (hash encadeado, integridade técnica — não é certificação AGT):</p>
-            <p className="font-mono break-all">{fatura.hash}</p>
-          </div>
+          <Card className="text-xs text-text-muted">
+            <CardContent>
+              <p>
+                Assinatura local (hash encadeado, integridade técnica — não é certificação AGT):
+              </p>
+              <p className="font-mono break-all">{fatura.hash}</p>
+            </CardContent>
+          </Card>
         </div>
 
         <FaturaQrCode faturaId={fatura.id} />
@@ -167,7 +176,7 @@ export default function DetalheFaturaPage() {
               Registar pagamento
             </Button>
           </div>
-          <div className="overflow-x-auto rounded-lg border border-border">
+          <Card className="overflow-x-auto py-0">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -199,7 +208,7 @@ export default function DetalheFaturaPage() {
                 ))}
               </TableBody>
             </Table>
-          </div>
+          </Card>
         </div>
       )}
 
