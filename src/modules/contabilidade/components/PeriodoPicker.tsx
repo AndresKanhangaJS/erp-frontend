@@ -25,9 +25,7 @@ export function PeriodoPicker({
   apenasAbertos = true,
 }: PeriodoPickerProps) {
   const { data: periodos } = usePeriodos()
-  const opcoes = apenasAbertos
-    ? (periodos ?? []).filter((p) => p.estado === 'aberto')
-    : (periodos ?? [])
+  const opcoes = apenasAbertos ? (periodos ?? []).filter((p) => !p.fechado) : (periodos ?? [])
 
   return (
     <Select value={value} onValueChange={onChange} disabled={disabled}>
@@ -37,7 +35,7 @@ export function PeriodoPicker({
       <SelectContent>
         {opcoes.map((periodo) => (
           <SelectItem key={periodo.id} value={periodo.id}>
-            {String(periodo.mes).padStart(2, '0')}/{periodo.ano}
+            {String(periodo.mes).padStart(2, '0')}/{periodo.anoFiscal}
           </SelectItem>
         ))}
       </SelectContent>

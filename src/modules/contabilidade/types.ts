@@ -5,7 +5,6 @@ export interface Conta {
   id: string
   codigo: string
   designacao: string
-  classe: number
   tipo: TipoConta
   contaPaiId: string | null
   /** Só contas-folha aceitam lançamentos directos. */
@@ -14,13 +13,15 @@ export interface Conta {
 
 export interface LinhaLancamento {
   contaId: string
-  contaCodigo: string
-  contaDesignacao: string
   debito: number
   credito: number
 }
 
-export type EstadoLancamento = 'rascunho' | 'lancado' | 'anulado'
+/** Um lançamento nunca é editado nem apagado — só "lancado" ou "anulado" (a correcção é sempre um estorno). */
+export type EstadoLancamento = 'lancado' | 'anulado'
+
+/** manual = criado por um utilizador; automatico = gerado por outro módulo (ex.: Facturação). */
+export type TipoOrigemLancamento = 'manual' | 'automatico'
 
 export interface Lancamento {
   id: string
@@ -29,24 +30,22 @@ export interface Lancamento {
   descricao: string
   periodoId: string
   estado: EstadoLancamento
+  tipoOrigem: TipoOrigemLancamento
+  /** Ex.: "fatura", quando tipoOrigem é automático. */
+  origemTipo: string | null
+  origemId: string | null
+  /** Se este lançamento foi anulado, o id da contra-entrada gerada — nunca é apagado nem escondido, só marcado. */
+  lancamentoEstornoId: string | null
   linhas: LinhaLancamento[]
-  totalDebito: number
-  totalCredito: number
-  createdAt: string
-  /** Se este lançamento é uma contra-entrada gerada ao anular outro, o id do lançamento original. */
-  estornaLancamentoId: string | null
-  /** Se este lançamento foi anulado, o id da contra-entrada gerada. Nunca é apagado nem escondido — só marcado. */
-  estornadoPorId: string | null
+  createdAt: string | null
 }
-
-export type EstadoPeriodo = 'aberto' | 'fechado'
 
 export interface Periodo {
   id: string
-  ano: number
+  anoFiscal: number
   mes: number
-  estado: EstadoPeriodo
-  dataFecho: string | null
+  fechado: boolean
+  fechadoEm: string | null
 }
 
 export interface SaldoConta {
@@ -68,10 +67,10 @@ export interface LinhaDemonstrativo {
 
 /** Activo = Passivo + Capital Próprio, por período. */
 export interface Balanco {
-  periodoId: string
   activo: LinhaDemonstrativo[]
   passivo: LinhaDemonstrativo[]
   capitalProprio: LinhaDemonstrativo[]
+  resultadoAcumulado: number
   totalActivo: number
   totalPassivo: number
   totalCapitalProprio: number
@@ -79,10 +78,20 @@ export interface Balanco {
 
 /** Resultado líquido = Proveitos − Custos, por período. */
 export interface DemonstracaoResultados {
-  periodoId: string
   proveitos: LinhaDemonstrativo[]
   custos: LinhaDemonstrativo[]
   totalProveitos: number
   totalCustos: number
   resultadoLiquido: number
+}
+
+export interface ApuramentoIva {
+  id: string
+  periodoId: string
+  ivaLiquidado: number
+  ivaDedutivel: number
+  ivaApurado: number
+  /** Lançamento contabilístico gerado automaticamente pelo apuramento. */
+  lancamentoId: string | null
+  dataApuramento: string | null
 }

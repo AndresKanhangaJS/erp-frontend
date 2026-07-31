@@ -6,8 +6,6 @@ import type { LinhaLancamento } from './types'
 function linha(overrides: Partial<LinhaLancamento> = {}): LinhaLancamento {
   return {
     contaId: '1',
-    contaCodigo: '1.1.01',
-    contaDesignacao: 'Caixa',
     debito: 0,
     credito: 0,
     ...overrides,

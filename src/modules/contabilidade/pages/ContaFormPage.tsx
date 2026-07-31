@@ -143,11 +143,17 @@ export default function ContaFormPage() {
               id="codigo"
               placeholder="Ex.: 1.1.01"
               aria-invalid={!!errors.codigo}
+              disabled={isEdicao}
               {...field}
             />
           )}
         />
         {errors.codigo && <p className="text-sm text-danger">{errors.codigo.message}</p>}
+        {isEdicao && (
+          <p className="text-sm text-text-muted">
+            O código não pode ser alterado depois de criado.
+          </p>
+        )}
       </div>
 
       <div className="space-y-1">
@@ -172,7 +178,7 @@ export default function ContaFormPage() {
           control={control}
           name="tipo"
           render={({ field }) => (
-            <Select value={field.value} onValueChange={field.onChange}>
+            <Select value={field.value} onValueChange={field.onChange} disabled={isEdicao}>
               <SelectTrigger id="tipo" className="w-full">
                 <SelectValue />
               </SelectTrigger>
@@ -186,6 +192,9 @@ export default function ContaFormPage() {
             </Select>
           )}
         />
+        {isEdicao && (
+          <p className="text-sm text-text-muted">O tipo não pode ser alterado depois de criado.</p>
+        )}
       </div>
 
       <div className="space-y-1">

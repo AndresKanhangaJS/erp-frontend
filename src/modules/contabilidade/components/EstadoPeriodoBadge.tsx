@@ -1,19 +1,20 @@
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
-import type { EstadoPeriodo } from '../types'
-
-const CONFIG: Record<EstadoPeriodo, { label: string; className: string }> = {
-  aberto: { label: 'Aberto', className: 'bg-success-subtle text-success' },
-  fechado: { label: 'Fechado', className: 'bg-surface-raised text-text-secondary' },
-}
-
 interface EstadoPeriodoBadgeProps {
-  estado: EstadoPeriodo
+  fechado: boolean
   className?: string
 }
 
-export function EstadoPeriodoBadge({ estado, className }: EstadoPeriodoBadgeProps) {
-  const config = CONFIG[estado]
-  return <Badge className={cn(config.className, className)}>{config.label}</Badge>
+export function EstadoPeriodoBadge({ fechado, className }: EstadoPeriodoBadgeProps) {
+  return (
+    <Badge
+      className={cn(
+        fechado ? 'bg-surface-raised text-text-secondary' : 'bg-success-subtle text-success',
+        className,
+      )}
+    >
+      {fechado ? 'Fechado' : 'Aberto'}
+    </Badge>
+  )
 }

@@ -18,12 +18,15 @@ import { formatDate } from '@/shared/utils/formatDate'
 
 import { EstadoLancamentoBadge } from '../components/EstadoLancamentoBadge'
 import { useAnularLancamento } from '../hooks/useAnularLancamento'
+import { useContasArvore } from '../hooks/useContasArvore'
 import { useLancamento } from '../hooks/useLancamento'
+import { calcularSaldoLancamento } from '../utils'
 
 export default function DetalheLancamentoPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { data: lancamento, isLoading } = useLancamento(id)
+  const { data: contas } = useContasArvore()
   const anular = useAnularLancamento()
   const [confirmOpen, setConfirmOpen] = useState(false)
 
@@ -35,6 +38,10 @@ export default function DetalheLancamentoPage() {
       </div>
     )
   }
+
+  // O backend só devolve conta_id em cada linha — o código/designação resolve-se aqui contra o plano de contas já carregado.
+  const contaPorId = new Map((contas ?? []).map((conta) => [conta.id, conta]))
+  const saldo = calcularSaldoLancamento(lancamento.linhas)
 
   return (
     <div className="space-y-6">
@@ -60,26 +67,23 @@ export default function DetalheLancamentoPage() {
         <span className="text-sm text-text-secondary">{lancamento.descricao}</span>
       </div>
 
-      {lancamento.estornaLancamentoId && (
+      {lancamento.lancamentoEstornoId && (
         <p className="text-sm text-text-muted">
-          Estorno do lançamento{' '}
+          Anulado pela contra-entrada{' '}
           <Link
-            to={`/contabilidade/lancamentos/${lancamento.estornaLancamentoId}`}
+            to={`/contabilidade/lancamentos/${lancamento.lancamentoEstornoId}`}
             className="underline"
           >
-            original
+            de estorno
           </Link>
           .
         </p>
       )}
-      {lancamento.estornadoPorId && (
+      {lancamento.tipoOrigem === 'automatico' && lancamento.origemTipo === 'fatura' && (
         <p className="text-sm text-text-muted">
-          Anulado pela contra-entrada{' '}
-          <Link
-            to={`/contabilidade/lancamentos/${lancamento.estornadoPorId}`}
-            className="underline"
-          >
-            de estorno
+          Gerado automaticamente a partir da{' '}
+          <Link to={`/faturacao/faturas/${lancamento.origemId}`} className="underline">
+            factura de origem
           </Link>
           .
         </p>
@@ -95,20 +99,25 @@ export default function DetalheLancamentoPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {lancamento.linhas.map((linha, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                  <span className="font-mono text-xs text-text-muted">{linha.contaCodigo}</span>{' '}
-                  {linha.contaDesignacao}
-                </TableCell>
-                <TableCell className="text-right">
-                  {linha.debito > 0 && <CurrencyDisplay value={linha.debito} />}
-                </TableCell>
-                <TableCell className="text-right">
-                  {linha.credito > 0 && <CurrencyDisplay value={linha.credito} />}
-                </TableCell>
-              </TableRow>
-            ))}
+            {lancamento.linhas.map((linha, index) => {
+              const conta = contaPorId.get(linha.contaId)
+              return (
+                <TableRow key={index}>
+                  <TableCell>
+                    <span className="font-mono text-xs text-text-muted">
+                      {conta?.codigo ?? '—'}
+                    </span>{' '}
+                    {conta?.designacao ?? linha.contaId}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {linha.debito > 0 && <CurrencyDisplay value={linha.debito} />}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {linha.credito > 0 && <CurrencyDisplay value={linha.credito} />}
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </div>
@@ -116,7 +125,7 @@ export default function DetalheLancamentoPage() {
       <div className="ml-auto w-full max-w-sm space-y-1.5 rounded-lg border border-border bg-surface-card p-4">
         <div className="flex items-center justify-between text-sm font-semibold text-text-primary">
           <span>Total</span>
-          <CurrencyDisplay value={lancamento.totalDebito} />
+          <CurrencyDisplay value={saldo.totalDebito} />
         </div>
       </div>
 

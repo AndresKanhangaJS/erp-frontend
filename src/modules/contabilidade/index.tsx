@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router'
 
 import { ModuleTabs, type ModuleTabsItem } from '@/shared/components/layout/ModuleTabs'
 
+import ApuramentoIvaPage from './pages/ApuramentoIvaPage'
 import BalancetePage from './pages/BalancetePage'
 import BalancoPage from './pages/BalancoPage'
 import ContaFormPage from './pages/ContaFormPage'
@@ -18,6 +19,7 @@ const NAV: ModuleTabsItem[] = [
   { label: 'Balancete', href: '/contabilidade/balancete' },
   { label: 'Balanço', href: '/contabilidade/balanco' },
   { label: 'Demonstração de Resultados', href: '/contabilidade/demonstracao-resultados' },
+  { label: 'Apuramento de IVA', href: '/contabilidade/apuramento-iva' },
   { label: 'Períodos', href: '/contabilidade/periodos' },
 ]
 
@@ -37,6 +39,7 @@ export default function ContabilidadeModule() {
         <Route path="balancete" element={<BalancetePage />} />
         <Route path="balanco" element={<BalancoPage />} />
         <Route path="demonstracao-resultados" element={<DemonstracaoResultadosPage />} />
+        <Route path="apuramento-iva" element={<ApuramentoIvaPage />} />
         <Route path="periodos" element={<PeriodosPage />} />
       </Routes>
     </div>

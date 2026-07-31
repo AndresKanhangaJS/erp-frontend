@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils'
 import type { EstadoLancamento } from '../types'
 
 const CONFIG: Record<EstadoLancamento, { label: string; className: string }> = {
-  rascunho: { label: 'Rascunho', className: 'bg-surface-raised text-text-secondary' },
   lancado: { label: 'Lançado', className: 'bg-success-subtle text-success' },
   anulado: { label: 'Anulado', className: 'bg-danger-subtle text-danger' },
 }

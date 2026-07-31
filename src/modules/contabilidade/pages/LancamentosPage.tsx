@@ -11,6 +11,7 @@ import { formatDate } from '@/shared/utils/formatDate'
 import { EstadoLancamentoBadge } from '../components/EstadoLancamentoBadge'
 import { useLancamentos } from '../hooks/useLancamentos'
 import type { Lancamento } from '../types'
+import { calcularSaldoLancamento } from '../utils'
 
 const PER_PAGE = 20
 
@@ -30,10 +31,13 @@ const columns: ColumnDef<Lancamento>[] = [
   { accessorKey: 'data', header: 'Data', cell: ({ row }) => formatDate(row.original.data) },
   { accessorKey: 'descricao', header: 'Descrição' },
   {
-    accessorKey: 'totalDebito',
+    id: 'total',
     header: 'Total',
     cell: ({ row }) => (
-      <CurrencyDisplay value={row.original.totalDebito} className="block text-right" />
+      <CurrencyDisplay
+        value={calcularSaldoLancamento(row.original.linhas).totalDebito}
+        className="block text-right"
+      />
     ),
   },
   {
