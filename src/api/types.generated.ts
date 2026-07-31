@@ -4,6 +4,22 @@
  */
 
 export interface paths {
+  '/v1/comercial/actividades': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['comercial.actividades.index']
+    put?: never
+    post: operations['comercial.actividades.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/v1/contabilidade/apuramento-iva': {
     parameters: {
       query?: never
@@ -36,6 +52,38 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/v1/stock/armazens': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['stock.armazens.index']
+    put?: never
+    post: operations['stock.armazens.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/stock/armazens/{armazem}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['stock.armazens.show']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/v1/faturacao/artigos': {
     parameters: {
       query?: never
@@ -60,7 +108,7 @@ export interface paths {
       cookie?: never
     }
     get: operations['faturacao.artigos.show']
-    put?: never
+    put: operations['faturacao.artigos.update']
     post?: never
     delete?: never
     options?: never
@@ -228,6 +276,22 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/v1/stock/existencias': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['stock.existencias.index']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/v1/faturacao/faturas': {
     parameters: {
       query?: never
@@ -313,6 +377,150 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/v1/rh/folhas-salariais': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['rh.folhas.index']
+    put?: never
+    post: operations['rh.folhas.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/rh/folhas-salariais/{folhaSalarial}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['rh.folhas.show']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/rh/folhas-salariais/{folhaSalarial}/vencimentos': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['rh.folhas.vencimentos']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/rh/folhas-salariais/{folhaSalarial}/anular': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations['rh.folhas.anular']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/rh/funcionarios': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['rh.funcionarios.index']
+    put?: never
+    post: operations['rh.funcionarios.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/rh/funcionarios/{funcionario}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['rh.funcionarios.show']
+    put: operations['rh.funcionarios.update']
+    post?: never
+    delete: operations['rh.funcionarios.destroy']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/stock/inventarios': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['stock.inventarios.index']
+    put?: never
+    post: operations['stock.inventarios.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/stock/inventarios/{inventario}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['stock.inventarios.show']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/stock/inventarios/{inventario}/fechar': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations['stock.inventarios.fechar']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/v1/contabilidade/lancamentos': {
     parameters: {
       query?: never
@@ -355,6 +563,150 @@ export interface paths {
     get?: never
     put?: never
     post: operations['contabilidade.lancamentos.anular']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/comercial/leads': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['comercial.leads.index']
+    put?: never
+    post: operations['comercial.leads.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/comercial/leads/{lead}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['comercial.leads.show']
+    put: operations['comercial.leads.update']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/stock/movimentos/transferir': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations['stock.movimentos.transferir']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/stock/movimentos': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['stock.movimentos.index']
+    put?: never
+    post: operations['stock.movimentos.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/stock/movimentos/{movimento}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['stock.movimentos.show']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/stock/movimentos/{movimento}/estornar': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations['stock.movimentos.estornar']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/comercial/oportunidades': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['comercial.oportunidades.index']
+    put?: never
+    post: operations['comercial.oportunidades.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/comercial/oportunidades/{oportunidade}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['comercial.oportunidades.show']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/comercial/oportunidades/{oportunidade}/mover-estagio': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations['comercial.oportunidades.mover-estagio']
     delete?: never
     options?: never
     head?: never
@@ -441,6 +793,38 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/v1/comercial/pipelines': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['comercial.pipelines.index']
+    put?: never
+    post: operations['comercial.pipelines.store']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/comercial/pipelines/{pipeline}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['comercial.pipelines.show']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/v1/contabilidade/balancete': {
     parameters: {
       query?: never
@@ -481,6 +865,38 @@ export interface paths {
       cookie?: never
     }
     get: operations['contabilidade.demonstracao-resultados']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/relatorios/dashboard': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['relatorios.dashboard']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/relatorios/dashboard/exportar': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['relatorios.dashboard.exportar']
     put?: never
     post?: never
     delete?: never
@@ -601,10 +1017,78 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/v1/rh/vencimentos/{vencimento}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations['rh.vencimentos.show']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/rh/vencimentos/{vencimento}/recibo': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * A geração do recibo nunca é síncrona (ver ARCHITECTURE.md): se
+     *     ainda não existir, despacha o Job e devolve 202 em vez de
+     *     bloquear o pedido HTTP
+     */
+    get: operations['rh.vencimentos.recibo']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
+    /** ActividadeCrmCollection */
+    ActividadeCrmCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** ActividadeCrmResource */
+    ActividadeCrmResource: {
+      id: string
+      /** @constant */
+      type: 'actividade_crm'
+      attributes: {
+        tipo: string
+        descricao: string
+        data: string
+        relacionado_type: string
+        relacionado_id: string
+      }
+      created_at: string | null
+      updated_at: string | null
+    }
     /** AnularFaturaRequest */
     AnularFaturaRequest: {
       /** Format: uuid */
@@ -630,8 +1114,8 @@ export interface components {
           amount: string
           currency: string
         } | null
-        lancamento_id: string
-        data_apuramento: string | null
+        lancamento_id: string | null
+        data_apuramento: string
       }
       created_at: string | null
       updated_at: string | null
@@ -640,6 +1124,36 @@ export interface components {
     ApurarIvaRequest: {
       /** Format: uuid */
       periodo_id: string
+    }
+    /** ArmazemCollection */
+    ArmazemCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** ArmazemResource */
+    ArmazemResource: {
+      id: string
+      /** @constant */
+      type: 'armazem'
+      attributes: {
+        codigo: string
+        nome: string
+        endereco: string
+        is_padrao: string
+      }
+      created_at: string | null
+      updated_at: string | null
     }
     /** ArtigoCollection */
     ArtigoCollection: {
@@ -665,12 +1179,15 @@ export interface components {
       attributes: {
         codigo: string
         nome: string
+        descricao: string | null
         preco_unitario: {
           amount: string
           currency: string
         } | null
         taxa_iva: string
         unidade: string
+        tipo: string
+        activo: boolean
       }
       created_at: string | null
       updated_at: string | null
@@ -726,10 +1243,10 @@ export interface components {
       type: 'cliente'
       attributes: {
         nome: string
-        nif: string
-        email: string
-        telefone: string
-        morada: string
+        nif: string | null
+        email: string | null
+        telefone: string | null
+        morada: string | null
       }
       created_at: string | null
       updated_at: string | null
@@ -759,20 +1276,40 @@ export interface components {
         codigo: string
         designacao: string
         tipo: string
-        conta_pai_id: string
-        permite_lancamentos: string
+        conta_pai_id: string | null
+        permite_lancamentos: boolean
       }
       created_at: string | null
       updated_at: string | null
+    }
+    /** CreateActividadeCrmRequest */
+    CreateActividadeCrmRequest: {
+      /** @enum {string} */
+      tipo: 'chamada' | 'email' | 'reuniao' | 'nota'
+      descricao: string
+      /** Format: date-time */
+      data?: string | null
+      /** @enum {string} */
+      relacionado_tipo: 'lead' | 'oportunidade'
+      /** Format: uuid */
+      relacionado_id: string
+    }
+    /** CreateArmazemRequest */
+    CreateArmazemRequest: {
+      codigo: string
+      nome: string
+      endereco?: string | null
     }
     /** CreateArtigoRequest */
     CreateArtigoRequest: {
       codigo: string
       nome: string
+      descricao?: string | null
       preco_unitario: number
       moeda?: string | null
       taxa_iva?: number | null
       unidade?: string | null
+      tipo?: components['schemas']['TipoArtigoEnum'] | null
     }
     /** CreateClienteRequest */
     CreateClienteRequest: {
@@ -793,6 +1330,81 @@ export interface components {
       conta_pai_id?: string | null
       permite_lancamentos: boolean
     }
+    /** CreateFuncionarioRequest */
+    CreateFuncionarioRequest: {
+      nome: string
+      nif?: string | null
+      numero_seguranca_social?: string | null
+      cargo: string
+      departamento?: string | null
+      /** Format: date-time */
+      data_admissao: string
+      salario_base: number
+      subsidio_alimentacao?: number | null
+      subsidio_transporte?: number | null
+    }
+    /**
+     * CreateInventarioRequest
+     * @description O cliente só indica o artigo e a quantidade contada fisicamente — o
+     *     código/nome do artigo e a quantidade de sistema são resolvidos no
+     *     servidor (CriarInventarioAgent, via ArtigoReaderContract/Existencia),
+     *     nunca aceites tal como vêm do pedido.
+     */
+    CreateInventarioRequest: {
+      /** Format: uuid */
+      armazem_id: string
+      /** Format: date-time */
+      data?: string | null
+      observacoes?: string | null
+      linhas: {
+        /** Format: uuid */
+        artigo_id: string
+        quantidade_contada: number
+      }[]
+    }
+    /** CreateLeadRequest */
+    CreateLeadRequest: {
+      nome: string
+      empresa?: string | null
+      /** Format: email */
+      email?: string | null
+      telefone?: string | null
+      /** @enum {string} */
+      origem: 'manual' | 'website' | 'referencia' | 'cold_call'
+    }
+    /**
+     * CreateMovimentoRequest
+     * @description Só entrada/saida directas aqui — ajuste nasce de FecharInventarioAgent
+     *     e transferência tem o seu próprio endpoint (par saída/entrada), ambos
+     *     porque precisam de calcular a quantidade (com sinal) sozinhos, nunca
+     *     a partir de input livre do utilizador.
+     */
+    CreateMovimentoRequest: {
+      /** Format: uuid */
+      armazem_id: string
+      /** Format: uuid */
+      artigo_id: string
+      /** @enum {string} */
+      tipo: 'entrada' | 'saida'
+      quantidade: number
+      custo_unitario?: number | null
+      moeda?: string | null
+      /** Format: date-time */
+      data?: string | null
+      observacoes?: string | null
+    }
+    /** CreateOportunidadeRequest */
+    CreateOportunidadeRequest: {
+      /** Format: uuid */
+      lead_id: string
+      titulo: string
+      valor_estimado: number
+      probabilidade?: number | null
+      /** Format: uuid */
+      pipeline_estagio_id?: string | null
+      /** Format: date-time */
+      data_fecho_prevista?: string | null
+    }
     /** CreatePeriodoContabilRequest */
     CreatePeriodoContabilRequest: {
       ano_fiscal: number
@@ -803,6 +1415,15 @@ export interface components {
       ano_fiscal: number
       /** @description Omitido ou 0 = fecho do ano inteiro; 1-12 = fecho apenas do mês. */
       mes?: number | null
+    }
+    /** CreatePipelineRequest */
+    CreatePipelineRequest: {
+      nome: string
+      estagios: {
+        nome: string
+        /** @enum {string} */
+        tipo: 'aberto' | 'ganho' | 'perdido'
+      }[]
     }
     /** CreateSerieRequest */
     CreateSerieRequest: {
@@ -838,6 +1459,41 @@ export interface components {
         debito?: number | null
         credito?: number | null
       }[]
+    }
+    /** DashboardResource */
+    DashboardResource: {
+      vendas: {
+        total_facturado: {
+          amount: string
+          currency: string
+        } | null
+        numero_facturas: string
+      } | null
+      financeiro: {
+        resultado_liquido: {
+          amount: string
+          currency: string
+        } | null
+      } | null
+      pessoal: {
+        custo_total: {
+          amount: string
+          currency: string
+        } | null
+      } | null
+      comercial: {
+        leads_por_estado: string
+        valor_pipeline_aberto: {
+          amount: string
+          currency: string
+        } | null
+      } | null
+      stock: {
+        valor_existencias: {
+          amount: string
+          currency: string
+        } | null
+      } | null
     }
     /** DemonstracaoResultadosResource */
     DemonstracaoResultadosResource: {
@@ -877,6 +1533,22 @@ export interface components {
         preco_unitario?: number | null
       }[]
     }
+    /** ExistenciaCollection */
+    ExistenciaCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
     /** ExportarSaftRequest */
     ExportarSaftRequest: {
       ano_fiscal: number
@@ -904,11 +1576,11 @@ export interface components {
       /** @constant */
       type: 'fatura'
       attributes: {
-        numero: string
+        numero: number
         tipo_documento: string
         estado: string
         serie_id: string
-        cliente_id: string
+        cliente_id: string | null
         subtotal: {
           amount: string
           currency: string
@@ -923,14 +1595,14 @@ export interface components {
         } | null
         taxa_cambio: string
         hash: string
-        hash_anterior: string
-        fatura_original_id: string
-        motivo_anulacao: string
-        data_emissao: string | null
+        hash_anterior: string | null
+        fatura_original_id: string | null
+        motivo_anulacao: string | null
+        data_emissao: string
         linhas:
           | {
               id: string
-              artigo_id: string
+              artigo_id: string | null
               descricao: string
               quantidade: string
               preco_unitario: {
@@ -956,10 +1628,126 @@ export interface components {
       created_at: string | null
       updated_at: string | null
     }
+    /** FolhaSalarialCollection */
+    FolhaSalarialCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** FolhaSalarialResource */
+    FolhaSalarialResource: {
+      id: string
+      /** @constant */
+      type: 'folha_salarial'
+      attributes: {
+        ano_fiscal: number
+        mes: number
+        estado: string
+        data_processamento: string
+      }
+      created_at: string | null
+      updated_at: string | null
+    }
     /** ForgotPasswordRequest */
     ForgotPasswordRequest: {
       /** Format: email */
       email: string
+    }
+    /** FuncionarioCollection */
+    FuncionarioCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** FuncionarioResource */
+    FuncionarioResource: {
+      id: string
+      /** @constant */
+      type: 'funcionario'
+      attributes: {
+        nome: string
+        nif: string | null
+        numero_seguranca_social: string | null
+        cargo: string
+        departamento: string | null
+        data_admissao: string
+        data_cessacao: string | null
+        estado: string
+        salario_base: {
+          amount: string
+          currency: string
+        } | null
+        subsidio_alimentacao: {
+          amount: string
+          currency: string
+        } | null
+        subsidio_transporte: {
+          amount: string
+          currency: string
+        } | null
+      }
+      created_at: string | null
+      updated_at: string | null
+    }
+    /** InventarioCollection */
+    InventarioCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** InventarioResource */
+    InventarioResource: {
+      id: string
+      /** @constant */
+      type: 'inventario'
+      attributes: {
+        armazem_id: string
+        estado: string
+        data: string | null
+        observacoes: string
+        linhas:
+          | {
+              id: string
+              artigo_id: string
+              artigo_codigo: string
+              artigo_nome: string
+              quantidade_sistema: string
+              quantidade_contada: string
+            }[]
+          | null
+      }
+      created_at: string | null
+      updated_at: string | null
     }
     /** LancamentoCollection */
     LancamentoCollection: {
@@ -983,15 +1771,15 @@ export interface components {
       /** @constant */
       type: 'lancamento'
       attributes: {
-        numero: string
+        numero: number
         periodo_id: string
-        data: string | null
+        data: string
         descricao: string
         estado: string
         tipo_origem: string
-        origem_tipo: string
-        origem_id: string
-        lancamento_estorno_id: string
+        origem_tipo: string | null
+        origem_id: string | null
+        lancamento_estorno_id: string | null
         linhas:
           | {
               id: string
@@ -1006,6 +1794,39 @@ export interface components {
               } | null
             }[]
           | null
+      }
+      created_at: string | null
+      updated_at: string | null
+    }
+    /** LeadCollection */
+    LeadCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** LeadResource */
+    LeadResource: {
+      id: string
+      /** @constant */
+      type: 'lead'
+      attributes: {
+        nome: string
+        empresa: string | null
+        email: string | null
+        telefone: string | null
+        origem: string
+        estado: string
+        faturacao_cliente_id: string | null
       }
       created_at: string | null
       updated_at: string | null
@@ -1025,6 +1846,89 @@ export interface components {
       /** Format: email */
       email: string
       password: string
+    }
+    /** MoverEstagioRequest */
+    MoverEstagioRequest: {
+      /** Format: uuid */
+      pipeline_estagio_id: string
+    }
+    /** MovimentoStockCollection */
+    MovimentoStockCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** MovimentoStockResource */
+    MovimentoStockResource: {
+      id: string
+      /** @constant */
+      type: 'movimento_stock'
+      attributes: {
+        armazem_id: string
+        artigo_id: string
+        artigo_codigo: string
+        artigo_nome: string
+        tipo: string
+        quantidade: string
+        custo_unitario: {
+          amount: string
+          currency: string
+        } | null
+        data: string | null
+        origem_tipo: string
+        origem_id: string
+        observacoes: string
+        movimento_estorno_id: string
+      }
+      created_at: string | null
+      updated_at: string | null
+    }
+    /** OportunidadeCollection */
+    OportunidadeCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** OportunidadeResource */
+    OportunidadeResource: {
+      id: string
+      /** @constant */
+      type: 'oportunidade'
+      attributes: {
+        lead_id: string
+        titulo: string
+        valor_estimado: {
+          amount: string
+          currency: string
+        } | null
+        probabilidade: number
+        pipeline_estagio_id: string
+        data_fecho_prevista: string | null
+        data_fechamento: string | null
+        faturacao_cliente_id: string | null
+      }
+      created_at: string | null
+      updated_at: string | null
     }
     /** PagamentoCollection */
     PagamentoCollection: {
@@ -1054,8 +1958,8 @@ export interface components {
           currency: string
         } | null
         metodo: string
-        referencia: string
-        data_pagamento: string | null
+        referencia: string | null
+        data_pagamento: string
       }
       created_at: string | null
       updated_at: string | null
@@ -1082,9 +1986,9 @@ export interface components {
       /** @constant */
       type: 'periodo_contabil'
       attributes: {
-        ano_fiscal: string
-        mes: string
-        fechado: string
+        ano_fiscal: number
+        mes: number
+        fechado: boolean
         fechado_em: string | null
       }
       created_at: string | null
@@ -1112,13 +2016,54 @@ export interface components {
       /** @constant */
       type: 'periodo_fiscal'
       attributes: {
-        ano_fiscal: string
-        mes: string
-        fechado: string
+        ano_fiscal: number
+        mes: number
+        fechado: boolean
         fechado_em: string | null
       }
       created_at: string | null
       updated_at: string | null
+    }
+    /** PipelineCollection */
+    PipelineCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** PipelineResource */
+    PipelineResource: {
+      id: string
+      /** @constant */
+      type: 'pipeline'
+      attributes: {
+        nome: string
+        is_padrao: boolean
+        estagios:
+          | {
+              id: string
+              nome: string
+              ordem: number
+              tipo: string
+            }[]
+          | null
+      }
+      created_at: string | null
+      updated_at: string | null
+    }
+    /** ProcessarFolhaRequest */
+    ProcessarFolhaRequest: {
+      ano_fiscal: number
+      mes: number
     }
     /** RegistarPagamentoRequest */
     RegistarPagamentoRequest: {
@@ -1181,9 +2126,9 @@ export interface components {
       attributes: {
         tipo_documento: string
         codigo: string
-        ano_fiscal: string
-        ultimo_numero: string
-        activa: string
+        ano_fiscal: number
+        ultimo_numero: number
+        activa: boolean
       }
       created_at: string | null
       updated_at: string | null
@@ -1218,11 +2163,38 @@ export interface components {
       updated_at: string | null
     }
     /**
+     * TipoArtigoEnum
+     * @description Distingue se um Artigo é fisicamente controlável em Stock (produto) ou não (serviço/outro) — usado por ArtigoControlavelSpec para decidir se uma linha de factura gera movimento de stock.
+     * @enum {string}
+     */
+    TipoArtigoEnum: 'produto' | 'servico' | 'outro'
+    /**
      * TipoDocumentoEnum
      * @description FT/FR/VD/RC são documentos "originais"; NC/ND só existem a referenciar um documento original (nunca se apaga uma factura — ver ADR-008).
      * @enum {string}
      */
     TipoDocumentoEnum: 'FT' | 'FR' | 'NC' | 'ND' | 'VD' | 'RC'
+    /** TransferirStockRequest */
+    TransferirStockRequest: {
+      /** Format: uuid */
+      armazem_origem_id: string
+      /** Format: uuid */
+      armazem_destino_id: string
+      /** Format: uuid */
+      artigo_id: string
+      quantidade: number
+      observacoes?: string | null
+    }
+    /** UpdateArtigoRequest */
+    UpdateArtigoRequest: {
+      nome?: string
+      descricao?: string | null
+      preco_unitario?: number
+      taxa_iva?: number
+      unidade?: string
+      tipo?: components['schemas']['TipoArtigoEnum']
+      activo?: boolean
+    }
     /** UpdateClienteRequest */
     UpdateClienteRequest: {
       nome?: string
@@ -1238,6 +2210,27 @@ export interface components {
       /** Format: uuid */
       conta_pai_id?: string | null
       permite_lancamentos: boolean
+    }
+    /** UpdateFuncionarioRequest */
+    UpdateFuncionarioRequest: {
+      nome: string
+      nif?: string | null
+      numero_seguranca_social?: string | null
+      cargo: string
+      departamento?: string | null
+      salario_base: number
+      subsidio_alimentacao?: number | null
+      subsidio_transporte?: number | null
+    }
+    /** UpdateLeadRequest */
+    UpdateLeadRequest: {
+      nome: string
+      empresa?: string | null
+      /** Format: email */
+      email?: string | null
+      telefone?: string | null
+      /** @enum {string} */
+      estado: 'novo' | 'contactado' | 'qualificado' | 'desqualificado'
     }
     /** UpdateUserRequest */
     UpdateUserRequest: {
@@ -1270,11 +2263,75 @@ export interface components {
       attributes: {
         name: string
         email: string
-        must_change_password: string
+        must_change_password: boolean
         roles: {
           relations: ['roles']
         }[]
         permissions: unknown[]
+      }
+      created_at: string | null
+      updated_at: string | null
+    }
+    /** VencimentoCollection */
+    VencimentoCollection: {
+      data: string
+      meta: {
+        current_page: string
+        per_page: string
+        total: string
+        last_page: string
+      }
+      links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+      }
+    }
+    /** VencimentoResource */
+    VencimentoResource: {
+      id: string
+      /** @constant */
+      type: 'vencimento'
+      attributes: {
+        folha_id: string
+        funcionario_id: string
+        salario_base: {
+          amount: string
+          currency: string
+        } | null
+        subsidio_alimentacao: {
+          amount: string
+          currency: string
+        } | null
+        subsidio_transporte: {
+          amount: string
+          currency: string
+        } | null
+        vencimento_bruto: {
+          amount: string
+          currency: string
+        } | null
+        base_tributavel_irt: {
+          amount: string
+          currency: string
+        } | null
+        irt: {
+          amount: string
+          currency: string
+        } | null
+        inss_trabalhador: {
+          amount: string
+          currency: string
+        } | null
+        inss_empregador: {
+          amount: string
+          currency: string
+        } | null
+        vencimento_liquido: {
+          amount: string
+          currency: string
+        } | null
       }
       created_at: string | null
       updated_at: string | null
@@ -1341,6 +2398,59 @@ export interface components {
 }
 export type $defs = Record<string, never>
 export interface operations {
+  'comercial.actividades.index': {
+    parameters: {
+      query?: {
+        relacionado_tipo?: string
+        relacionado_id?: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `ActividadeCrmCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ActividadeCrmCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'comercial.actividades.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateActividadeCrmRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['ActividadeCrmResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
   'contabilidade.apuramento-iva.store': {
     parameters: {
       query?: never
@@ -1390,6 +2500,84 @@ export interface operations {
         content: {
           'application/json': {
             data: components['schemas']['ApuramentoIvaResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'stock.armazens.index': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `ArmazemCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ArmazemCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'stock.armazens.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateArmazemRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['ArmazemResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'stock.armazens.show': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The armazem ID */
+        armazem: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `ArmazemResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['ArmazemResource']
           }
         }
       }
@@ -1476,6 +2664,39 @@ export interface operations {
       404: components['responses']['ModelNotFoundException']
     }
   }
+  'faturacao.artigos.update': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The artigo ID */
+        artigo: string
+      }
+      cookie?: never
+    }
+    requestBody?: {
+      content: {
+        'application/json': components['schemas']['UpdateArtigoRequest']
+      }
+    }
+    responses: {
+      /** @description `ArtigoResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['ArtigoResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+      422: components['responses']['ValidationException']
+    }
+  }
   'auth.login': {
     parameters: {
       query?: never
@@ -1497,7 +2718,7 @@ export interface operations {
           'application/json': {
             data: {
               token: string
-              must_change_password: string
+              must_change_password: boolean
               user: components['schemas']['UserResource']
             }
           }
@@ -1818,6 +3039,31 @@ export interface operations {
       422: components['responses']['ValidationException']
     }
   }
+  'stock.existencias.index': {
+    parameters: {
+      query?: {
+        armazem_id?: string
+        artigo_id?: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `ExistenciaCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ExistenciaCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
   'faturacao.faturas.index': {
     parameters: {
       query?: never
@@ -1995,6 +3241,383 @@ export interface operations {
       404: components['responses']['ModelNotFoundException']
     }
   }
+  'rh.folhas.index': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `FolhaSalarialCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['FolhaSalarialCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'rh.folhas.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ProcessarFolhaRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['FolhaSalarialResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'rh.folhas.show': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The folha salarial ID */
+        folhaSalarial: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `FolhaSalarialResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['FolhaSalarialResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'rh.folhas.vencimentos': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The folha salarial ID */
+        folhaSalarial: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `VencimentoCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VencimentoCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'rh.folhas.anular': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The folha salarial ID */
+        folhaSalarial: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `FolhaSalarialResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['FolhaSalarialResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'rh.funcionarios.index': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `FuncionarioCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['FuncionarioCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'rh.funcionarios.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateFuncionarioRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['FuncionarioResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'rh.funcionarios.show': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The funcionario ID */
+        funcionario: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `FuncionarioResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['FuncionarioResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'rh.funcionarios.update': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The funcionario ID */
+        funcionario: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateFuncionarioRequest']
+      }
+    }
+    responses: {
+      /** @description `FuncionarioResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['FuncionarioResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'rh.funcionarios.destroy': {
+    parameters: {
+      query: {
+        motivo: string
+        data_cessacao?: string | null
+      }
+      header?: never
+      path: {
+        /** @description The funcionario ID */
+        funcionario: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description No content */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'stock.inventarios.index': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `InventarioCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['InventarioCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'stock.inventarios.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateInventarioRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['InventarioResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'stock.inventarios.show': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The inventario ID */
+        inventario: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `InventarioResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['InventarioResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'stock.inventarios.fechar': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The inventario ID */
+        inventario: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `InventarioResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['InventarioResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
   'contabilidade.lancamentos.index': {
     parameters: {
       query?: {
@@ -2104,6 +3727,367 @@ export interface operations {
       401: components['responses']['AuthenticationException']
       403: components['responses']['AuthorizationException']
       404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'comercial.leads.index': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `LeadCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['LeadCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'comercial.leads.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateLeadRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['LeadResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'comercial.leads.show': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The lead ID */
+        lead: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `LeadResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['LeadResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'comercial.leads.update': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The lead ID */
+        lead: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateLeadRequest']
+      }
+    }
+    responses: {
+      /** @description `LeadResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['LeadResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'stock.movimentos.transferir': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TransferirStockRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: {
+              saida: components['schemas']['MovimentoStockResource']
+              entrada: components['schemas']['MovimentoStockResource']
+            }
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'stock.movimentos.index': {
+    parameters: {
+      query?: {
+        armazem_id?: string
+        artigo_id?: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `MovimentoStockCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['MovimentoStockCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'stock.movimentos.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateMovimentoRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['MovimentoStockResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'stock.movimentos.show': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The movimento ID */
+        movimento: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `MovimentoStockResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['MovimentoStockResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'stock.movimentos.estornar': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The movimento ID */
+        movimento: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['MovimentoStockResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'comercial.oportunidades.index': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `OportunidadeCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OportunidadeCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'comercial.oportunidades.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateOportunidadeRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['OportunidadeResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'comercial.oportunidades.show': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The oportunidade ID */
+        oportunidade: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `OportunidadeResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['OportunidadeResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'comercial.oportunidades.mover-estagio': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The oportunidade ID */
+        oportunidade: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MoverEstagioRequest']
+      }
+    }
+    responses: {
+      /** @description `OportunidadeResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['OportunidadeResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+      422: components['responses']['ValidationException']
     }
   }
   'faturacao.pagamentos.index': {
@@ -2320,6 +4304,84 @@ export interface operations {
       404: components['responses']['ModelNotFoundException']
     }
   }
+  'comercial.pipelines.index': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `PipelineCollection` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PipelineCollection']
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+    }
+  }
+  'comercial.pipelines.store': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreatePipelineRequest']
+      }
+    }
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['PipelineResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'comercial.pipelines.show': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The pipeline ID */
+        pipeline: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `PipelineResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['PipelineResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
   'contabilidade.balancete': {
     parameters: {
       query: {
@@ -2394,6 +4456,60 @@ export interface operations {
           'application/json': {
             data: components['schemas']['DemonstracaoResultadosResource']
           }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'relatorios.dashboard': {
+    parameters: {
+      query?: {
+        ano?: number | null
+        mes?: number | null
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `DashboardResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['DashboardResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      422: components['responses']['ValidationException']
+    }
+  }
+  'relatorios.dashboard.exportar': {
+    parameters: {
+      query?: {
+        ano?: number | null
+        mes?: number | null
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      200: {
+        headers: {
+          'Transfer-Encoding': 'chunked'
+          [name: string]: unknown
+        }
+        content: {
+          'text/csv': string
         }
       }
       401: components['responses']['AuthenticationException']
@@ -2617,7 +4733,7 @@ export interface operations {
       header?: never
       path: {
         /** @description The user ID */
-        user: number
+        user: string
       }
       cookie?: never
     }
@@ -2645,7 +4761,7 @@ export interface operations {
       header?: never
       path: {
         /** @description The user ID */
-        user: number
+        user: string
       }
       cookie?: never
     }
@@ -2680,7 +4796,7 @@ export interface operations {
       header?: never
       path: {
         /** @description The user ID */
-        user: number
+        user: string
       }
       cookie?: never
     }
@@ -2705,7 +4821,7 @@ export interface operations {
       header?: never
       path: {
         /** @description The user ID */
-        user: number
+        user: string
       }
       cookie?: never
     }
@@ -2720,6 +4836,76 @@ export interface operations {
             data: {
               temporary_password: string
             }
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'rh.vencimentos.show': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The vencimento ID */
+        vencimento: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description `VencimentoResource` */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: components['schemas']['VencimentoResource']
+          }
+        }
+      }
+      401: components['responses']['AuthenticationException']
+      403: components['responses']['AuthorizationException']
+      404: components['responses']['ModelNotFoundException']
+    }
+  }
+  'rh.vencimentos.recibo': {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The vencimento ID */
+        vencimento: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            data: {
+              url: string
+            }
+          }
+        }
+      }
+      202: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            /** @constant */
+            message: 'O recibo está a ser gerado; tenta novamente dentro de momentos.'
+            /** @constant */
+            code: 'RECIBO_EM_GERACAO'
           }
         }
       }
