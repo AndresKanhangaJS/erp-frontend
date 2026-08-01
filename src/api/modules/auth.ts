@@ -15,6 +15,7 @@ interface RawUserResource {
     must_change_password: boolean
     roles: string[]
     permissions: string[]
+    modulos_activos: string[]
   }
   created_at: string | null
   updated_at: string | null
@@ -31,6 +32,7 @@ export interface LoginResult {
   user: AuthUser
   permissions: string[]
   mustChangePassword: boolean
+  activeModules: string[]
 }
 
 /**
@@ -41,6 +43,42 @@ export interface LoginResult {
  * login (o cliente já sabe o tenant, foi ele que o forneceu no
  * cabeçalho X-Tenant-ID — ver useLogin.ts).
  */
+export interface ChangePasswordPayload {
+  currentPassword: string
+  password: string
+  passwordConfirmation: string
+}
+
+export async function changePassword(payload: ChangePasswordPayload): Promise<void> {
+  await apiClient.post('/auth/change-password', {
+    current_password: payload.currentPassword,
+    password: payload.password,
+    password_confirmation: payload.passwordConfirmation,
+  })
+}
+
+export interface ForgotPasswordPayload {
+  email: string
+}
+
+export async function forgotPassword(payload: ForgotPasswordPayload): Promise<void> {
+  await apiClient.post('/auth/forgot-password', payload)
+}
+
+export interface ResetPasswordPayload {
+  token: string
+  password: string
+  passwordConfirmation: string
+}
+
+export async function resetPassword(payload: ResetPasswordPayload): Promise<void> {
+  await apiClient.post('/auth/reset-password', {
+    token: payload.token,
+    password: payload.password,
+    password_confirmation: payload.passwordConfirmation,
+  })
+}
+
 export async function login(payload: LoginPayload): Promise<LoginResult> {
   const response = await apiClient.post<RawLoginResponse>('/auth/login', payload)
   const raw = response.data
@@ -54,5 +92,6 @@ export async function login(payload: LoginPayload): Promise<LoginResult> {
       email: raw.user.attributes.email,
     },
     permissions: raw.user.attributes.permissions,
+    activeModules: raw.user.attributes.modulos_activos,
   }
 }

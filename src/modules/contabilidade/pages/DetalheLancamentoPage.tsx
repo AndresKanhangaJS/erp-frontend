@@ -15,6 +15,7 @@ import {
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { ConfirmDialog } from '@/shared/components/ui/ConfirmDialog'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { formatDate } from '@/shared/utils/formatDate'
 
 import { EstadoLancamentoBadge } from '../components/EstadoLancamentoBadge'
@@ -55,9 +56,11 @@ export default function DetalheLancamentoPage() {
         ]}
         actions={
           lancamento.estado === 'lancado' ? (
-            <Button variant="destructive" onClick={() => setConfirmOpen(true)}>
-              Anular
-            </Button>
+            <PermissionGuard permission="contabilidade.lancar">
+              <Button variant="destructive" onClick={() => setConfirmOpen(true)}>
+                Anular
+              </Button>
+            </PermissionGuard>
           ) : undefined
         }
       />

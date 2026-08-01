@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 
 import { useDashboard } from '../hooks/useDashboard'
 import { useExportarDashboard } from '../hooks/useExportarDashboard'
@@ -54,14 +55,16 @@ export default function DashboardPage() {
       <PageHeader
         title="Dashboard"
         actions={
-          <Button
-            type="button"
-            variant="outline"
-            disabled={exportar.isPending}
-            onClick={() => exportar.mutate({ ano, mes })}
-          >
-            {exportar.isPending ? 'A exportar...' : 'Exportar CSV'}
-          </Button>
+          <PermissionGuard permission="relatorios.exportar">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={exportar.isPending}
+              onClick={() => exportar.mutate({ ano, mes })}
+            >
+              {exportar.isPending ? 'A exportar...' : 'Exportar CSV'}
+            </Button>
+          </PermissionGuard>
         }
       />
 

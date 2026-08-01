@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { useCliente } from '../hooks/useCliente'
@@ -81,9 +82,11 @@ export default function ClienteFormPage() {
           { label: isEdicao ? 'Editar' : 'Novo' },
         ]}
         actions={
-          <Button type="submit" disabled={isSubmitting || aGuardar}>
-            {aGuardar ? 'A guardar...' : 'Guardar'}
-          </Button>
+          <PermissionGuard permission={isEdicao ? 'faturacao.editar' : 'faturacao.criar'}>
+            <Button type="submit" disabled={isSubmitting || aGuardar}>
+              {aGuardar ? 'A guardar...' : 'Guardar'}
+            </Button>
+          </PermissionGuard>
         }
       />
 

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { getApiErrorMessage } from '@/shared/utils/mapApiErrors'
 
 import { LinhasLancamentoEditor } from '../components/LinhasLancamentoEditor'
@@ -52,9 +53,11 @@ export default function NovoLancamentoPage() {
           { label: 'Novo' },
         ]}
         actions={
-          <Button type="submit" disabled={isSubmitting || criar.isPending || !saldo.equilibrado}>
-            {criar.isPending ? 'A lançar...' : 'Lançar'}
-          </Button>
+          <PermissionGuard permission="contabilidade.lancar">
+            <Button type="submit" disabled={isSubmitting || criar.isPending || !saldo.equilibrado}>
+              {criar.isPending ? 'A lançar...' : 'Lançar'}
+            </Button>
+          </PermissionGuard>
         }
       />
 

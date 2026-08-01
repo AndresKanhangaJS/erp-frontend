@@ -6,9 +6,15 @@ import { AppShell } from '@/shared/components/layout/AppShell'
 
 import { AuthGuard } from './guards/AuthGuard'
 import { ModuleGuard } from './guards/ModuleGuard'
+import { PermissionRouteGuard } from './guards/PermissionRouteGuard'
+import { PerfilPage } from './pages/PerfilPage'
 import { UpgradePage } from './pages/UpgradePage'
 
 const LoginPage = lazy(() => import('@/modules/auth/pages/LoginPage'))
+const ForgotPasswordPage = lazy(() => import('@/modules/auth/pages/ForgotPasswordPage'))
+const ResetPasswordPage = lazy(() => import('@/modules/auth/pages/ResetPasswordPage'))
+const ChangePasswordPage = lazy(() => import('@/modules/auth/pages/ChangePasswordPage'))
+const AdminModule = lazy(() => import('@/modules/admin'))
 const FaturacaoModule = lazy(() => import('@/modules/faturacao'))
 const ContabilidadeModule = lazy(() => import('@/modules/contabilidade'))
 const RhModule = lazy(() => import('@/modules/rh'))
@@ -39,11 +45,21 @@ export function AppRouter() {
       <Suspense fallback={<ModuleFallback />}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/esqueci-password" element={<ForgotPasswordPage />} />
+          {/* Caminho fixo pelo backend em PasswordResetMail (erp-api) — não renomear sem actualizar lá também. */}
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
 
           <Route element={<AuthGuard />}>
+            <Route path="/trocar-password" element={<ChangePasswordPage />} />
+
             <Route element={<AppShellLayout />}>
               <Route index element={<Navigate to="/faturacao" replace />} />
               <Route path="planos" element={<UpgradePage />} />
+              <Route path="perfil" element={<PerfilPage />} />
+
+              <Route element={<PermissionRouteGuard permission="admin.gerir_utilizadores" />}>
+                <Route path="admin/*" element={<AdminModule />} />
+              </Route>
 
               <Route element={<ModuleGuard module="faturacao" />}>
                 <Route path="faturacao/*" element={<FaturacaoModule />} />

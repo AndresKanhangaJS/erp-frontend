@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/select'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { StatCard } from '@/shared/components/ui/StatCard'
 import { formatDate } from '@/shared/utils/formatDate'
 
@@ -85,24 +86,34 @@ export default function DetalheOportunidadePage() {
           <label htmlFor="estagio" className="text-sm text-text-secondary">
             Estágio
           </label>
-          <Select
-            value={oportunidade.pipelineEstagioId}
-            onValueChange={(next) =>
-              moverEstagio.mutate({ id: oportunidade.id, pipelineEstagioId: next })
+          <PermissionGuard
+            permission="comercial.gerir_pipeline"
+            fallback={
+              <p className="text-sm text-text-primary">
+                {pipeline?.estagios.find((estagio) => estagio.id === oportunidade.pipelineEstagioId)
+                  ?.nome ?? '—'}
+              </p>
             }
-            disabled={moverEstagio.isPending}
           >
-            <SelectTrigger id="estagio" className="w-full">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {(pipeline?.estagios ?? []).map((estagio) => (
-                <SelectItem key={estagio.id} value={estagio.id}>
-                  {estagio.nome}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <Select
+              value={oportunidade.pipelineEstagioId}
+              onValueChange={(next) =>
+                moverEstagio.mutate({ id: oportunidade.id, pipelineEstagioId: next })
+              }
+              disabled={moverEstagio.isPending}
+            >
+              <SelectTrigger id="estagio" className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {(pipeline?.estagios ?? []).map((estagio) => (
+                  <SelectItem key={estagio.id} value={estagio.id}>
+                    {estagio.nome}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </PermissionGuard>
         </div>
       </div>
 

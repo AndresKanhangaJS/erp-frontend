@@ -7,6 +7,7 @@ import { listClientes } from '@/api/modules/faturacao'
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 
 import type { Cliente } from '../types'
 
@@ -39,9 +40,11 @@ export default function ClientesPage() {
       <PageHeader
         title="Clientes"
         actions={
-          <Button asChild>
-            <Link to="/faturacao/clientes/novo">Novo cliente</Link>
-          </Button>
+          <PermissionGuard permission="faturacao.criar">
+            <Button asChild>
+              <Link to="/faturacao/clientes/novo">Novo cliente</Link>
+            </Button>
+          </PermissionGuard>
         }
       />
       <DataTable

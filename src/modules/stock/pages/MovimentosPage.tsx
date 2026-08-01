@@ -17,6 +17,7 @@ import {
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { StatCard } from '@/shared/components/ui/StatCard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 import { formatDate } from '@/shared/utils/formatDate'
@@ -121,9 +122,11 @@ export default function MovimentosPage() {
       <PageHeader
         title="Movimentos de stock"
         actions={
-          <Button asChild variant="outline">
-            <Link to="/stock/movimentos/transferir">Transferir entre armazéns</Link>
-          </Button>
+          <PermissionGuard permission="stock.movimentar">
+            <Button asChild variant="outline">
+              <Link to="/stock/movimentos/transferir">Transferir entre armazéns</Link>
+            </Button>
+          </PermissionGuard>
         }
       />
 
@@ -138,134 +141,138 @@ export default function MovimentosPage() {
         </div>
       )}
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-        className="grid grid-cols-2 gap-4 rounded-xl bg-surface-card p-4 ring-1 ring-foreground/10 md:grid-cols-4"
-      >
-        <div className="space-y-1">
-          <label htmlFor="armazemId" className="text-sm text-text-secondary">
-            Armazém
-          </label>
-          <Controller
-            control={control}
-            name="armazemId"
-            render={({ field }) => (
-              <ArmazemPicker id="armazemId" value={field.value} onChange={field.onChange} />
-            )}
-          />
-          {errors.armazemId && <p className="text-sm text-danger">{errors.armazemId.message}</p>}
-        </div>
+      <PermissionGuard permission="stock.movimentar">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          className="grid grid-cols-2 gap-4 rounded-xl bg-surface-card p-4 ring-1 ring-foreground/10 md:grid-cols-4"
+        >
+          <div className="space-y-1">
+            <label htmlFor="armazemId" className="text-sm text-text-secondary">
+              Armazém
+            </label>
+            <Controller
+              control={control}
+              name="armazemId"
+              render={({ field }) => (
+                <ArmazemPicker id="armazemId" value={field.value} onChange={field.onChange} />
+              )}
+            />
+            {errors.armazemId && <p className="text-sm text-danger">{errors.armazemId.message}</p>}
+          </div>
 
-        <div className="space-y-1">
-          <label htmlFor="artigoId" className="text-sm text-text-secondary">
-            Artigo
-          </label>
-          <Controller
-            control={control}
-            name="artigoId"
-            render={() => (
-              <ArtigoStockCombobox
-                id="artigoId"
-                value={artigo}
-                onChange={(next) => {
-                  setArtigo(next)
-                  setValue('artigoId', next?.id ?? '', { shouldValidate: true })
-                }}
-              />
-            )}
-          />
-          {errors.artigoId && <p className="text-sm text-danger">{errors.artigoId.message}</p>}
-        </div>
+          <div className="space-y-1">
+            <label htmlFor="artigoId" className="text-sm text-text-secondary">
+              Artigo
+            </label>
+            <Controller
+              control={control}
+              name="artigoId"
+              render={() => (
+                <ArtigoStockCombobox
+                  id="artigoId"
+                  value={artigo}
+                  onChange={(next) => {
+                    setArtigo(next)
+                    setValue('artigoId', next?.id ?? '', { shouldValidate: true })
+                  }}
+                />
+              )}
+            />
+            {errors.artigoId && <p className="text-sm text-danger">{errors.artigoId.message}</p>}
+          </div>
 
-        <div className="space-y-1">
-          <label htmlFor="tipo" className="text-sm text-text-secondary">
-            Tipo
-          </label>
-          <Controller
-            control={control}
-            name="tipo"
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger id="tipo" className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="entrada">Entrada</SelectItem>
-                  <SelectItem value="saida">Saída</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
-          />
-        </div>
+          <div className="space-y-1">
+            <label htmlFor="tipo" className="text-sm text-text-secondary">
+              Tipo
+            </label>
+            <Controller
+              control={control}
+              name="tipo"
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="tipo" className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="entrada">Entrada</SelectItem>
+                    <SelectItem value="saida">Saída</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
 
-        <div className="space-y-1">
-          <label htmlFor="quantidade" className="text-sm text-text-secondary">
-            Quantidade
-          </label>
-          <Controller
-            control={control}
-            name="quantidade"
-            render={({ field }) => (
-              <Input
-                id="quantidade"
-                type="number"
-                min={0}
-                step="0.01"
-                aria-invalid={!!errors.quantidade}
-                value={field.value}
-                onChange={(event) => field.onChange(Number(event.target.value))}
-              />
+          <div className="space-y-1">
+            <label htmlFor="quantidade" className="text-sm text-text-secondary">
+              Quantidade
+            </label>
+            <Controller
+              control={control}
+              name="quantidade"
+              render={({ field }) => (
+                <Input
+                  id="quantidade"
+                  type="number"
+                  min={0}
+                  step="0.01"
+                  aria-invalid={!!errors.quantidade}
+                  value={field.value}
+                  onChange={(event) => field.onChange(Number(event.target.value))}
+                />
+              )}
+            />
+            {errors.quantidade && (
+              <p className="text-sm text-danger">{errors.quantidade.message}</p>
             )}
-          />
-          {errors.quantidade && <p className="text-sm text-danger">{errors.quantidade.message}</p>}
-        </div>
+          </div>
 
-        <div className="space-y-1">
-          <label htmlFor="custoUnitario" className="text-sm text-text-secondary">
-            Custo unitário (opcional)
-          </label>
-          <Controller
-            control={control}
-            name="custoUnitario"
-            render={({ field }) => (
-              <Input
-                id="custoUnitario"
-                type="number"
-                min={0}
-                step="0.01"
-                value={field.value ?? ''}
-                onChange={(event) =>
-                  field.onChange(event.target.value === '' ? null : Number(event.target.value))
-                }
-              />
-            )}
-          />
-        </div>
+          <div className="space-y-1">
+            <label htmlFor="custoUnitario" className="text-sm text-text-secondary">
+              Custo unitário (opcional)
+            </label>
+            <Controller
+              control={control}
+              name="custoUnitario"
+              render={({ field }) => (
+                <Input
+                  id="custoUnitario"
+                  type="number"
+                  min={0}
+                  step="0.01"
+                  value={field.value ?? ''}
+                  onChange={(event) =>
+                    field.onChange(event.target.value === '' ? null : Number(event.target.value))
+                  }
+                />
+              )}
+            />
+          </div>
 
-        <div className="col-span-2 space-y-1">
-          <label htmlFor="observacoes" className="text-sm text-text-secondary">
-            Observações (opcional)
-          </label>
-          <Controller
-            control={control}
-            name="observacoes"
-            render={({ field }) => (
-              <Input
-                id="observacoes"
-                value={field.value ?? ''}
-                onChange={(event) => field.onChange(event.target.value || null)}
-              />
-            )}
-          />
-        </div>
+          <div className="col-span-2 space-y-1">
+            <label htmlFor="observacoes" className="text-sm text-text-secondary">
+              Observações (opcional)
+            </label>
+            <Controller
+              control={control}
+              name="observacoes"
+              render={({ field }) => (
+                <Input
+                  id="observacoes"
+                  value={field.value ?? ''}
+                  onChange={(event) => field.onChange(event.target.value || null)}
+                />
+              )}
+            />
+          </div>
 
-        <div className="col-span-full">
-          <Button type="submit" disabled={isSubmitting || registar.isPending}>
-            {registar.isPending ? 'A registar...' : 'Registar movimento'}
-          </Button>
-        </div>
-      </form>
+          <div className="col-span-full">
+            <Button type="submit" disabled={isSubmitting || registar.isPending}>
+              {registar.isPending ? 'A registar...' : 'Registar movimento'}
+            </Button>
+          </div>
+        </form>
+      </PermissionGuard>
 
       <DataTable
         columns={columns}

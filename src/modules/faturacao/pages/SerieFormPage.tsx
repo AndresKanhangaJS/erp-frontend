@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { TipoDocumentoPicker } from '../components/TipoDocumentoPicker'
@@ -45,9 +46,11 @@ export default function SerieFormPage() {
           { label: 'Nova' },
         ]}
         actions={
-          <Button type="submit" disabled={isSubmitting || criar.isPending}>
-            {criar.isPending ? 'A guardar...' : 'Guardar'}
-          </Button>
+          <PermissionGuard permission="faturacao.criar">
+            <Button type="submit" disabled={isSubmitting || criar.isPending}>
+              {criar.isPending ? 'A guardar...' : 'Guardar'}
+            </Button>
+          </PermissionGuard>
         }
       />
 

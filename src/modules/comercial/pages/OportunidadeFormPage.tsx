@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { LeadCombobox } from '../components/LeadCombobox'
@@ -54,9 +55,11 @@ export default function OportunidadeFormPage() {
           { label: 'Nova' },
         ]}
         actions={
-          <Button type="submit" disabled={isSubmitting || criar.isPending}>
-            {criar.isPending ? 'A criar...' : 'Criar'}
-          </Button>
+          <PermissionGuard permission="comercial.gerir_pipeline">
+            <Button type="submit" disabled={isSubmitting || criar.isPending}>
+              {criar.isPending ? 'A criar...' : 'Criar'}
+            </Button>
+          </PermissionGuard>
         }
       />
 

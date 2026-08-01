@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { EstadoFolhaBadge } from '../components/EstadoFolhaBadge'
@@ -108,9 +109,11 @@ export default function FolhasSalariaisPage() {
             )}
           />
         </div>
-        <Button type="submit" disabled={isSubmitting || processar.isPending}>
-          {processar.isPending ? 'A processar...' : 'Processar folha'}
-        </Button>
+        <PermissionGuard permission="rh.processar_vencimentos">
+          <Button type="submit" disabled={isSubmitting || processar.isPending}>
+            {processar.isPending ? 'A processar...' : 'Processar folha'}
+          </Button>
+        </PermissionGuard>
       </form>
 
       <DataTable

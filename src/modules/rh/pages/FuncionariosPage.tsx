@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { StatCard } from '@/shared/components/ui/StatCard'
 import { formatDate } from '@/shared/utils/formatDate'
 
@@ -60,12 +61,14 @@ export default function FuncionariosPage() {
       <PageHeader
         title="Funcionários"
         actions={
-          <Button asChild>
-            <Link to="/rh/funcionarios/novo">
-              <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
-              Novo funcionário
-            </Link>
-          </Button>
+          <PermissionGuard permission="rh.gerir_funcionarios">
+            <Button asChild>
+              <Link to="/rh/funcionarios/novo">
+                <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
+                Novo funcionário
+              </Link>
+            </Button>
+          </PermissionGuard>
         }
       />
 

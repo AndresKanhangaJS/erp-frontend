@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 
 import type { Artigo } from '../types'
 
@@ -51,9 +52,11 @@ export default function ArtigosPage() {
       <PageHeader
         title="Artigos"
         actions={
-          <Button asChild>
-            <Link to="/faturacao/artigos/novo">Novo artigo</Link>
-          </Button>
+          <PermissionGuard permission="faturacao.criar">
+            <Button asChild>
+              <Link to="/faturacao/artigos/novo">Novo artigo</Link>
+            </Button>
+          </PermissionGuard>
         }
       />
       <DataTable

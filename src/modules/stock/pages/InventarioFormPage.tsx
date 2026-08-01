@@ -15,6 +15,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { ArmazemPicker } from '../components/ArmazemPicker'
@@ -55,9 +56,11 @@ export default function InventarioFormPage() {
           { label: 'Novo' },
         ]}
         actions={
-          <Button type="submit" disabled={isSubmitting || criar.isPending}>
-            {criar.isPending ? 'A criar...' : 'Criar inventário'}
-          </Button>
+          <PermissionGuard permission="stock.ajustar_inventario">
+            <Button type="submit" disabled={isSubmitting || criar.isPending}>
+              {criar.isPending ? 'A criar...' : 'Criar inventário'}
+            </Button>
+          </PermissionGuard>
         }
       />
 

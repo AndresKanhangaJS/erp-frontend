@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { ActividadesTimeline } from '../components/ActividadesTimeline'
@@ -116,9 +117,11 @@ export default function LeadFormPage() {
             { label: isEdicao ? 'Editar' : 'Novo' },
           ]}
           actions={
-            <Button type="submit" disabled={isSubmitting || aGuardar}>
-              {aGuardar ? 'A guardar...' : 'Guardar'}
-            </Button>
+            <PermissionGuard permission="comercial.gerir_clientes">
+              <Button type="submit" disabled={isSubmitting || aGuardar}>
+                {aGuardar ? 'A guardar...' : 'Guardar'}
+              </Button>
+            </PermissionGuard>
           }
         />
 

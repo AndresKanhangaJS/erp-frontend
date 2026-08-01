@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/table'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { ConfirmDialog } from '@/shared/components/ui/ConfirmDialog'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { cn } from '@/lib/utils'
 
 import { EstadoInventarioBadge } from '../components/EstadoInventarioBadge'
@@ -50,9 +51,11 @@ export default function DetalheInventarioPage() {
         ]}
         actions={
           inventario.estado === 'aberto' ? (
-            <Button variant="destructive" onClick={() => setConfirmOpen(true)}>
-              Fechar inventário
-            </Button>
+            <PermissionGuard permission="stock.ajustar_inventario">
+              <Button variant="destructive" onClick={() => setConfirmOpen(true)}>
+                Fechar inventário
+              </Button>
+            </PermissionGuard>
           ) : undefined
         }
       />

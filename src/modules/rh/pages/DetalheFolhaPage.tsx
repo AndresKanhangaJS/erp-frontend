@@ -16,6 +16,7 @@ import {
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { ConfirmDialog } from '@/shared/components/ui/ConfirmDialog'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 
 import { EstadoFolhaBadge } from '../components/EstadoFolhaBadge'
 import { useAnularFolha } from '../hooks/useAnularFolha'
@@ -54,9 +55,11 @@ export default function DetalheFolhaPage() {
         ]}
         actions={
           folha.estado === 'processada' ? (
-            <Button variant="destructive" onClick={() => setConfirmOpen(true)}>
-              Anular
-            </Button>
+            <PermissionGuard permission="rh.processar_vencimentos">
+              <Button variant="destructive" onClick={() => setConfirmOpen(true)}>
+                Anular
+              </Button>
+            </PermissionGuard>
           ) : undefined
         }
       />

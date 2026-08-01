@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 
 import { useFuncionario } from '../hooks/useFuncionario'
 import { useReciboVencimento } from '../hooks/useReciboVencimento'
@@ -50,14 +51,16 @@ export default function DetalheVencimentoPage() {
           { label: funcionario?.nome ?? 'Vencimento' },
         ]}
         actions={
-          <Button
-            type="button"
-            variant="outline"
-            disabled={recibo.isPending}
-            onClick={() => recibo.mutate(vencimento.id)}
-          >
-            {recibo.isPending ? 'A abrir...' : 'Ver recibo'}
-          </Button>
+          <PermissionGuard permission="rh.ver_salarios">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={recibo.isPending}
+              onClick={() => recibo.mutate(vencimento.id)}
+            >
+              {recibo.isPending ? 'A abrir...' : 'Ver recibo'}
+            </Button>
+          </PermissionGuard>
         }
       />
 

@@ -4,6 +4,7 @@ import {
   Calculator,
   Handshake,
   Receipt,
+  UserCog,
   Users,
   type LucideIcon,
 } from 'lucide-react'
@@ -12,6 +13,8 @@ import { Link, useLocation } from 'react-router'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { useModules } from '@/shared/hooks/useModules'
+import { usePermission } from '@/shared/hooks/usePermission'
+import { useAuthStore } from '@/shared/stores/authStore'
 import { useUiStore } from '@/shared/stores/uiStore'
 
 interface ModuleNavItem {
@@ -30,11 +33,22 @@ const MODULES: ModuleNavItem[] = [
   { slug: 'relatorios', label: 'Relatórios', href: '/relatorios', icon: BarChart3 },
 ]
 
-/** Módulos inactivos no plano do tenant não desaparecem — ficam com badge "Pro" e apontam para a página de upgrade (ver ModuleGuard). */
+/**
+ * Módulos inactivos no plano do tenant não desaparecem — ficam com
+ * badge "Pro" e apontam para a página de upgrade (ver ModuleGuard).
+ * Módulos cujo plano está activo mas o utilizador não tem a
+ * permissão "<slug>.ver" (ex.: role "operador_stock" não vê Comercial)
+ * são simplesmente omitidos — mostrar um link que vai dar 403 na
+ * primeira chamada não ajuda ninguém.
+ */
 export function Sidebar() {
   const sidebarOpen = useUiStore((state) => state.sidebarOpen)
   const { isModuleActive } = useModules()
+  const permissions = useAuthStore((state) => state.permissions)
+  const podeGerirUtilizadores = usePermission('admin.gerir_utilizadores')
   const location = useLocation()
+
+  const modulosVisiveis = MODULES.filter((mod) => permissions.includes(`${mod.slug}.ver`))
 
   return (
     <aside
@@ -44,7 +58,7 @@ export function Sidebar() {
       )}
     >
       <nav className="flex-1 space-y-0.5 p-2" aria-label="Módulos">
-        {MODULES.map((mod) => {
+        {modulosVisiveis.map((mod) => {
           const active = isModuleActive(mod.slug)
           const isCurrent = active && location.pathname.startsWith(mod.href)
           const Icon = mod.icon
@@ -71,6 +85,25 @@ export function Sidebar() {
           )
         })}
       </nav>
+
+      {podeGerirUtilizadores && (
+        <nav className="space-y-0.5 border-t border-border p-2" aria-label="Administração">
+          <Link
+            to="/admin/utilizadores"
+            className={cn(
+              'flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+              location.pathname.startsWith('/admin/utilizadores')
+                ? 'bg-brand-accent-subtle text-brand-accent'
+                : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
+              !sidebarOpen && 'justify-center px-2',
+            )}
+            aria-current={location.pathname.startsWith('/admin/utilizadores') ? 'page' : undefined}
+          >
+            <UserCog className="h-4 w-4 shrink-0" aria-hidden="true" />
+            {sidebarOpen && <span className="flex-1">Utilizadores</span>}
+          </Link>
+        </nav>
+      )}
     </aside>
   )
 }

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { StatCard } from '@/shared/components/ui/StatCard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
@@ -67,53 +68,55 @@ export default function ArmazensPage() {
         </div>
       )}
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-        className="flex items-end gap-4 rounded-xl bg-surface-card p-4 ring-1 ring-foreground/10"
-      >
-        <div className="space-y-1">
-          <label htmlFor="codigo" className="text-sm text-text-secondary">
-            Código
-          </label>
-          <Controller
-            control={control}
-            name="codigo"
-            render={({ field }) => (
-              <Input id="codigo" className="w-28" aria-invalid={!!errors.codigo} {...field} />
-            )}
-          />
-        </div>
-        <div className="space-y-1">
-          <label htmlFor="nome" className="text-sm text-text-secondary">
-            Nome
-          </label>
-          <Controller
-            control={control}
-            name="nome"
-            render={({ field }) => <Input id="nome" aria-invalid={!!errors.nome} {...field} />}
-          />
-        </div>
-        <div className="flex-1 space-y-1">
-          <label htmlFor="endereco" className="text-sm text-text-secondary">
-            Endereço (opcional)
-          </label>
-          <Controller
-            control={control}
-            name="endereco"
-            render={({ field }) => (
-              <Input
-                id="endereco"
-                value={field.value ?? ''}
-                onChange={(event) => field.onChange(event.target.value || null)}
-              />
-            )}
-          />
-        </div>
-        <Button type="submit" disabled={isSubmitting || criar.isPending}>
-          {criar.isPending ? 'A criar...' : 'Criar armazém'}
-        </Button>
-      </form>
+      <PermissionGuard permission="stock.movimentar">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          className="flex items-end gap-4 rounded-xl bg-surface-card p-4 ring-1 ring-foreground/10"
+        >
+          <div className="space-y-1">
+            <label htmlFor="codigo" className="text-sm text-text-secondary">
+              Código
+            </label>
+            <Controller
+              control={control}
+              name="codigo"
+              render={({ field }) => (
+                <Input id="codigo" className="w-28" aria-invalid={!!errors.codigo} {...field} />
+              )}
+            />
+          </div>
+          <div className="space-y-1">
+            <label htmlFor="nome" className="text-sm text-text-secondary">
+              Nome
+            </label>
+            <Controller
+              control={control}
+              name="nome"
+              render={({ field }) => <Input id="nome" aria-invalid={!!errors.nome} {...field} />}
+            />
+          </div>
+          <div className="flex-1 space-y-1">
+            <label htmlFor="endereco" className="text-sm text-text-secondary">
+              Endereço (opcional)
+            </label>
+            <Controller
+              control={control}
+              name="endereco"
+              render={({ field }) => (
+                <Input
+                  id="endereco"
+                  value={field.value ?? ''}
+                  onChange={(event) => field.onChange(event.target.value || null)}
+                />
+              )}
+            />
+          </div>
+          <Button type="submit" disabled={isSubmitting || criar.isPending}>
+            {criar.isPending ? 'A criar...' : 'Criar armazém'}
+          </Button>
+        </form>
+      </PermissionGuard>
 
       <DataTable
         columns={columns}

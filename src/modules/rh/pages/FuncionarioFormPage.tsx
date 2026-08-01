@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { DeactivateFuncionarioDialog } from '../components/DeactivateFuncionarioDialog'
@@ -102,16 +103,18 @@ export default function FuncionarioFormPage() {
           { label: isEdicao ? 'Editar' : 'Novo' },
         ]}
         actions={
-          <div className="flex gap-2">
-            {isEdicao && funcionario?.estado === 'activo' && (
-              <Button type="button" variant="destructive" onClick={() => setDesactivarOpen(true)}>
-                Desactivar
+          <PermissionGuard permission="rh.gerir_funcionarios">
+            <div className="flex gap-2">
+              {isEdicao && funcionario?.estado === 'activo' && (
+                <Button type="button" variant="destructive" onClick={() => setDesactivarOpen(true)}>
+                  Desactivar
+                </Button>
+              )}
+              <Button type="submit" disabled={isSubmitting || aGuardar}>
+                {aGuardar ? 'A guardar...' : 'Guardar'}
               </Button>
-            )}
-            <Button type="submit" disabled={isSubmitting || aGuardar}>
-              {aGuardar ? 'A guardar...' : 'Guardar'}
-            </Button>
-          </div>
+            </div>
+          </PermissionGuard>
         }
       />
 

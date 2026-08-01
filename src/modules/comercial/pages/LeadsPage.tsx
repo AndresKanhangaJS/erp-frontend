@@ -6,6 +6,7 @@ import { Link } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { StatCard } from '@/shared/components/ui/StatCard'
 
 import { EstadoLeadBadge } from '../components/EstadoLeadBadge'
@@ -42,12 +43,14 @@ export default function LeadsPage() {
       <PageHeader
         title="Leads"
         actions={
-          <Button asChild>
-            <Link to="/comercial/leads/novo">
-              <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
-              Novo lead
-            </Link>
-          </Button>
+          <PermissionGuard permission="comercial.gerir_clientes">
+            <Button asChild>
+              <Link to="/comercial/leads/novo">
+                <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
+                Novo lead
+              </Link>
+            </Button>
+          </PermissionGuard>
         }
       />
       {data && (

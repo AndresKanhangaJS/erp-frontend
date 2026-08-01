@@ -2268,6 +2268,7 @@ export interface components {
           relations: ['roles']
         }[]
         permissions: unknown[]
+        modulos_activos: string[]
       }
       created_at: string | null
       updated_at: string | null

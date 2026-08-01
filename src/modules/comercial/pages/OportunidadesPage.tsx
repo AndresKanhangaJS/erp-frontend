@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { StatCard } from '@/shared/components/ui/StatCard'
 
 import { useOportunidades } from '../hooks/useOportunidades'
@@ -60,12 +61,14 @@ export default function OportunidadesPage() {
       <PageHeader
         title="Oportunidades"
         actions={
-          <Button asChild>
-            <Link to="/comercial/oportunidades/nova">
-              <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
-              Nova oportunidade
-            </Link>
-          </Button>
+          <PermissionGuard permission="comercial.gerir_pipeline">
+            <Button asChild>
+              <Link to="/comercial/oportunidades/nova">
+                <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
+                Nova oportunidade
+              </Link>
+            </Button>
+          </PermissionGuard>
         }
       />
       {data && (

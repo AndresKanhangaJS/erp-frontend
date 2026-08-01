@@ -63,6 +63,15 @@ apiClient.interceptors.response.use(
     }
 
     if (status === 403) {
+      if (body?.error?.code === 'PASSWORD_CHANGE_REQUIRED') {
+        // O backend bloqueia todos os outros endpoints enquanto
+        // must_change_password for verdadeiro — redirect duro, tal como
+        // no 401, para não deixar a app presa a repetir o mesmo pedido.
+        if (window.location.pathname !== '/trocar-password') {
+          window.location.href = '/trocar-password'
+        }
+        return Promise.reject(error)
+      }
       if (body?.error?.code === 'MODULE_NOT_ACTIVE') {
         // Modal de upgrade fica para o ModuleGuard (Passo 8); o toast
         // garante feedback imediato mesmo em acções fora de rotas guardadas.

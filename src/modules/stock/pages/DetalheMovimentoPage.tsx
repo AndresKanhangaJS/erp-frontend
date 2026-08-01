@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { ConfirmDialog } from '@/shared/components/ui/ConfirmDialog'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { formatDate } from '@/shared/utils/formatDate'
 
 import { useArmazens } from '../hooks/useArmazens'
@@ -51,9 +52,11 @@ export default function DetalheMovimentoPage() {
         ]}
         actions={
           podeEstornar ? (
-            <Button variant="destructive" onClick={() => setConfirmOpen(true)}>
-              Estornar
-            </Button>
+            <PermissionGuard permission="stock.movimentar">
+              <Button variant="destructive" onClick={() => setConfirmOpen(true)}>
+                Estornar
+              </Button>
+            </PermissionGuard>
           ) : undefined
         }
       />

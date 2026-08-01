@@ -14,6 +14,7 @@ import {
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { useCriarPipeline } from '../hooks/useCriarPipeline'
@@ -69,81 +70,83 @@ export default function PipelinesPage() {
     <div className="space-y-6">
       <PageHeader title="Pipelines" />
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-        className="max-w-xl space-y-4 rounded-xl bg-surface-card p-4 ring-1 ring-foreground/10"
-      >
-        <div className="space-y-1">
-          <label htmlFor="nome" className="text-sm text-text-secondary">
-            Nome do pipeline
-          </label>
-          <Controller
-            control={control}
-            name="nome"
-            render={({ field }) => <Input id="nome" aria-invalid={!!errors.nome} {...field} />}
-          />
-          {errors.nome && <p className="text-sm text-danger">{errors.nome.message}</p>}
-        </div>
+      <PermissionGuard permission="comercial.gerir_pipeline">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          className="max-w-xl space-y-4 rounded-xl bg-surface-card p-4 ring-1 ring-foreground/10"
+        >
+          <div className="space-y-1">
+            <label htmlFor="nome" className="text-sm text-text-secondary">
+              Nome do pipeline
+            </label>
+            <Controller
+              control={control}
+              name="nome"
+              render={({ field }) => <Input id="nome" aria-invalid={!!errors.nome} {...field} />}
+            />
+            {errors.nome && <p className="text-sm text-danger">{errors.nome.message}</p>}
+          </div>
 
-        <div className="space-y-2">
-          <p className="text-sm text-text-secondary">Estágios</p>
-          {fields.map((field, index) => (
-            <div key={field.id} className="flex gap-2">
-              <Controller
-                control={control}
-                name={`estagios.${index}.nome`}
-                render={({ field: nomeField }) => (
-                  <Input placeholder="Nome do estágio" className="flex-1" {...nomeField} />
-                )}
-              />
-              <Controller
-                control={control}
-                name={`estagios.${index}.tipo`}
-                render={({ field: tipoField }) => (
-                  <Select value={tipoField.value} onValueChange={tipoField.onChange}>
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(TIPO_LABELS).map(([value, label]) => (
-                        <SelectItem key={value} value={value}>
-                          {label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                onClick={() => remove(index)}
-                aria-label="Remover estágio"
-              >
-                <Trash2 className="h-4 w-4" aria-hidden="true" />
-              </Button>
-            </div>
-          ))}
-          {errors.estagios?.message && (
-            <p className="text-sm text-danger">{errors.estagios.message}</p>
-          )}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => append({ nome: '', tipo: 'aberto' })}
-          >
-            <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
-            Adicionar estágio
+          <div className="space-y-2">
+            <p className="text-sm text-text-secondary">Estágios</p>
+            {fields.map((field, index) => (
+              <div key={field.id} className="flex gap-2">
+                <Controller
+                  control={control}
+                  name={`estagios.${index}.nome`}
+                  render={({ field: nomeField }) => (
+                    <Input placeholder="Nome do estágio" className="flex-1" {...nomeField} />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name={`estagios.${index}.tipo`}
+                  render={({ field: tipoField }) => (
+                    <Select value={tipoField.value} onValueChange={tipoField.onChange}>
+                      <SelectTrigger className="w-32">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.entries(TIPO_LABELS).map(([value, label]) => (
+                          <SelectItem key={value} value={value}>
+                            {label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={() => remove(index)}
+                  aria-label="Remover estágio"
+                >
+                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              </div>
+            ))}
+            {errors.estagios?.message && (
+              <p className="text-sm text-danger">{errors.estagios.message}</p>
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => append({ nome: '', tipo: 'aberto' })}
+            >
+              <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
+              Adicionar estágio
+            </Button>
+          </div>
+
+          <Button type="submit" disabled={isSubmitting || criar.isPending}>
+            {criar.isPending ? 'A criar...' : 'Criar pipeline'}
           </Button>
-        </div>
-
-        <Button type="submit" disabled={isSubmitting || criar.isPending}>
-          {criar.isPending ? 'A criar...' : 'Criar pipeline'}
-        </Button>
-      </form>
+        </form>
+      </PermissionGuard>
 
       <div className="space-y-4">
         {isLoading && <p className="text-sm text-text-muted">A carregar...</p>}

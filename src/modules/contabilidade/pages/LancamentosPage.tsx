@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { StatCard } from '@/shared/components/ui/StatCard'
 import { formatDate } from '@/shared/utils/formatDate'
 
@@ -58,12 +59,14 @@ export default function LancamentosPage() {
       <PageHeader
         title="Lançamentos"
         actions={
-          <Button asChild>
-            <Link to="/contabilidade/lancamentos/novo">
-              <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
-              Novo lançamento
-            </Link>
-          </Button>
+          <PermissionGuard permission="contabilidade.lancar">
+            <Button asChild>
+              <Link to="/contabilidade/lancamentos/novo">
+                <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
+                Novo lançamento
+              </Link>
+            </Button>
+          </PermissionGuard>
         }
       />
 

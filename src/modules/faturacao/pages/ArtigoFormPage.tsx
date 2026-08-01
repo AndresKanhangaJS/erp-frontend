@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { useCriarArtigo } from '../hooks/useCriarArtigo'
@@ -56,9 +57,11 @@ export default function ArtigoFormPage() {
           { label: 'Novo' },
         ]}
         actions={
-          <Button type="submit" disabled={isSubmitting || criar.isPending}>
-            {criar.isPending ? 'A guardar...' : 'Guardar'}
-          </Button>
+          <PermissionGuard permission="faturacao.criar">
+            <Button type="submit" disabled={isSubmitting || criar.isPending}>
+              {criar.isPending ? 'A guardar...' : 'Guardar'}
+            </Button>
+          </PermissionGuard>
         }
       />
 

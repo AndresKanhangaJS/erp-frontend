@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/table'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { formatDate, formatDateTime } from '@/shared/utils/formatDate'
 
 import { AnularFaturaDialog } from '../components/AnularFaturaDialog'
@@ -60,18 +61,22 @@ export default function DetalheFaturaPage() {
         breadcrumbs={[{ label: 'Facturação', href: '/faturacao' }, { label: fatura.numero }]}
         actions={
           <div className="flex gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              disabled={pdf.isPending}
-              onClick={() => pdf.mutate(fatura.id)}
-            >
-              {pdf.isPending ? 'A abrir...' : 'Ver PDF'}
-            </Button>
-            {podeAnular && (
-              <Button variant="destructive" onClick={() => setAnularOpen(true)}>
-                Anular
+            <PermissionGuard permission="faturacao.imprimir">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={pdf.isPending}
+                onClick={() => pdf.mutate(fatura.id)}
+              >
+                {pdf.isPending ? 'A abrir...' : 'Ver PDF'}
               </Button>
+            </PermissionGuard>
+            {podeAnular && (
+              <PermissionGuard permission="faturacao.anular">
+                <Button variant="destructive" onClick={() => setAnularOpen(true)}>
+                  Anular
+                </Button>
+              </PermissionGuard>
             )}
           </div>
         }
@@ -167,14 +172,16 @@ export default function DetalheFaturaPage() {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold text-text-primary">Pagamentos</h2>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setPagamentoOpen(true)}
-            >
-              Registar pagamento
-            </Button>
+            <PermissionGuard permission="faturacao.criar">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setPagamentoOpen(true)}
+              >
+                Registar pagamento
+              </Button>
+            </PermissionGuard>
           </div>
           <Card className="overflow-x-auto py-0">
             <Table>

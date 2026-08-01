@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { ArmazemPicker } from '../components/ArmazemPicker'
@@ -52,9 +53,11 @@ export default function TransferenciaPage() {
           { label: 'Transferir' },
         ]}
         actions={
-          <Button type="submit" disabled={isSubmitting || transferir.isPending}>
-            {transferir.isPending ? 'A transferir...' : 'Transferir'}
-          </Button>
+          <PermissionGuard permission="stock.movimentar">
+            <Button type="submit" disabled={isSubmitting || transferir.isPending}>
+              {transferir.isPending ? 'A transferir...' : 'Transferir'}
+            </Button>
+          </PermissionGuard>
         }
       />
 

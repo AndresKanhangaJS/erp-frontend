@@ -6,6 +6,7 @@ import { Link } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { StatCard } from '@/shared/components/ui/StatCard'
 import { formatDate } from '@/shared/utils/formatDate'
 
@@ -50,12 +51,14 @@ export default function InventariosPage() {
       <PageHeader
         title="Inventários"
         actions={
-          <Button asChild>
-            <Link to="/stock/inventarios/novo">
-              <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
-              Novo inventário
-            </Link>
-          </Button>
+          <PermissionGuard permission="stock.ajustar_inventario">
+            <Button asChild>
+              <Link to="/stock/inventarios/novo">
+                <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
+                Novo inventário
+              </Link>
+            </Button>
+          </PermissionGuard>
         }
       />
       {data && (

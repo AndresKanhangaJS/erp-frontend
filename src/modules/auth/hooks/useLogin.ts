@@ -5,21 +5,6 @@ import { login, type LoginPayload } from '@/api/modules/auth'
 import { useAuthStore } from '@/shared/stores/authStore'
 import { useTenantStore } from '@/shared/stores/tenantStore'
 
-const MODULE_SLUGS = ['faturacao', 'contabilidade', 'rh', 'comercial', 'stock', 'relatorios']
-
-/**
- * O backend ainda não tem nenhum endpoint de plano/módulos activos do
- * tenant (confirmado via `artisan route:list` — só existem rotas de
- * Auth e Admin/Users). Até isso existir, inferimos os módulos activos
- * a partir dos prefixos das permissões reais que o login devolve
- * (ex.: "faturacao.ver" → módulo "faturacao" activo). É uma
- * aproximação deliberada e assinalada, não uma suposição às cegas.
- */
-function deriveActiveModules(permissions: string[]): string[] {
-  const prefixes = new Set(permissions.map((permission) => permission.split('.')[0]))
-  return MODULE_SLUGS.filter((slug) => prefixes.has(slug))
-}
-
 export interface LoginFormPayload extends LoginPayload {
   tenantId: string
 }
@@ -50,8 +35,8 @@ export function useLogin() {
         user: result.user,
         permissions: result.permissions,
       })
-      useTenantStore.setState({ activeModules: deriveActiveModules(result.permissions) })
-      navigate('/', { replace: true })
+      useTenantStore.setState({ activeModules: result.activeModules })
+      navigate(result.mustChangePassword ? '/trocar-password' : '/', { replace: true })
     },
   })
 }

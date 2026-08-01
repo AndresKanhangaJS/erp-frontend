@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { ConfirmDialog } from '@/shared/components/ui/ConfirmDialog'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { EstadoPeriodoBadge } from '../components/EstadoPeriodoBadge'
@@ -55,14 +56,16 @@ export default function PeriodosPage() {
       header: '',
       cell: ({ row }) =>
         !row.original.fechado ? (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => setPeriodoParaFechar(row.original)}
-          >
-            Fechar período
-          </Button>
+          <PermissionGuard permission="contabilidade.fechar_periodo">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setPeriodoParaFechar(row.original)}
+            >
+              Fechar período
+            </Button>
+          </PermissionGuard>
         ) : null,
     },
   ]
@@ -116,9 +119,11 @@ export default function PeriodosPage() {
             )}
           />
         </div>
-        <Button type="submit" disabled={isSubmitting || criar.isPending}>
-          {criar.isPending ? 'A criar...' : 'Criar período'}
-        </Button>
+        <PermissionGuard permission="contabilidade.lancar">
+          <Button type="submit" disabled={isSubmitting || criar.isPending}>
+            {criar.isPending ? 'A criar...' : 'Criar período'}
+          </Button>
+        </PermissionGuard>
       </form>
 
       <DataTable

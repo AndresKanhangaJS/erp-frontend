@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 import { formatDateTime } from '@/shared/utils/formatDate'
 
@@ -57,46 +58,48 @@ export function ActividadesTimeline({ relacionadoTipo, relacionadoId }: Activida
     <div className="space-y-4">
       <h2 className="text-sm font-semibold text-text-primary">Actividades</h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-2">
-        <div className="flex gap-2">
-          <Controller
-            control={control}
-            name="tipo"
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger className="w-36">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(TIPO_LABELS).map(([value, label]) => (
-                    <SelectItem key={value} value={value}>
-                      {label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          />
-          <div className="flex-1">
+      <PermissionGuard permission="comercial.gerir_clientes">
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-2">
+          <div className="flex gap-2">
             <Controller
               control={control}
-              name="descricao"
+              name="tipo"
               render={({ field }) => (
-                <Textarea
-                  placeholder="Descreve a actividade..."
-                  className="min-h-9"
-                  aria-invalid={!!errors.descricao}
-                  {...field}
-                />
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="w-36">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(TIPO_LABELS).map(([value, label]) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
             />
+            <div className="flex-1">
+              <Controller
+                control={control}
+                name="descricao"
+                render={({ field }) => (
+                  <Textarea
+                    placeholder="Descreve a actividade..."
+                    className="min-h-9"
+                    aria-invalid={!!errors.descricao}
+                    {...field}
+                  />
+                )}
+              />
+            </div>
+            <Button type="submit" disabled={isSubmitting || registar.isPending}>
+              {registar.isPending ? 'A registar...' : 'Registar'}
+            </Button>
           </div>
-          <Button type="submit" disabled={isSubmitting || registar.isPending}>
-            {registar.isPending ? 'A registar...' : 'Registar'}
-          </Button>
-        </div>
-        {errors.descricao && <p className="text-sm text-danger">{errors.descricao.message}</p>}
-      </form>
+          {errors.descricao && <p className="text-sm text-danger">{errors.descricao.message}</p>}
+        </form>
+      </PermissionGuard>
 
       <div className="space-y-2">
         {isLoading && <p className="text-sm text-text-muted">A carregar...</p>}

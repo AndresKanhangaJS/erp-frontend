@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { applyApiErrorsToForm } from '@/shared/utils/mapApiErrors'
 
 import { ContaCombobox } from '../components/ContaCombobox'
@@ -125,9 +126,11 @@ export default function ContaFormPage() {
           { label: isEdicao ? 'Editar' : 'Nova' },
         ]}
         actions={
-          <Button type="submit" disabled={isSubmitting || aGuardar}>
-            {aGuardar ? 'A guardar...' : 'Guardar'}
-          </Button>
+          <PermissionGuard permission="contabilidade.lancar">
+            <Button type="submit" disabled={isSubmitting || aGuardar}>
+              {aGuardar ? 'A guardar...' : 'Guardar'}
+            </Button>
+          </PermissionGuard>
         }
       />
 

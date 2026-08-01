@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { DataTable } from '@/shared/components/ui/DataTable'
+import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 
 import { useSeries } from '../hooks/useSeries'
 import type { SerieDocumento } from '../types'
@@ -36,9 +37,11 @@ export default function SeriesPage() {
       <PageHeader
         title="Séries"
         actions={
-          <Button asChild>
-            <Link to="/faturacao/series/nova">Nova série</Link>
-          </Button>
+          <PermissionGuard permission="faturacao.criar">
+            <Button asChild>
+              <Link to="/faturacao/series/nova">Nova série</Link>
+            </Button>
+          </PermissionGuard>
         }
       />
       <DataTable
