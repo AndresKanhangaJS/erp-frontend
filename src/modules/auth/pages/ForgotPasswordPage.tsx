@@ -8,6 +8,7 @@ import { Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { FormField } from '@/shared/components/ui/FormField'
 import { getApiErrorMessage } from '@/shared/utils/mapApiErrors'
+import { getTenantSlugFromHostname } from '@/shared/utils/tenantSlug'
 
 import { useForgotPassword } from '../hooks/useForgotPassword'
 import {
@@ -17,9 +18,10 @@ import {
 
 export default function ForgotPasswordPage() {
   const [enviado, setEnviado] = useState(false)
+  const [tenantSlug] = useState(() => getTenantSlugFromHostname())
   const form = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
-    defaultValues: { tenantId: '', email: '' },
+    defaultValues: { tenantId: tenantSlug ?? '', email: '' },
   })
   const {
     control,
@@ -55,13 +57,15 @@ export default function ForgotPasswordPage() {
         ) : (
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
-              <FormField
-                control={control}
-                name="tenantId"
-                label="ID do tenant"
-                description="Temporário — substituído por resolução automática mais tarde."
-                render={(field) => <Input autoComplete="off" {...field} />}
-              />
+              {!tenantSlug && (
+                <FormField
+                  control={control}
+                  name="tenantId"
+                  label="ID do tenant"
+                  description="Detectado automaticamente num subdomínio real — usa isto só em ambiente de suporte ou desenvolvimento."
+                  render={(field) => <Input autoComplete="off" {...field} />}
+                />
+              )}
 
               <FormField
                 control={control}

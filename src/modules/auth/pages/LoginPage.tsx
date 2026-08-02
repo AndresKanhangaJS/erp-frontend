@@ -3,11 +3,14 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 import { z } from 'zod'
 
+import { useState } from 'react'
+
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { FormField } from '@/shared/components/ui/FormField'
 import { applyApiErrorsToForm, getApiErrorMessage } from '@/shared/utils/mapApiErrors'
+import { getTenantSlugFromHostname } from '@/shared/utils/tenantSlug'
 
 import { useLogin } from '../hooks/useLogin'
 
@@ -22,11 +25,11 @@ type LoginFormValues = z.infer<typeof loginSchema>
 /**
  * Validação Zod aqui é só UX — o backend valida sempre (ADR-004).
  *
- * Campo "ID do tenant": solução interina — ainda não há resolução de
- * tenant por subdomínio nem um passo de "descobrir o tenant pelo
- * email" no backend, e o X-Tenant-ID é obrigatório mesmo no login
- * (ver docs/api-contract.md). Substituir isto assim que existir um
- * mecanismo real de resolução.
+ * Campo "ID do tenant": num subdomínio real (empresa.sistema.ao),
+ * getTenantSlugFromHostname deriva-o sozinho e o campo nem aparece — o
+ * X-Tenant-ID continua obrigatório no backend (ver docs/api-contract.md),
+ * só deixa de precisar de input manual. Sem VITE_ROOT_DOMAIN configurado
+ * (dev local) ou fora desse domínio, mantém-se o campo manual.
  *
  * O <Form {...form}> (FormProvider do RHF) é obrigatório aqui: o
  * FormField partilhado usa FormLabel/FormControl/FormMessage do
@@ -36,9 +39,10 @@ type LoginFormValues = z.infer<typeof loginSchema>
  * ErrorBoundary a árvore React inteira desmonta (ecrã em branco).
  */
 export default function LoginPage() {
+  const [tenantSlug] = useState(() => getTenantSlugFromHostname())
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { tenantId: '', email: '', password: '' },
+    defaultValues: { tenantId: tenantSlug ?? '', email: '', password: '' },
   })
   const {
     control,
@@ -70,13 +74,19 @@ export default function LoginPage() {
         >
           <h1 className="text-lg font-semibold text-text-primary">Entrar</h1>
 
-          <FormField
-            control={control}
-            name="tenantId"
-            label="ID do tenant"
-            description="Temporário — substituído por resolução automática mais tarde."
-            render={(field) => <Input autoComplete="off" {...field} />}
-          />
+          {tenantSlug ? (
+            <p className="text-sm text-text-muted">
+              A entrar em <span className="font-medium text-text-primary">{tenantSlug}</span>
+            </p>
+          ) : (
+            <FormField
+              control={control}
+              name="tenantId"
+              label="ID do tenant"
+              description="Detectado automaticamente num subdomínio real — usa isto só em ambiente de suporte ou desenvolvimento."
+              render={(field) => <Input autoComplete="off" {...field} />}
+            />
+          )}
 
           <FormField
             control={control}

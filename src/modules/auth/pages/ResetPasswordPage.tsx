@@ -2,9 +2,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 
+import { useState } from 'react'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { getApiErrorMessage } from '@/shared/utils/mapApiErrors'
+import { getTenantSlugFromHostname } from '@/shared/utils/tenantSlug'
 
 import { useResetPassword } from '../hooks/useResetPassword'
 import { resetPasswordSchema, type ResetPasswordFormValues } from '../schemas/resetPasswordSchema'
@@ -14,6 +17,7 @@ export default function ResetPasswordPage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const token = searchParams.get('token')
+  const [tenantSlug] = useState(() => getTenantSlugFromHostname())
 
   const {
     control,
@@ -22,7 +26,7 @@ export default function ResetPasswordPage() {
     formState: { errors, isSubmitting },
   } = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
-    defaultValues: { tenantId: '', password: '', passwordConfirmation: '' },
+    defaultValues: { tenantId: tenantSlug ?? '', password: '', passwordConfirmation: '' },
   })
   const resetPassword = useResetPassword()
 
@@ -58,27 +62,37 @@ export default function ResetPasswordPage() {
           </p>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
-            <div className="space-y-1">
-              <label htmlFor="tenantId" className="text-sm text-text-secondary">
-                ID do tenant
-              </label>
-              <Controller
-                control={control}
-                name="tenantId"
-                render={({ field }) => (
-                  <Input
-                    id="tenantId"
-                    autoComplete="off"
-                    aria-invalid={!!errors.tenantId}
-                    {...field}
-                  />
-                )}
-              />
-              {errors.tenantId && <p className="text-sm text-danger">{errors.tenantId.message}</p>}
-              <p className="text-xs text-text-muted">
-                Temporário — substituído por resolução automática mais tarde.
+            {tenantSlug ? (
+              <p className="text-sm text-text-muted">
+                A repor a senha em{' '}
+                <span className="font-medium text-text-primary">{tenantSlug}</span>
               </p>
-            </div>
+            ) : (
+              <div className="space-y-1">
+                <label htmlFor="tenantId" className="text-sm text-text-secondary">
+                  ID do tenant
+                </label>
+                <Controller
+                  control={control}
+                  name="tenantId"
+                  render={({ field }) => (
+                    <Input
+                      id="tenantId"
+                      autoComplete="off"
+                      aria-invalid={!!errors.tenantId}
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.tenantId && (
+                  <p className="text-sm text-danger">{errors.tenantId.message}</p>
+                )}
+                <p className="text-xs text-text-muted">
+                  Detectado automaticamente num subdomínio real — usa isto só em ambiente de suporte
+                  ou desenvolvimento.
+                </p>
+              </div>
+            )}
 
             <div className="space-y-1">
               <label htmlFor="password" className="text-sm text-text-secondary">
