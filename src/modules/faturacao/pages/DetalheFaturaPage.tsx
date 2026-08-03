@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -16,8 +17,10 @@ import { PageHeader } from '@/shared/components/layout/PageHeader'
 import { CurrencyDisplay } from '@/shared/components/ui/CurrencyDisplay'
 import { PermissionGuard } from '@/shared/components/ui/PermissionGuard'
 import { formatDate, formatDateTime } from '@/shared/utils/formatDate'
+import { getApiErrorMessage } from '@/shared/utils/mapApiErrors'
 
 import { AnularFaturaDialog } from '../components/AnularFaturaDialog'
+import { AgtEstadoBadge } from '../components/AgtEstadoBadge'
 import { EstadoBadge } from '../components/EstadoBadge'
 import { FaturaQrCode } from '../components/FaturaQrCode'
 import { RegistarPagamentoDialog } from '../components/RegistarPagamentoDialog'
@@ -26,6 +29,9 @@ import { useCliente } from '../hooks/useCliente'
 import { useFatura } from '../hooks/useFatura'
 import { useFaturaPdf } from '../hooks/useFaturaPdf'
 import { usePagamentos } from '../hooks/usePagamentos'
+import { useReenviarFaturaAgt } from '../hooks/useReenviarFaturaAgt'
+import { useSubmeterFaturaAgt } from '../hooks/useSubmeterFaturaAgt'
+import { useVerificarEstadoAgt } from '../hooks/useVerificarEstadoAgt'
 
 const METODO_LABELS: Record<string, string> = {
   transferencia: 'Transferência',
@@ -40,6 +46,9 @@ export default function DetalheFaturaPage() {
   const { data: cliente } = useCliente(fatura?.clienteId ?? undefined)
   const { data: pagamentos } = usePagamentos(fatura?.estado === 'anulada' ? undefined : id)
   const pdf = useFaturaPdf()
+  const submeterAgt = useSubmeterFaturaAgt(id ?? '')
+  const reenviarAgt = useReenviarFaturaAgt(id ?? '')
+  const verificarEstadoAgt = useVerificarEstadoAgt(id ?? '')
   const [anularOpen, setAnularOpen] = useState(false)
   const [pagamentoOpen, setPagamentoOpen] = useState(false)
 
@@ -155,12 +164,109 @@ export default function DetalheFaturaPage() {
             taxaCambio={fatura.taxaCambio}
           />
 
-          <Card className="text-xs text-text-muted">
-            <CardContent>
-              <p>
-                Assinatura local (hash encadeado, integridade técnica — não é certificação AGT):
-              </p>
-              <p className="font-mono break-all">{fatura.hash}</p>
+          <Card>
+            <CardContent className="space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-medium text-text-primary">AGT</p>
+                  <AgtEstadoBadge estado={fatura.agt.estado} />
+                </div>
+                <div className="flex gap-2">
+                  {(fatura.agt.estado === 'submetida' || fatura.agt.estado === 'pendente') && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={verificarEstadoAgt.isPending}
+                      onClick={() =>
+                        verificarEstadoAgt.mutate(undefined, {
+                          onError: (error) =>
+                            toast.error(
+                              getApiErrorMessage(error, 'Não foi possível verificar o estado.'),
+                            ),
+                        })
+                      }
+                    >
+                      {verificarEstadoAgt.isPending ? 'A verificar...' : 'Actualizar estado'}
+                    </Button>
+                  )}
+                  {fatura.agt.estado === 'pendente' && (
+                    <PermissionGuard permission="faturacao.agt_submeter">
+                      <Button
+                        type="button"
+                        size="sm"
+                        disabled={submeterAgt.isPending}
+                        onClick={() =>
+                          submeterAgt.mutate(undefined, {
+                            onSuccess: (result) => toast.success(result.message),
+                            onError: (error) =>
+                              toast.error(
+                                getApiErrorMessage(error, 'Não foi possível submeter à AGT.'),
+                              ),
+                          })
+                        }
+                      >
+                        {submeterAgt.isPending ? 'A submeter...' : 'Submeter à AGT'}
+                      </Button>
+                    </PermissionGuard>
+                  )}
+                  {(fatura.agt.estado === 'invalida' || fatura.agt.estado === 'erro') && (
+                    <PermissionGuard permission="faturacao.agt_submeter">
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        disabled={reenviarAgt.isPending}
+                        onClick={() =>
+                          reenviarAgt.mutate(undefined, {
+                            onSuccess: (result) => toast.success(result.message),
+                            onError: (error) =>
+                              toast.error(
+                                getApiErrorMessage(error, 'Não foi possível reenviar à AGT.'),
+                              ),
+                          })
+                        }
+                      >
+                        {reenviarAgt.isPending ? 'A reenviar...' : 'Reenviar correcção'}
+                      </Button>
+                    </PermissionGuard>
+                  )}
+                </div>
+              </div>
+
+              {fatura.agt.documentNo && (
+                <p className="text-sm text-text-secondary">
+                  Nº de documento AGT:{' '}
+                  <span className="font-mono text-text-primary">{fatura.agt.documentNo}</span>
+                </p>
+              )}
+              {fatura.agt.validadaEm && (
+                <p className="text-sm text-text-muted">
+                  Validada em {formatDateTime(fatura.agt.validadaEm)}
+                </p>
+              )}
+              {fatura.agt.reportUrl && (
+                <a
+                  href={fatura.agt.reportUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block text-sm text-brand-accent hover:underline"
+                >
+                  Ver relatório da AGT
+                </a>
+              )}
+              {fatura.agt.erros && fatura.agt.erros.length > 0 && (
+                <div className="rounded-md bg-danger-subtle p-2 text-xs text-danger">
+                  {fatura.agt.erros.map((erro, index) => (
+                    <p key={index}>{JSON.stringify(erro)}</p>
+                  ))}
+                </div>
+              )}
+
+              <div className="border-t border-border pt-3 text-xs text-text-muted">
+                <p>Assinatura local (hash encadeado, integridade técnica):</p>
+                <p className="font-mono break-all">{fatura.hash}</p>
+              </div>
             </CardContent>
           </Card>
         </div>

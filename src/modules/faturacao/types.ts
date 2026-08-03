@@ -24,6 +24,21 @@ export interface Artigo {
   unidade: string | null
 }
 
+/** Estado da série perante a AGT — devolvido por listarSeries (secção 9). */
+export type AgtEstadoSerie = 'A' | 'U' | 'F'
+export type AgtIndicadorContingencia = 'N' | 'C'
+export type AgtMetodoFacturacao = 'FEPC' | 'FESF' | 'SF'
+
+export interface SerieAgt {
+  seriesCode: string | null
+  authorizedQuantity: number | null
+  firstDocumentNo: number | null
+  lastDocumentNo: number | null
+  estado: AgtEstadoSerie | null
+  indicadorContingencia: AgtIndicadorContingencia | null
+  metodoFacturacao: AgtMetodoFacturacao | null
+}
+
 export interface SerieDocumento {
   id: string
   tipoDocumento: TipoDocumento
@@ -31,6 +46,8 @@ export interface SerieDocumento {
   anoFiscal: number
   ultimoNumero: number
   activa: boolean
+  /** null até se pedir quota à AGT (POST /faturacao/agt/series/solicitar) — sem isto a série não é utilizável a sério. */
+  agt: SerieAgt
 }
 
 export interface FaturaLinha {
@@ -46,6 +63,31 @@ export interface FaturaLinha {
   total: number
 }
 
+/**
+ * Estado da factura perante a AGT — independente do estado de negócio
+ * local (EstadoFatura). "nao_aplicavel" cobre integração desligada ou
+ * tenant sem credenciais configuradas.
+ */
+export type AgtEstadoSubmissao =
+  | 'nao_aplicavel'
+  | 'pendente'
+  | 'submetida'
+  | 'valida'
+  | 'invalida'
+  | 'anulada_agt'
+  | 'substituida'
+  | 'erro'
+
+export interface FaturaAgt {
+  estado: AgtEstadoSubmissao
+  documentNo: string | null
+  documentStatus: string | null
+  validadaEm: string | null
+  erros: unknown[] | null
+  reportUrl: string | null
+  tentativas: number | null
+}
+
 export interface Fatura {
   id: string
   numero: string
@@ -58,7 +100,7 @@ export interface Fatura {
   total: number
   moeda: Moeda
   taxaCambio: number
-  /** Assinatura local em cadeia (integridade técnica) — não é certificação AGT. */
+  /** Assinatura local em cadeia (integridade técnica) — não é certificação AGT; ver campo agt para o estado de certificação real. */
   hash: string
   hashAnterior: string | null
   faturaOriginalId: string | null
@@ -67,6 +109,7 @@ export interface Fatura {
   /** null quando a listagem não carrega as linhas — só show/store/anular trazem linhas populadas. */
   linhas: FaturaLinha[] | null
   createdAt: string | null
+  agt: FaturaAgt
 }
 
 export type MetodoPagamento = 'transferencia' | 'numerario' | 'outro'
@@ -97,4 +140,43 @@ export interface TaxaCambio {
   moeda: Moeda
   taxa: number
   data: string
+}
+
+export type AmbienteAgt = 'hml' | 'prd'
+
+/**
+ * Nunca traz username/password/chave_privada_pem/certificado_pem — o
+ * backend nunca os devolve (ver AgtConfiguracaoResource, erp-api). Um
+ * formulário de edição só sabe se já há credenciais via temCredenciais.
+ */
+export interface AgtConfiguracao {
+  nifEmitente: string | null
+  establishmentNumber: string | null
+  eacCode: string | null
+  codigoIsencaoPadrao: string | null
+  ambiente: AmbienteAgt
+  activa: boolean
+  aderiuEm: string | null
+  tipoAdesao: string | null
+  temCredenciais: boolean
+}
+
+/** Uma entrada de listarSeries directamente da AGT — não é o SerieDocumento local, é o que a AGT tem registado. */
+export interface AgtSerieInfo {
+  seriesCode: string | null
+  seriesYear: string | null
+  documentType: string | null
+  seriesStatus: string | null
+  seriesCreationDate: string | null
+  firstDocumentCreated: string | null
+  lastDocumentCreated: string | null
+  firstDocumentNumber: string | null
+  invoicingMethod: string | null
+  seriesContingencyIndicator: string | null
+  seriesStartTS: string | null
+  seriesEndTS: string | null
+  nif: string | null
+  nome: string | null
+  dataAdesao: string | null
+  tipoAdesao: string | null
 }

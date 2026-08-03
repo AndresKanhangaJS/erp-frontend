@@ -4,6 +4,8 @@ import { PermissionRouteGuard } from '@/app/guards/PermissionRouteGuard'
 import { ModuleTabs, type ModuleTabsItem } from '@/shared/components/layout/ModuleTabs'
 import { usePermission } from '@/shared/hooks/usePermission'
 
+import AgtConfiguracaoPage from './pages/AgtConfiguracaoPage'
+import AgtSeriesPage from './pages/AgtSeriesPage'
 import ArtigoFormPage from './pages/ArtigoFormPage'
 import ArtigosPage from './pages/ArtigosPage'
 import ClienteFormPage from './pages/ClienteFormPage'
@@ -40,10 +42,14 @@ const NAV_CONFIGURACAO: ModuleTabsItem[] = [
 export default function FaturacaoModule() {
   const podeConfigurarEmpresa = usePermission('admin.configurar_empresa')
   const podeExportarSaft = usePermission('faturacao.exportar_saft')
+  const podeVerAgt = usePermission('faturacao.agt_ver')
+  const podeGerirSeriesAgt = usePermission('faturacao.agt_gerir_series')
   const nav = [
     ...NAV_BASE,
     ...(podeExportarSaft ? [{ label: 'SAF-T', href: '/faturacao/saft' }] : []),
     ...(podeConfigurarEmpresa ? NAV_CONFIGURACAO : []),
+    ...(podeVerAgt ? [{ label: 'Configuração AGT', href: '/faturacao/agt/configuracao' }] : []),
+    ...(podeGerirSeriesAgt ? [{ label: 'Séries AGT', href: '/faturacao/agt/series' }] : []),
   ]
 
   return (
@@ -66,6 +72,12 @@ export default function FaturacaoModule() {
         </Route>
         <Route element={<PermissionRouteGuard permission="faturacao.exportar_saft" />}>
           <Route path="saft" element={<SaftExportPage />} />
+        </Route>
+        <Route element={<PermissionRouteGuard permission="faturacao.agt_ver" />}>
+          <Route path="agt/configuracao" element={<AgtConfiguracaoPage />} />
+        </Route>
+        <Route element={<PermissionRouteGuard permission="faturacao.agt_gerir_series" />}>
+          <Route path="agt/series" element={<AgtSeriesPage />} />
         </Route>
       </Routes>
     </div>

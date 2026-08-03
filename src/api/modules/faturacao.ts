@@ -11,7 +11,11 @@ import type { PeriodoFiscalFormValues } from '../../modules/faturacao/schemas/pe
 import type { SaftFormValues } from '../../modules/faturacao/schemas/saftSchema'
 import type { SerieFormValues } from '../../modules/faturacao/schemas/serieSchema'
 import type { TaxaCambioFormValues } from '../../modules/faturacao/schemas/taxaCambioSchema'
+import type { AgtConfiguracaoFormValues } from '../../modules/faturacao/schemas/agtConfiguracaoSchema'
 import type {
+  AgtConfiguracao,
+  AgtSerieInfo,
+  AmbienteAgt,
   Artigo,
   Cliente,
   Fatura,
@@ -64,6 +68,15 @@ interface RawFaturaResource {
     motivo_anulacao: string | null
     data_emissao: string | null
     linhas: RawFaturaLinha[] | null
+    agt: {
+      estado: string
+      document_no: string | null
+      document_status: string | null
+      validada_em: string | null
+      erros: unknown[] | null
+      report_url: string | null
+      tentativas: number | null
+    }
   }
   created_at: string | null
   updated_at: string | null
@@ -105,6 +118,15 @@ function mapFatura(raw: RawFaturaResource): Fatura {
     dataEmissao: attrs.data_emissao,
     linhas: attrs.linhas ? attrs.linhas.map(mapFaturaLinha) : null,
     createdAt: raw.created_at,
+    agt: {
+      estado: attrs.agt.estado as Fatura['agt']['estado'],
+      documentNo: attrs.agt.document_no,
+      documentStatus: attrs.agt.document_status,
+      validadaEm: attrs.agt.validada_em,
+      erros: attrs.agt.erros,
+      reportUrl: attrs.agt.report_url,
+      tentativas: attrs.agt.tentativas,
+    },
   }
 }
 
@@ -286,6 +308,15 @@ interface RawSerieDocumentoResource {
     ano_fiscal: string | number
     ultimo_numero: string | number
     activa: boolean
+    agt: {
+      series_code: string | null
+      authorized_quantity: number | null
+      first_document_no: number | null
+      last_document_no: number | null
+      estado: string | null
+      indicador_contingencia: string | null
+      metodo_facturacao: string | null
+    }
   }
   created_at: string | null
   updated_at: string | null
@@ -300,6 +331,16 @@ function mapSerie(raw: RawSerieDocumentoResource): SerieDocumento {
     anoFiscal: Number(attrs.ano_fiscal),
     ultimoNumero: Number(attrs.ultimo_numero),
     activa: attrs.activa,
+    agt: {
+      seriesCode: attrs.agt.series_code,
+      authorizedQuantity: attrs.agt.authorized_quantity,
+      firstDocumentNo: attrs.agt.first_document_no,
+      lastDocumentNo: attrs.agt.last_document_no,
+      estado: attrs.agt.estado as SerieDocumento['agt']['estado'],
+      indicadorContingencia: attrs.agt
+        .indicador_contingencia as SerieDocumento['agt']['indicadorContingencia'],
+      metodoFacturacao: attrs.agt.metodo_facturacao as SerieDocumento['agt']['metodoFacturacao'],
+    },
   }
 }
 
@@ -458,5 +499,127 @@ export async function exportarSaft(values: SaftFormValues): Promise<{ message: s
     ano_fiscal: values.anoFiscal,
     mes: values.mes ?? null,
   })
+  return response.data
+}
+
+/*
+ * AGT (facturação electrónica) — App\Modules\Fiscal\Agt, erp-api.
+ * Submissão de facturas é automática ao emitir (SubmeterFaturaAgtListener);
+ * os endpoints aqui são para configurar a integração, pedir quota de
+ * numeração para uma série, e reenviar/consultar manualmente.
+ */
+
+interface RawAgtConfiguracaoResource {
+  id: string
+  type: 'agt_configuracao'
+  attributes: {
+    nif_emitente: string | null
+    establishment_number: string | null
+    eac_code: string | null
+    codigo_isencao_padrao: string | null
+    ambiente: string
+    activa: boolean
+    aderiu_em: string | null
+    tipo_adesao: string | null
+    tem_credenciais: boolean
+  }
+  created_at: string | null
+  updated_at: string | null
+}
+
+function mapAgtConfiguracao(raw: RawAgtConfiguracaoResource): AgtConfiguracao {
+  const attrs = raw.attributes
+  return {
+    nifEmitente: attrs.nif_emitente,
+    establishmentNumber: attrs.establishment_number,
+    eacCode: attrs.eac_code,
+    codigoIsencaoPadrao: attrs.codigo_isencao_padrao,
+    ambiente: attrs.ambiente as AmbienteAgt,
+    activa: attrs.activa,
+    aderiuEm: attrs.aderiu_em,
+    tipoAdesao: attrs.tipo_adesao,
+    temCredenciais: attrs.tem_credenciais,
+  }
+}
+
+export async function getAgtConfiguracao(): Promise<AgtConfiguracao> {
+  const response = await apiClient.get<RawAgtConfiguracaoResource>('/faturacao/agt/configuracao')
+  return mapAgtConfiguracao(response.data)
+}
+
+/** Campos de credenciais em branco não são enviados — significam "não alterar" (ver agtConfiguracaoSchema). */
+export async function updateAgtConfiguracao(
+  values: AgtConfiguracaoFormValues,
+): Promise<AgtConfiguracao> {
+  const payload: Record<string, unknown> = {
+    nif_emitente: values.nifEmitente,
+    establishment_number: values.establishmentNumber,
+    eac_code: values.eacCode || null,
+    codigo_isencao_padrao: values.codigoIsencaoPadrao || null,
+    ambiente: values.ambiente,
+    activa: values.activa,
+  }
+  if (values.username) payload.username = values.username
+  if (values.password) payload.password = values.password
+  if (values.chavePrivadaPem) payload.chave_privada_pem = values.chavePrivadaPem
+  if (values.certificadoPem) payload.certificado_pem = values.certificadoPem
+
+  const response = await apiClient.put<RawAgtConfiguracaoResource>(
+    '/faturacao/agt/configuracao',
+    payload,
+  )
+  return mapAgtConfiguracao(response.data)
+}
+
+/** Submissão normal é automática ao emitir — isto é só para reenviar manualmente após uma falha. */
+export async function submeterFaturaAgt(
+  faturaId: string,
+): Promise<{ message: string; code: string }> {
+  const response = await apiClient.post<{ message: string; code: string }>(
+    `/faturacao/agt/faturas/${faturaId}/submeter`,
+  )
+  return response.data
+}
+
+/** Se o estado local ainda for "submetida", despacha uma nova verificação e devolve o estado ainda actual — pode não reflectir de imediato. */
+export async function getFaturaAgtEstado(faturaId: string): Promise<Fatura> {
+  const response = await apiClient.get<RawFaturaResource>(
+    `/faturacao/agt/faturas/${faturaId}/estado`,
+  )
+  return mapFatura(response.data)
+}
+
+export async function reenviarFaturaAgt(
+  faturaId: string,
+): Promise<{ message: string; code: string }> {
+  const response = await apiClient.post<{ message: string; code: string }>(
+    `/faturacao/agt/faturas/${faturaId}/reenviar`,
+  )
+  return response.data
+}
+
+/** Sem isto, a série não tem quota de numeração real na AGT — fica só uma numeração local. */
+export async function solicitarSerieAgt(serieId: string): Promise<SerieDocumento> {
+  const response = await apiClient.post<RawSerieDocumentoResource>(
+    '/faturacao/agt/series/solicitar',
+    {
+      serie_id: serieId,
+    },
+  )
+  return mapSerie(response.data)
+}
+
+export interface ListarSeriesAgtParams {
+  seriesCode?: string
+  seriesYear?: string
+  seriesStatus?: string
+  documentType?: string
+  establishmentNumber?: string
+  seriesContingencyIndicator?: string
+}
+
+/** Consulta directa à AGT (não à base local) — é o que a AGT tem registado para este NIF. */
+export async function listarSeriesAgt(params: ListarSeriesAgtParams = {}): Promise<AgtSerieInfo[]> {
+  const response = await apiClient.get<AgtSerieInfo[]>('/faturacao/agt/series', { params })
   return response.data
 }
