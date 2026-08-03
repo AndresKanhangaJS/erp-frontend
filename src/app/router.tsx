@@ -11,6 +11,7 @@ import { PerfilPage } from './pages/PerfilPage'
 import { UpgradePage } from './pages/UpgradePage'
 
 const LoginPage = lazy(() => import('@/modules/auth/pages/LoginPage'))
+const RegisterPage = lazy(() => import('@/modules/tenant/pages/RegisterPage'))
 const ForgotPasswordPage = lazy(() => import('@/modules/auth/pages/ForgotPasswordPage'))
 const ResetPasswordPage = lazy(() => import('@/modules/auth/pages/ResetPasswordPage'))
 const ChangePasswordPage = lazy(() => import('@/modules/auth/pages/ChangePasswordPage'))
@@ -45,6 +46,7 @@ export function AppRouter() {
       <Suspense fallback={<ModuleFallback />}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/registar" element={<RegisterPage />} />
           <Route path="/esqueci-password" element={<ForgotPasswordPage />} />
           {/* Caminho fixo pelo backend em PasswordResetMail (erp-api) — não renomear sem actualizar lá também. */}
           <Route path="/reset-password" element={<ResetPasswordPage />} />

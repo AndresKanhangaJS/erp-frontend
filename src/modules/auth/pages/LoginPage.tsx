@@ -108,12 +108,14 @@ export default function LoginPage() {
             {login.isPending ? 'A entrar...' : 'Entrar'}
           </Button>
 
-          <Link
-            to="/esqueci-password"
-            className="block text-center text-sm text-text-secondary hover:underline"
-          >
-            Esqueci-me da password
-          </Link>
+          <div className="space-y-1.5 text-center text-sm">
+            <Link to="/esqueci-password" className="block text-text-secondary hover:underline">
+              Esqueci-me da password
+            </Link>
+            <Link to="/registar" className="block text-text-secondary hover:underline">
+              Ainda não tens conta? Regista a tua empresa
+            </Link>
+          </div>
         </form>
       </Form>
     </div>
