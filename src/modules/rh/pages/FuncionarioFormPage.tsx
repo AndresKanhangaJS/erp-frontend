@@ -80,12 +80,12 @@ export default function FuncionarioFormPage() {
   function onSubmit(values: FuncionarioFormValues) {
     if (isEdicao) {
       editar.mutate(values, {
-        onSuccess: () => navigate('/rh/funcionarios'),
+        onSuccess: () => navigate('/rh'),
         onError: (error) => applyApiErrorsToForm(error, setError),
       })
     } else {
       criar.mutate(values, {
-        onSuccess: () => navigate('/rh/funcionarios'),
+        onSuccess: () => navigate('/rh'),
         onError: (error) => applyApiErrorsToForm(error, setError),
       })
     }
@@ -99,7 +99,7 @@ export default function FuncionarioFormPage() {
         title={isEdicao ? 'Editar funcionário' : 'Novo funcionário'}
         breadcrumbs={[
           { label: 'RH', href: '/rh' },
-          { label: 'Funcionários', href: '/rh/funcionarios' },
+          { label: 'Funcionários', href: '/rh' },
           { label: isEdicao ? 'Editar' : 'Novo' },
         ]}
         actions={
@@ -308,7 +308,7 @@ export default function FuncionarioFormPage() {
           onOpenChange={setDesactivarOpen}
           onDesactivado={() => {
             setDesactivarOpen(false)
-            navigate('/rh/funcionarios')
+            navigate('/rh')
           }}
         />
       )}

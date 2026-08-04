@@ -268,13 +268,10 @@ function mapSaldoConta(raw: RawSaldoContaResource): SaldoConta {
 }
 
 export async function getBalancete(periodoId: string): Promise<SaldoConta[]> {
-  const response = await apiClient.get<{ data: RawSaldoContaResource[] }>(
-    '/contabilidade/balancete',
-    {
-      params: { periodo_id: periodoId },
-    },
-  )
-  return response.data.data.map(mapSaldoConta)
+  const response = await apiClient.get<RawSaldoContaResource[]>('/contabilidade/balancete', {
+    params: { periodo_id: periodoId },
+  })
+  return response.data.map(mapSaldoConta)
 }
 
 interface RawLinhaDemonstrativo {

@@ -93,12 +93,12 @@ export default function LeadFormPage() {
   function onSubmit(values: LeadFormValues) {
     if (isEdicao) {
       editar.mutate(values, {
-        onSuccess: () => navigate('/comercial/leads'),
+        onSuccess: () => navigate('/comercial'),
         onError: (error) => applyApiErrorsToForm(error, setError),
       })
     } else {
       criar.mutate(values, {
-        onSuccess: () => navigate('/comercial/leads'),
+        onSuccess: () => navigate('/comercial'),
         onError: (error) => applyApiErrorsToForm(error, setError),
       })
     }
@@ -113,7 +113,7 @@ export default function LeadFormPage() {
           title={isEdicao ? 'Editar lead' : 'Novo lead'}
           breadcrumbs={[
             { label: 'Comercial', href: '/comercial' },
-            { label: 'Leads', href: '/comercial/leads' },
+            { label: 'Leads', href: '/comercial' },
             { label: isEdicao ? 'Editar' : 'Novo' },
           ]}
           actions={
